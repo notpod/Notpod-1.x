@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DeviceConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <SyncPatterns>
+    <SyncPattern>
+      <Identifier>itunes-style</Identifier>
+      <Name>iTunes</Name>
+      <Pattern>%ARTIST%\%ALBUM%\%TRACKNUMSPACE%%NAME%</Pattern>
+      <Description>This pattern places the tracks the same way iTunes places tracks in a managed iTunes music folder. Files are organized by Artist\Album\TrackNumber Name. This pattern is recommended for the Sony Ericsson W800i (Walkman phone).</Description>
+      <CompilationsPattern>Compilations\%ALBUM%\%TRACKNUMSPACE%%NAME%</CompilationsPattern>
+    </SyncPattern>
+    <SyncPattern>
+      <Identifier>one-folder</Identifier>
+      <Name>Artist Folder</Name>
+      <Pattern>%ARTIST% - %ALBUM%\%TRACKNUMSPACE%%NAME%</Pattern>
+      <Description>This pattern organizes the tracks in folders named by Artist and album. Files are organized like this: Artist - Album\TrackNumber Name.</Description>
+      <CompilationsPattern>%ALBUM%\%TRACKNUMSPACE%%NAME%</CompilationsPattern>
+    </SyncPattern>
+    <SyncPattern>
+      <Identifier>flat</Identifier>
+      <Name>Flat</Name>
+      <Pattern>%ARTIST% - %NAME%</Pattern>
+      <Description>This pattern organizes all tracks in the root media folder of the device. All tracks from all artists are in one folder and names like this: Artist - Name.</Description>
+      <CompilationsPattern />
+    </SyncPattern>
+  </SyncPatterns>
+  <Devices>
+    <Device>
+      <Name>Sony PSP</Name>
+      <MediaRoot>PSP\MUSIC</MediaRoot>
+      <SyncPattern>one-folder</SyncPattern>
+      <RecognizePattern>PSP</RecognizePattern>
+      <Playlist />
+    </Device>
+    <Device>
+      <Name>Sony Ericsson Walkman Phone</Name>
+      <MediaRoot>Music</MediaRoot>
+      <SyncPattern>itunes-style</SyncPattern>
+      <RecognizePattern>MSSEMC\Media files</RecognizePattern>
+      <Playlist />
+    </Device>
+    <Device>
+      <Name>Generic Player</Name>
+      <MediaRoot />
+      <SyncPattern>flat</SyncPattern>
+      <RecognizePattern>ITAGENERIC</RecognizePattern>
+      <Playlist />
+    </Device>
+  </Devices>
+</DeviceConfiguration>

@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="Configuration">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="ShowNotificationPopups" type="xs:boolean" />
+        <xs:element name="DeviceConfiguration" type="xs:string" />
+        <xs:element name="UseListFolder" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

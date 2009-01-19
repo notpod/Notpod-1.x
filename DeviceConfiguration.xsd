@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="DeviceConfiguration">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="SyncPatterns">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="SyncPattern">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Identifier" type="xs:string" />
+                    <xs:element name="Name" type="xs:string" />
+                    <xs:element name="Pattern" type="xs:string" />
+                    <xs:element name="Description" type="xs:string" />
+                    <xs:element name="CompilationsPattern" type="xs:string" />
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Devices">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="Device">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Name" type="xs:string" />
+                    <xs:element name="MediaRoot" type="xs:string" />
+                    <xs:element name="SyncPattern" type="xs:string" />
+                    <xs:element name="RecognizePattern" type="xs:string" />
+                    <xs:element name="Playlist" type="xs:string" />
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

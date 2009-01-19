@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+
+<Configuration>
+	<ShowNotificationPopups>true</ShowNotificationPopups>
+	<DeviceConfiguration>device-config.xml</DeviceConfiguration>
+	<UseListFolder>true</UseListFolder>
+</Configuration>
