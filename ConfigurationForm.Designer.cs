@@ -39,6 +39,7 @@ namespace Jaranweb.iTunesAgent
             this.comboSyncPatterns = new System.Windows.Forms.ComboBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupDeviceInformation = new System.Windows.Forms.GroupBox();
+            this.buttonCreateUniqueFile = new System.Windows.Forms.Button();
             this.comboAssociatePlaylist = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
             this.buttonDelete = new System.Windows.Forms.Button();
@@ -114,11 +115,11 @@ namespace Jaranweb.iTunesAgent
             // buttonBrowseMediaRoot
             // 
             this.buttonBrowseMediaRoot.Enabled = false;
-            this.buttonBrowseMediaRoot.Location = new System.Drawing.Point(454, 66);
+            this.buttonBrowseMediaRoot.Location = new System.Drawing.Point(428, 65);
             this.buttonBrowseMediaRoot.Name = "buttonBrowseMediaRoot";
-            this.buttonBrowseMediaRoot.Size = new System.Drawing.Size(40, 23);
+            this.buttonBrowseMediaRoot.Size = new System.Drawing.Size(65, 23);
             this.buttonBrowseMediaRoot.TabIndex = 6;
-            this.buttonBrowseMediaRoot.Text = "...";
+            this.buttonBrowseMediaRoot.Text = "Choose";
             this.toolTip.SetToolTip(this.buttonBrowseMediaRoot, "Browse for the folder if the device is already connected.");
             this.buttonBrowseMediaRoot.UseVisualStyleBackColor = true;
             this.buttonBrowseMediaRoot.Click += new System.EventHandler(this.buttonBrowseMediaRoot_Click);
@@ -148,6 +149,7 @@ namespace Jaranweb.iTunesAgent
             // 
             // groupDeviceInformation
             // 
+            this.groupDeviceInformation.Controls.Add(this.buttonCreateUniqueFile);
             this.groupDeviceInformation.Controls.Add(this.comboAssociatePlaylist);
             this.groupDeviceInformation.Controls.Add(this.label5);
             this.groupDeviceInformation.Controls.Add(this.buttonDelete);
@@ -168,6 +170,19 @@ namespace Jaranweb.iTunesAgent
             this.groupDeviceInformation.TabIndex = 1;
             this.groupDeviceInformation.TabStop = false;
             this.groupDeviceInformation.Text = "Device information";
+            // 
+            // buttonCreateUniqueFile
+            // 
+            this.buttonCreateUniqueFile.Enabled = false;
+            this.buttonCreateUniqueFile.Location = new System.Drawing.Point(428, 89);
+            this.buttonCreateUniqueFile.Name = "buttonCreateUniqueFile";
+            this.buttonCreateUniqueFile.Size = new System.Drawing.Size(65, 23);
+            this.buttonCreateUniqueFile.TabIndex = 14;
+            this.buttonCreateUniqueFile.Text = "Create";
+            this.toolTip.SetToolTip(this.buttonCreateUniqueFile, "Choose the location of your device and iTunes Agent will create a unique file for" +
+                    " you.");
+            this.buttonCreateUniqueFile.UseVisualStyleBackColor = true;
+            this.buttonCreateUniqueFile.Click += new System.EventHandler(this.buttonCreateUniqueFile_Click);
             // 
             // comboAssociatePlaylist
             // 
@@ -230,7 +245,7 @@ namespace Jaranweb.iTunesAgent
             this.textRecognizePattern.Location = new System.Drawing.Point(134, 91);
             this.textRecognizePattern.Name = "textRecognizePattern";
             this.helpProvider.SetShowHelp(this.textRecognizePattern, true);
-            this.textRecognizePattern.Size = new System.Drawing.Size(360, 20);
+            this.textRecognizePattern.Size = new System.Drawing.Size(289, 20);
             this.textRecognizePattern.TabIndex = 8;
             // 
             // label4
@@ -247,7 +262,7 @@ namespace Jaranweb.iTunesAgent
             this.textMediaRoot.Enabled = false;
             this.textMediaRoot.Location = new System.Drawing.Point(134, 67);
             this.textMediaRoot.Name = "textMediaRoot";
-            this.textMediaRoot.Size = new System.Drawing.Size(314, 20);
+            this.textMediaRoot.Size = new System.Drawing.Size(289, 20);
             this.textMediaRoot.TabIndex = 5;
             // 
             // label3
@@ -382,5 +397,6 @@ namespace Jaranweb.iTunesAgent
         private System.Windows.Forms.ComboBox comboAssociatePlaylist;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.CheckBox checkAutocloseSyncWindow;
+        private System.Windows.Forms.Button buttonCreateUniqueFile;
     }
 }
