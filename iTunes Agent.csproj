@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{BC5AD6BB-A60E-4FFC-8A9F-CB0B6E66E90D}</ProjectGuid>
     <OutputType>WinExe</OutputType>
@@ -60,7 +60,7 @@
     </Reference>
     <Reference Include="nunit.framework, Version=2.4.6.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Program Files\NUnit 2.4.6\bin\nunit.framework.dll</HintPath>
+      <HintPath>..\..\Program Files\NUnit 2.4.8\bin\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -87,6 +87,7 @@
     </Compile>
     <Compile Include="ConfigurationHelper.cs" />
     <Compile Include="ConnectedDevicesManagerImpl.cs" />
+    <Compile Include="CryptoUtils.cs" />
     <Compile Include="Device.cs" />
     <Compile Include="FileNameUtils.cs" />
     <Compile Include="FileNameUtilsTest.cs" />
