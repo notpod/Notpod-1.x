@@ -244,6 +244,8 @@ namespace Jaranweb.iTunesAgent
         /// </summary>
         protected void OniTunesQuitEvent()
         {
+            Console.Out.WriteLine("OniTunesQuitEvent");
+
             CancelEventArgs e = new CancelEventArgs(false);
             this.OnClosing(e);
             Application.Exit();
@@ -396,39 +398,9 @@ namespace Jaranweb.iTunesAgent
         /// Set event handlers for iTunes events.
         /// </summary>
         private void SetEventHandlers()
-        {
-            itunes.OnPlayerPlayEvent
-                += new _IiTunesEvents_OnPlayerPlayEventEventHandler(OnITunesPlayEvent);
-            itunes.OnPlayerPlayingTrackChangedEvent 
-                    += new _IiTunesEvents_OnPlayerPlayingTrackChangedEventEventHandler(OnITunesPlayEvent);
+        {            
             itunes.OnAboutToPromptUserToQuitEvent 
                     += new _IiTunesEvents_OnAboutToPromptUserToQuitEventEventHandler(OniTunesQuitEvent);
-        }
-
-        /// <summary>
-        /// Event handler for play events in iTunes.
-        /// </summary>
-        /// <param name="track"></param>
-        public void OnITunesPlayEvent(object track)
-        {
-            if (configuration.ShowNotificationPopups)
-            {
-                try
-                {
-                    IITTrack itrack = (IITTrack)track;
-                    string trackInfo = (itrack.Artist != null && itrack.Artist.Length > 0 ? itrack.Artist + " - " : "") 
-                            + itrack.Name;
-                    itaTray.ShowBalloonTip(5, "Now playing:", trackInfo, ToolTipIcon.Info);
-                }
-                catch (Exception e)
-                {
-                    l.Error(e);
-
-                    itaTray.ShowBalloonTip(5, "Warning", "An error prevented me from telling you what is currently "
-                        + "playing. This is most likely because iTunes is busy with a dialog and is not considered critical.", 
-                            ToolTipIcon.Warning);
-                }
-            }
         }
 
         /// <summary>
