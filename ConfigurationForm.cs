@@ -12,6 +12,7 @@ using System.Runtime.InteropServices;
 using iTunesLib;
 using Jaranweb.iTunesAgent.Configuration12;
 using log4net;
+using System.Security.Cryptography;
 
 namespace Jaranweb.iTunesAgent
 {
@@ -44,7 +45,7 @@ namespace Jaranweb.iTunesAgent
             this.checkAutocloseSyncWindow.Checked = configuration.CloseSyncWindowOnSuccess;
 
             this.deviceConfiguration = deviceConfiguration;
-            for(int d = 0; d < deviceConfiguration.Devices.Length; d++)                
+            for (int d = 0; d < deviceConfiguration.Devices.Length; d++)
             {
                 Device device = deviceConfiguration.Devices[d];
                 ListViewItem item = new ListViewItem(device.Name);
@@ -57,7 +58,7 @@ namespace Jaranweb.iTunesAgent
 
                     deviceConfigurationChanged = true;
                     buttonOK.Enabled = true;
-                    deviceConfiguration.RemoveDevice(device);                    
+                    deviceConfiguration.RemoveDevice(device);
                     continue;
                 }
 
@@ -75,14 +76,14 @@ namespace Jaranweb.iTunesAgent
                         "Invalid configuration", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 
                     deviceConfigurationChanged = true;
-                    deviceConfiguration.RemoveSyncPattern(pattern);                    
+                    deviceConfiguration.RemoveSyncPattern(pattern);
                     buttonOK.Enabled = true;
                     continue;
                 }
 
                 comboSyncPatterns.Items.Add(pattern.Name);
-            }      
-      
+            }
+
             //Add playlists to "Associate with playlist" combo
             bool retry = true;
             while (retry)
@@ -119,8 +120,8 @@ namespace Jaranweb.iTunesAgent
 
             }
 
-            
-            
+
+
         }
 
         /// <summary>
@@ -148,7 +149,7 @@ namespace Jaranweb.iTunesAgent
                 + "synchronized with iTunes Agent you will have to clear the music folder of your "
                 + "device, including the '.itastruct' file, in order for iTunes Agent to manage "
                 + "the device with the new structure.\n\nFor new devices the new structure setting "
-                + "will be applied upon first iTunes-to-device synchronization.", "Please note", 
+                + "will be applied upon first iTunes-to-device synchronization.", "Please note",
                 MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 
@@ -176,13 +177,13 @@ namespace Jaranweb.iTunesAgent
                     if (pattern.Identifier != device.SyncPattern)
                         continue;
 
-                    for (int i = 0; i <comboSyncPatterns.Items.Count; i++)                        
-                    {                        
+                    for (int i = 0; i < comboSyncPatterns.Items.Count; i++)
+                    {
                         if ((string)comboSyncPatterns.Items[i] != pattern.Name)
                             continue;
 
                         comboSyncPatterns.SelectedIndex = i;
-                        break;                        
+                        break;
                     }
 
                     //helpProvider.SetHelpString(comboSyncPatterns, pattern.Description);
@@ -192,14 +193,14 @@ namespace Jaranweb.iTunesAgent
 
                 //Set selected associated playlist.
                 comboAssociatePlaylist.SelectedIndex = 0;
-                if (device.Playlist != null && device.Playlist.Length > 0)                    
+                if (device.Playlist != null && device.Playlist.Length > 0)
                 {
-                    
+
                     foreach (string playlist in comboAssociatePlaylist.Items)
                     {
                         if (playlist == device.Playlist)
                         {
-                            comboAssociatePlaylist.SelectedItem = playlist;                            
+                            comboAssociatePlaylist.SelectedItem = playlist;
                         }
                     }
 
@@ -208,7 +209,7 @@ namespace Jaranweb.iTunesAgent
 
                 break;
             }
-            
+
         }
 
         /// <summary>
@@ -217,17 +218,18 @@ namespace Jaranweb.iTunesAgent
         /// <param name="forNewDevice"></param>
         private void EnableEditFields(bool forNewDevice)
         {
-            if(forNewDevice)
+            if (forNewDevice)
                 textDeviceName.Enabled = true;
             comboSyncPatterns.Enabled = true;
             textMediaRoot.Enabled = true;
             textRecognizePattern.Enabled = true;
             comboAssociatePlaylist.Enabled = true;
 
-            if(!forNewDevice)
+            if (!forNewDevice)
                 buttonDelete.Enabled = true;
             buttonSave.Enabled = true;
             buttonBrowseMediaRoot.Enabled = true;
+            buttonCreateUniqueFile.Enabled = true;
             comboAssociatePlaylist.Enabled = true;
 
         }
@@ -244,6 +246,7 @@ namespace Jaranweb.iTunesAgent
             comboAssociatePlaylist.Enabled = false;
 
             buttonBrowseMediaRoot.Enabled = false;
+            buttonCreateUniqueFile.Enabled = false;
             buttonDelete.Enabled = false;
             buttonSave.Enabled = false;
             comboAssociatePlaylist.Enabled = false;
@@ -251,7 +254,7 @@ namespace Jaranweb.iTunesAgent
 
         private void comboSyncPatterns_SelectedIndexChanged(object sender, EventArgs e)
         {
-            
+
             foreach (SyncPattern pattern in deviceConfiguration.SyncPatterns)
             {
                 if (pattern.Name != (string)comboSyncPatterns.SelectedItem)
@@ -276,7 +279,7 @@ namespace Jaranweb.iTunesAgent
             textRecognizePattern.Text = "";
             comboSyncPatterns.SelectedIndex = 0;
             comboAssociatePlaylist.SelectedIndex = 0;
-            
+
         }
 
         /// <summary>
@@ -310,7 +313,7 @@ namespace Jaranweb.iTunesAgent
 
             buttonNew_Click(this, null);
             DisableEditFields();
-            SaveDeviceConfiguration();  
+            SaveDeviceConfiguration();
         }
 
         /// <summary>
@@ -331,13 +334,13 @@ namespace Jaranweb.iTunesAgent
                 MessageBox.Show(this, "Please enter a name for the device.", "Missing information", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
             }
-                        
+
             if (syncPattern == null)
             {
                 MessageBox.Show(this, "Please select a synchronize pattern for the device.", "Missing information", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
             }
-                        
+
             /*if (mediaroot.Length == 0)
             {
                 MessageBox.Show(this, "Please enter a media folder for the device.", "Missing information", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
@@ -349,7 +352,7 @@ namespace Jaranweb.iTunesAgent
                 MessageBox.Show(this, "Please enter a recognize pattern for the device.", "Missing information", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
             }
-                        
+
             Device newDevice = new Device();
             newDevice.Name = deviceName;
             newDevice.MediaRoot = mediaroot;
@@ -398,7 +401,7 @@ namespace Jaranweb.iTunesAgent
 
             deviceConfigurationChanged = true;
             SaveDeviceConfiguration();
-            
+
             buttonNew_Click(this, null);
             DisableEditFields();
 
@@ -413,7 +416,7 @@ namespace Jaranweb.iTunesAgent
         private void buttonBrowseMediaRoot_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog dlg = new FolderBrowserDialog();
-            if (dlg.ShowDialog() == DialogResult.Cancel)                
+            if (dlg.ShowDialog() == DialogResult.Cancel)
                 return;
 
             //This check is to make sure that the application do not throw an exception if a path 
@@ -421,7 +424,7 @@ namespace Jaranweb.iTunesAgent
             //reportet incidents where unsupported, special devices have given an empty path in return...
             //See bug report 1443246.
             // https://sourceforge.net/tracker/index.php?func=detail&aid=1443246&group_id=149133&atid=773786
-            if(dlg.SelectedPath.Length >= 3)
+            if (dlg.SelectedPath.Length >= 3)
                 textMediaRoot.Text = dlg.SelectedPath.Substring(3, dlg.SelectedPath.Length - 3);
         }
 
@@ -436,7 +439,7 @@ namespace Jaranweb.iTunesAgent
             {
                 if (MessageBox.Show(this, "Configuration has been modified. Do you want to save the changes?", "Please confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    if(configurationChanged)
+                    if (configurationChanged)
                         SaveConfiguration();
                     if (deviceConfigurationChanged)
                         SaveDeviceConfiguration();
@@ -456,13 +459,13 @@ namespace Jaranweb.iTunesAgent
 
             try
             {
-                XmlSerializer serializer = new XmlSerializer(typeof(Configuration));                
+                XmlSerializer serializer = new XmlSerializer(typeof(Configuration));
                 TextWriter writer = new StreamWriter(MainForm.DATA_PATH + "\\ita-config.xml");
                 serializer.Serialize(writer, configuration);
                 writer.Flush();
                 writer.Close();
-                                
-                configurationChanged = false;                
+
+                configurationChanged = false;
             }
             catch (Exception ex)
             {
@@ -470,7 +473,7 @@ namespace Jaranweb.iTunesAgent
                 MessageBox.Show(this, "Failed to write configuration! " + ex.Message, "Fatal", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-                        
+
         }
 
         /// <summary>
@@ -485,7 +488,7 @@ namespace Jaranweb.iTunesAgent
                 serializer.Serialize(writer, deviceConfiguration);
                 writer.Flush();
                 writer.Close();
-                                
+
                 deviceConfigurationChanged = false;
             }
             catch (Exception ex)
@@ -527,6 +530,53 @@ namespace Jaranweb.iTunesAgent
         {
             configurationChanged = true;
             buttonOK.Enabled = true;
+        }
+
+        /// <summary>
+        /// Event handler for buttonCreateUniqueFile clicks. Lets the 
+        /// user select a folder and creates a unique file in this folder 
+        /// which is used to identify the device.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void buttonCreateUniqueFile_Click(object sender, EventArgs e)
+        {
+            // Check that a name for the device has been entered as this is 
+            // used when generating the file.
+            if (String.IsNullOrEmpty(textDeviceName.Text))
+            {
+                MessageBox.Show(this, "You need to give your device a name " +
+                    "before I can auto-generate the file to recognize it by.",
+                    "Please enter device name", MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+                return;
+            }
+
+
+            FolderBrowserDialog dlg = new FolderBrowserDialog();
+            dlg.Description = "Select a folder in which you want the file to be created.";
+            if (dlg.ShowDialog() == DialogResult.Cancel)
+                return;
+
+
+            string folder = dlg.SelectedPath;
+            string nameBase = textDeviceName.Text + "-" + DateTime.Now.Ticks.ToString();
+            
+            // Build the filename which is the MD5 checksum of the nameBase + the .ita extension.
+            string fileName = CryptoUtils.Md5Hex(nameBase) + ".ita";
+
+            try
+            {
+                File.Create(folder + "\\" + fileName);
+                textRecognizePattern.Text = folder.Substring(3) + "\\" + fileName;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "I was unable to create a file for identifying the device in the folder "
+                    + folder + ". The name of the file I tried to create was \"" + fileName
+                    + "\".\n\nError reported: " + ex.Message, "Unable to create file", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
         }
 
     }
