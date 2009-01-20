@@ -31,6 +31,7 @@ namespace Jaranweb.iTunesAgent
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConfigurationForm));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.checkAutocloseSyncWindow = new System.Windows.Forms.CheckBox();
             this.checkUseListFolder = new System.Windows.Forms.CheckBox();
             this.checkNotifications = new System.Windows.Forms.CheckBox();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
@@ -55,7 +56,6 @@ namespace Jaranweb.iTunesAgent
             this.buttonCancel = new System.Windows.Forms.Button();
             this.buttonOK = new System.Windows.Forms.Button();
             this.helpProvider = new System.Windows.Forms.HelpProvider();
-            this.checkAutocloseSyncWindow = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupDeviceInformation.SuspendLayout();
@@ -72,6 +72,20 @@ namespace Jaranweb.iTunesAgent
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Agent";
+            // 
+            // checkAutocloseSyncWindow
+            // 
+            this.checkAutocloseSyncWindow.AutoSize = true;
+            this.checkAutocloseSyncWindow.Location = new System.Drawing.Point(9, 43);
+            this.checkAutocloseSyncWindow.Name = "checkAutocloseSyncWindow";
+            this.helpProvider.SetShowHelp(this.checkAutocloseSyncWindow, false);
+            this.checkAutocloseSyncWindow.Size = new System.Drawing.Size(238, 17);
+            this.checkAutocloseSyncWindow.TabIndex = 2;
+            this.checkAutocloseSyncWindow.Text = "Close status window automatically if no errors";
+            this.toolTip.SetToolTip(this.checkAutocloseSyncWindow, "If checked, the status window shown during synchronization will be automatically " +
+                    "closed unless there are errors.");
+            this.checkAutocloseSyncWindow.UseVisualStyleBackColor = true;
+            this.checkAutocloseSyncWindow.Click += new System.EventHandler(this.checkAutocloseSyncWindow_Click);
             // 
             // checkUseListFolder
             // 
@@ -94,7 +108,7 @@ namespace Jaranweb.iTunesAgent
             this.checkNotifications.TabIndex = 0;
             this.checkNotifications.Text = "Show baloon notifications";
             this.toolTip.SetToolTip(this.checkNotifications, "Checking this option will cause a baloon to appear in your system tray whenever a" +
-                    " new track starts playing in iTunes.");
+                    " device is connected, disconnected and on several other events.");
             this.checkNotifications.Click += new System.EventHandler(this.checkNotifications_Click);
             // 
             // buttonBrowseMediaRoot
@@ -311,20 +325,6 @@ namespace Jaranweb.iTunesAgent
             this.buttonOK.TabIndex = 3;
             this.buttonOK.Text = "&Save";
             this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
-            // 
-            // checkAutocloseSyncWindow
-            // 
-            this.checkAutocloseSyncWindow.AutoSize = true;
-            this.checkAutocloseSyncWindow.Location = new System.Drawing.Point(9, 43);
-            this.checkAutocloseSyncWindow.Name = "checkAutocloseSyncWindow";
-            this.helpProvider.SetShowHelp(this.checkAutocloseSyncWindow, false);
-            this.checkAutocloseSyncWindow.Size = new System.Drawing.Size(238, 17);
-            this.checkAutocloseSyncWindow.TabIndex = 2;
-            this.checkAutocloseSyncWindow.Text = "Close status window automatically if no errors";
-            this.toolTip.SetToolTip(this.checkAutocloseSyncWindow, "If checked, the status window shown during synchronization will be automatically " +
-                    "closed unless there are errors.");
-            this.checkAutocloseSyncWindow.UseVisualStyleBackColor = true;
-            this.checkAutocloseSyncWindow.Click += new System.EventHandler(this.checkAutocloseSyncWindow_Click);
             // 
             // ConfigurationForm
             // 
