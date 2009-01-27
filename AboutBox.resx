@@ -117,4 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="textBoxDescription.Text" xml:space="preserve">
+    <value>Development team:
+------------------------
+Project lead / developer: Jaran Nilsen
+Developer: Justin Katz
+
+Thanks to:
+----------------------
+
+- PamC (lmnopc), for debugging assistance.
+
+----------------------
+For more information please visit:
+http://ita.sourceforge.net</value>
+  </data>
 </root>

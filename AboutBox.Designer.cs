@@ -27,6 +27,7 @@ namespace Jaranweb.iTunesAgent
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AboutBox));
             this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.logoPictureBox = new System.Windows.Forms.PictureBox();
             this.labelProductName = new System.Windows.Forms.Label();
@@ -136,9 +137,7 @@ namespace Jaranweb.iTunesAgent
             this.textBoxDescription.Size = new System.Drawing.Size(271, 126);
             this.textBoxDescription.TabIndex = 23;
             this.textBoxDescription.TabStop = false;
-            this.textBoxDescription.Text = "iTunes Agent\r\n===========\r\n\r\nThanks to:\r\n- PamC (lmnopc), for debugging assistanc" +
-                "e.\r\n\r\n----------------------\r\nFor more information please visit:\r\nhttp://ita.sou" +
-                "rceforge.net";
+            this.textBoxDescription.Text = resources.GetString("textBoxDescription.Text");
             // 
             // okButton
             // 
