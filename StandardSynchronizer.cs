@@ -61,6 +61,21 @@ namespace Jaranweb.iTunesAgent
                 throw new SynchronizeException("Configuration has not been set.");
 
             DirectoryInfo di = new DirectoryInfo(drive + device.MediaRoot);
+
+            // Check if the media root directory actually exists 
+            // Thanks to Robert Grabowski for the contribution.
+            try
+            {
+                if (!di.Exists)
+                    di.Create();
+            }
+            catch (IOException ex)
+            {
+                throw new SynchronizeException("Could not create directory '"
+                    + di.Name + "' for device '" + device.Name
+                    + "'. Unable to complete synchronization.", ex);
+            }
+
             FileInfo[] files = di.GetFiles("*.*", SearchOption.AllDirectories);
 
             //Find correct synchronize pattern for the device.
@@ -80,8 +95,84 @@ namespace Jaranweb.iTunesAgent
 
             syncForm.AddLogText("Synchronizing '" + device.Name + "'...");
             syncForm.SetDeviceName(device.Name, drive);
+
+            syncForm.SetCurrentStatus("Initializing...");
+            syncForm.SetMaxProgressValue(playlist.Tracks.Count);
+            syncForm.SetProgressValue(0);
+
+
+            // maintain a filename -> track object dictionary for the tracks to be copied onto the device           
+            // Thanks to Robert Grabowski for the contribution.
+            Dictionary<string, IITFileOrCDTrack> syncList = new Dictionary<string, IITFileOrCDTrack>();
+
+            string deviceMediaRoot = drive + (device.MediaRoot.Length > 0 ? device.MediaRoot + "\\" : "");
+
+            try
+            {
+                foreach (IITTrack track in playlist.Tracks)
+                {
+                    if (syncForm.GetOperationCancelled())
+                    {
+                        syncForm.SetCurrentStatus("Synchronization cancelled. 0 tracks added, 0 tracks removed.");
+                        syncForm.AddLogText("Synchronization cancelled.", Color.OrangeRed);
+                        OnSynchronizeCancelled();
+                        return;
+                    }
+
+                    syncForm.SetProgressValue(syncForm.GetProgressValue() + 1);
+
+                    //Continue if the track is not of kind "file" or the track is one of the initial tracks on the device.
+                    if (track.Kind != ITTrackKind.ITTrackKindFile || device.InitialTracks.Contains(track))
+                        continue;
+
+
+                    string pathOnDevice = "";
+
+                    IITTrack addTrack = track;
+
+                    try
+                    {
+                        pathOnDevice = SyncPatternTranslator.Translate(devicePattern, (IITFileOrCDTrack)addTrack);
+                    }
+                    catch (Exception ex)
+                    {
+                        syncForm.AddLogText("An error occured while working with \"" + track.Artist + " - " + track.Name
+                            + "\". This may be because the track has been deleted from disk. Look for an exclamation mark"
+                            + "next to the track in your playlist.", Color.Orange);
+                        continue;
+                    }
+                    string fullPath = deviceMediaRoot + pathOnDevice;
+
+                    // Check if the list already contains a key - this happens in cases where there are duplicate 
+                    // entries in the playlist for the same track. Although the track may have different locations on 
+                    // the user's computer, iTunes Agent will not handle this.
+                    if (syncList.ContainsKey(fullPath))
+                    {
+                        syncForm.AddLogText("You have duplicate listings for " + track.Artist + " - " + track.Name
+                            + " in your playlist. I will continue for now, but you should remove any duplicates "
+                            + "when the synchronization is complete.", Color.Orange);
+                        continue;
+                    }
+
+                    syncList.Add(fullPath, (IITFileOrCDTrack)addTrack);
+                }
+            }
+            catch (Exception ex)
+            {
+                syncForm.SetCurrentStatus("");
+                String message = "Error occured while initializing: " + ex.Message;
+                syncForm.AddLogText(message, Color.Red);
+                syncForm.DisableCancelButton();
+                syncForm.SetProgressValue(0);
+                OnSynchronizeError(device, message);
+
+                l.Error(message, ex);
+                return;
+            }
+            syncForm.AddLogText("Initialization completed.");
+
             syncForm.SetCurrentStatus("Checking tracks. Removing those that are no longer in the playlist...");
-            int totalTracks = files.Length; // +playlist.Tracks.Count;
+            int totalTracks = files.Length;
             syncForm.SetMaxProgressValue(totalTracks);
             syncForm.SetProgressValue(0);
 
@@ -112,37 +203,12 @@ namespace Jaranweb.iTunesAgent
                     if (!extensions.Contains(file.Extension))
                         continue;
 
-                    //Variable indicating if the track has been found in the playlist
-                    bool bTrackFound = false;
-
-                    //Loop through all tracks in the playlist to check for deleted files.
-                    foreach (IITTrack track in playlist.Tracks)
+                    if (syncList.ContainsKey(file.FullName))
                     {
-                        //Continue if the track is not of kind "file" or the track is one of the initial tracks on the device.
-                        if (track.Kind != ITTrackKind.ITTrackKindFile || device.InitialTracks.Contains(track))
-                            continue;
-
-                        string pathOnDevice = "";
-
-                        pathOnDevice = SyncPatternTranslator.Translate(devicePattern, (IITFileOrCDTrack)track);
-                        
-                        // Construct full path for the destination of the file
-                        string fullPath = drive + (device.MediaRoot.Length > 0 ? device.MediaRoot + "\\" : "") + pathOnDevice;
-
-                        if (fullPath == file.FullName)
-                        {
-                            bTrackFound = true;
-
-                            // Get size of existing file.
-                            FileInfo fi = new FileInfo(fullPath);
-                            existingSize += fi.Length;
-                            break;
-                        }
-                    }
-
-                    //Was the track found? If so, continue.
-                    if (bTrackFound)
+                        FileInfo fi = new FileInfo(file.FullName);
+                        existingSize += fi.Length;
                         continue;
+                    }
 
                     //If the track was not found --- delete it!
                     string fileFullName = file.FullName;
@@ -157,7 +223,7 @@ namespace Jaranweb.iTunesAgent
                     Color.Orange);
             }
             catch (MissingTrackException ex)
-            {                
+            {
                 syncForm.SetCurrentStatus("");
                 String message = "You have a missing file in your library. Please remove the track '" + ex.Track.Artist + " - " + ex.Track.Name + "' before synchronizing.";
                 syncForm.AddLogText(message, Color.Red);
@@ -208,8 +274,12 @@ namespace Jaranweb.iTunesAgent
                 syncForm.SetProgressValue(0);
 
                 //Check for new track in the playlist which should be copied to the device
-                foreach (IITTrack track in playlist.Tracks)
+                // NEW foreach: traverse synchronization list instead of playlist
+                // Thanks to Robert Grabowski.                
+                foreach (string filePath in syncList.Keys)
                 {
+                    IITTrack track = syncList[filePath];
+
                     // Check for cancelled operation.
                     if (syncForm.GetOperationCancelled())
                     {
@@ -226,36 +296,27 @@ namespace Jaranweb.iTunesAgent
                     //Increase progress bar
                     syncForm.SetProgressValue(syncForm.GetProgressValue() + 1);
 
-                    //Skip track if it's not a file.
-                    if (track.Kind != ITTrackKind.ITTrackKindFile)
-                        continue;
+                    string trackPath = filePath.Substring(deviceMediaRoot.Length); // hack: cut out media root
 
-                    string trackPath = "";
-
-                    trackPath = SyncPatternTranslator.Translate(devicePattern, (IITFileOrCDTrack)track);                    
-                    
-                    // Construct file path
-                    string pathOnDevice = drive + device.MediaRoot + "\\"
-                        + trackPath;
-
-                    if (File.Exists(pathOnDevice))
+                    if (File.Exists(filePath))
                         continue;
 
                     try
                     {
                         CheckAndCreateFolders(trackPath, drive, device);
-                        syncForm.SetCurrentStatus("Copying " + pathOnDevice);
+                        syncForm.SetCurrentStatus("Copying " + filePath
+                            + " (" + syncForm.GetProgressValue() + "/" + syncForm.GetMaxProgressValue() + ")");
 
-                        File.Copy(((IITFileOrCDTrack)track).Location, pathOnDevice, true);
-                        File.SetAttributes(pathOnDevice, FileAttributes.Normal);
+                        File.Copy(((IITFileOrCDTrack)track).Location, filePath, true);
+                        File.SetAttributes(filePath, FileAttributes.Normal);
 
 
-                        syncForm.AddLogText(pathOnDevice + " copied successfully.", Color.Green);
+                        syncForm.AddLogText(filePath + " copied successfully.", Color.Green);
 
                     }
                     catch (Exception ex)
                     {
-                        String message = "Failed to copy " + pathOnDevice + ".\n-> " + ex.Message;
+                        String message = "Failed to copy " + filePath + ".\n-> " + ex.Message;
                         syncForm.AddLogText(message, Color.Red);
                         OnSynchronizeError(device, message);
 
@@ -384,7 +445,10 @@ namespace Jaranweb.iTunesAgent
         /// </summary>
         public bool HasGui
         {
-            get { return hasGui; }
+            get
+            {
+                return hasGui;
+            }
         }
 
         /// <summary>
@@ -392,8 +456,14 @@ namespace Jaranweb.iTunesAgent
         /// </summary>
         public DeviceConfiguration Configuration
         {
-            get { return configuration; }
-            set { configuration = value; }
+            get
+            {
+                return configuration;
+            }
+            set
+            {
+                configuration = value;
+            }
         }
 
         /// <summary>
@@ -440,8 +510,14 @@ namespace Jaranweb.iTunesAgent
         /// </summary>
         public ISynchronizeForm Form
         {
-            get { return syncForm; }
-            set { syncForm = value; }
+            get
+            {
+                return syncForm;
+            }
+            set
+            {
+                syncForm = value;
+            }
         }
 
         #endregion
