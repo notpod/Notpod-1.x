@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("iTunes Agent")]
 [assembly: AssemblyProduct("iTunes Agent")]
-[assembly: AssemblyCopyright("Copyright 2005-2008, Jaran Nilsen")]
+[assembly: AssemblyCopyright("Copyright 2005-2009, Jaran Nilsen")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -29,5 +29,5 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("1.2.2")]
-[assembly: AssemblyFileVersion("1.2")]
+[assembly: AssemblyVersion("1.3.0")]
+[assembly: AssemblyFileVersion("1.3")]
