@@ -62,6 +62,26 @@ namespace Jaranweb.iTunesAgent
 
             DirectoryInfo di = new DirectoryInfo(drive + device.MediaRoot);
 
+            // Perform a write check to make sure iTunes Agent has write 
+            // access to the music folder of the device.
+            String writeCheckPath = drive + device.MediaRoot + "\\wrtchk.ita";            
+            try
+            {                
+                FileStream writeCheckStream = File.Create(writeCheckPath);
+                writeCheckStream.Close();
+                File.Delete(writeCheckPath);
+            }
+            catch (Exception e)
+            {
+                l.Error("Could not write " + writeCheckPath + ".", e);
+
+                MessageBox.Show("I am unable to write to the music folder of "
+                    + "your device. Please make sure I have the right permissions"
+                    + " and try again.", "Unable to write to music folder", 
+                    MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
             // Check if the media root directory actually exists 
             // Thanks to Robert Grabowski for the contribution.
             try
@@ -71,9 +91,11 @@ namespace Jaranweb.iTunesAgent
             }
             catch (IOException ex)
             {
-                throw new SynchronizeException("Could not create directory '"
+                string message = "Could not create directory '"
                     + di.Name + "' for device '" + device.Name
-                    + "'. Unable to complete synchronization.", ex);
+                    + "'. Unable to complete synchronization.";
+                l.Error(message, ex);
+                throw new SynchronizeException(message, ex);
             }
 
             FileInfo[] files = di.GetFiles("*.*", SearchOption.AllDirectories);
@@ -225,7 +247,9 @@ namespace Jaranweb.iTunesAgent
             catch (MissingTrackException ex)
             {
                 syncForm.SetCurrentStatus("");
-                String message = "You have a missing file in your library. Please remove the track '" + ex.Track.Artist + " - " + ex.Track.Name + "' before synchronizing.";
+                String message = "You have a missing file in your library. Please clean up "
+                    + "your playlist and remove the track '" + ex.Track.Artist + " - " 
+                    + ex.Track.Name + "' before re-synchronizing.";
                 syncForm.AddLogText(message, Color.Red);
                 syncForm.DisableCancelButton();
                 syncForm.SetProgressValue(0);
@@ -235,7 +259,7 @@ namespace Jaranweb.iTunesAgent
 
                 return;
             }
-            catch (ApplicationException ex)
+            catch (Exception ex)
             {
                 syncForm.SetCurrentStatus("");
                 String message = "Error occured while checking for deleted tracks: " + ex.Message;
