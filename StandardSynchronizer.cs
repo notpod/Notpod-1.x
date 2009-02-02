@@ -62,26 +62,6 @@ namespace Jaranweb.iTunesAgent
 
             DirectoryInfo di = new DirectoryInfo(drive + device.MediaRoot);
 
-            // Perform a write check to make sure iTunes Agent has write 
-            // access to the music folder of the device.
-            String writeCheckPath = drive + device.MediaRoot + "\\wrtchk.ita";            
-            try
-            {                
-                FileStream writeCheckStream = File.Create(writeCheckPath);
-                writeCheckStream.Close();
-                File.Delete(writeCheckPath);
-            }
-            catch (Exception e)
-            {
-                l.Error("Could not write " + writeCheckPath + ".", e);
-
-                MessageBox.Show("I am unable to write to the music folder of "
-                    + "your device. Please make sure I have the right permissions"
-                    + " and try again.", "Unable to write to music folder", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                return;
-            }
-
             // Check if the media root directory actually exists 
             // Thanks to Robert Grabowski for the contribution.
             try
@@ -95,7 +75,29 @@ namespace Jaranweb.iTunesAgent
                     + di.Name + "' for device '" + device.Name
                     + "'. Unable to complete synchronization.";
                 l.Error(message, ex);
-                throw new SynchronizeException(message, ex);
+
+                syncForm.AddLogText(message, Color.Red);
+            }
+
+            // Perform a write check to make sure iTunes Agent has write 
+            // access to the music folder of the device.
+            String writeCheckPath = drive + device.MediaRoot + "\\wrtchk.ita";
+            try
+            {
+                FileStream writeCheckStream = File.Create(writeCheckPath);
+                writeCheckStream.Close();
+                File.Delete(writeCheckPath);
+            }
+            catch (Exception e)
+            {
+                l.Error("Could not write " + writeCheckPath + ".", e);
+
+                String message = "Error: I am unable to write to the music folder of "
+                    + "your device. Please make sure I have the proper permissions"
+                    + " and try again.";
+
+                syncForm.AddLogText(message, Color.Red);
+                return;
             }
 
             FileInfo[] files = di.GetFiles("*.*", SearchOption.AllDirectories);
@@ -248,7 +250,7 @@ namespace Jaranweb.iTunesAgent
             {
                 syncForm.SetCurrentStatus("");
                 String message = "You have a missing file in your library. Please clean up "
-                    + "your playlist and remove the track '" + ex.Track.Artist + " - " 
+                    + "your playlist and remove the track '" + ex.Track.Artist + " - "
                     + ex.Track.Name + "' before re-synchronizing.";
                 syncForm.AddLogText(message, Color.Red);
                 syncForm.DisableCancelButton();
@@ -294,7 +296,7 @@ namespace Jaranweb.iTunesAgent
             {
                 syncForm.SetCurrentStatus("Copying new files...");
                 syncForm.AddLogText("Preparing to copy new files.", Color.Black);
-                syncForm.SetMaxProgressValue(playlist.Tracks.Count);
+                syncForm.SetMaxProgressValue(syncList.Count);
                 syncForm.SetProgressValue(0);
 
                 //Check for new track in the playlist which should be copied to the device
@@ -330,7 +332,7 @@ namespace Jaranweb.iTunesAgent
                         CheckAndCreateFolders(trackPath, drive, device);
                         syncForm.SetCurrentStatus("Copying " + filePath
                             + " (" + syncForm.GetProgressValue() + "/" + syncForm.GetMaxProgressValue() + ")");
-
+                                                
                         File.Copy(((IITFileOrCDTrack)track).Location, filePath, true);
                         File.SetAttributes(filePath, FileAttributes.Normal);
 
