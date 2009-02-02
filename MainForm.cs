@@ -398,7 +398,8 @@ namespace Jaranweb.iTunesAgent
         /// Set event handlers for iTunes events.
         /// </summary>
         private void SetEventHandlers()
-        {            
+        {   
+            itunes.OnQuittingEvent += new _IiTunesEvents_OnQuittingEventEventHandler(OniTunesQuitEvent);
             itunes.OnAboutToPromptUserToQuitEvent 
                     += new _IiTunesEvents_OnAboutToPromptUserToQuitEventEventHandler(OniTunesQuitEvent);
         }
