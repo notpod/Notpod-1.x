@@ -51,7 +51,7 @@ namespace Jaranweb.iTunesAgent
             this.labelDeviceName.Name = "labelDeviceName";
             this.labelDeviceName.Size = new System.Drawing.Size(440, 29);
             this.labelDeviceName.TabIndex = 2;
-            this.labelDeviceName.Text = "[Device name]";
+            this.labelDeviceName.Text = "Initializing...";
             this.labelDeviceName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // labelCurrentStatus
@@ -60,7 +60,6 @@ namespace Jaranweb.iTunesAgent
             this.labelCurrentStatus.Name = "labelCurrentStatus";
             this.labelCurrentStatus.Size = new System.Drawing.Size(441, 35);
             this.labelCurrentStatus.TabIndex = 3;
-            this.labelCurrentStatus.Text = "[Current file]";
             this.labelCurrentStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // linkToggle
