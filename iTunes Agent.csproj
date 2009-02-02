@@ -190,5 +190,6 @@
   <PropertyGroup>
     <PostBuildEvent>
     </PostBuildEvent>
+    <PreBuildEvent>$(ProjectDir)Versioner.exe "$(ProjectDir)Properties\AssemblyInfo.cs"</PreBuildEvent>
   </PropertyGroup>
 </Project>
