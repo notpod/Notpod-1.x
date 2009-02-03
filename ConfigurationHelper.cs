@@ -23,9 +23,9 @@ namespace Jaranweb.iTunesAgent
         /// <returns></returns>
         public static bool MovePre12Configuration()
         {
-            MessageBox.Show("It seems that you have recently upgraded me to a new "
-                + "version. I need to perform some changes to my configuration.\n\nIf you "
-                + "have existing configuration from an earlier version, then I will help "
+            MessageBox.Show("It seems that you have recently installed me, or upgraded me from an earlier version than 1.2. "
+                + "I need to configure myself for this new version.\n\nIf you "
+                + "have existing configuration from a pre 1.2 version of the application, then I will help "
                 + "you convert this. Please click 'OK' to continue.",
                 "Configuration changes required", MessageBoxButtons.OK,
                 MessageBoxIcon.Information);
@@ -66,11 +66,11 @@ namespace Jaranweb.iTunesAgent
 
 
 
-            if (MessageBox.Show("Do you want me to import device configuration you have already set up?\n\nNote: Choosing 'No' will reset application settings to default.", "Move device configuration?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            if (MessageBox.Show("Do you want me to import old device configuration?\n\nIf this is a fresh installation of iTunes Agent, not an upgrade, you can safely choose 'No'.", "Upgrade device configuration?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 FolderBrowserDialog folders = new FolderBrowserDialog();
                 folders.ShowNewFolderButton = false;
-                folders.Description = "Please choose the installation folder of your old iTunes Agent installation";
+                folders.Description = "Please choose the installation folder of your pre 1.2 iTunes Agent installation";
 
                 if (folders.ShowDialog() == DialogResult.OK)
                 {
@@ -153,7 +153,7 @@ namespace Jaranweb.iTunesAgent
             try
             {
                 File.Create(MainForm.DATA_PATH + "\\.upgraded_12");
-                MessageBox.Show("Application configuration was successfully converted for the new version.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("I have successfully configured myself and we're ready to go. Enjoy!.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
