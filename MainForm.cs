@@ -542,7 +542,7 @@ namespace Jaranweb.iTunesAgent
                 syncForm.CloseSafe();
 
             if (configuration.ShowNotificationPopups)
-                itaTray.ShowBalloonTip(5, "Synchronize complete", "Your device was successfully sychronized with iTunes.", ToolTipIcon.Info);
+                itaTray.ShowBalloonTip(5, "Synchronize complete", "Your device was successfully synchronized with iTunes.", ToolTipIcon.Info);
         }
 
         private void OnSynchronizeCancelled(object sender)
