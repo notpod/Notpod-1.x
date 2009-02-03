@@ -25,26 +25,10 @@
   </SyncPatterns>
   <Devices>
     <Device>
-      <Name>Sony PSP</Name>
-      <MediaRoot>PSP\MUSIC</MediaRoot>
-      <SyncPattern>one-folder</SyncPattern>
-      <RecognizePattern>PSP</RecognizePattern>
-      <Playlist />
-      <InitialTracks />
-    </Device>
-    <Device>
-      <Name>Sony Ericsson Walkman Phone</Name>
+      <Name>Example Configuration</Name>
       <MediaRoot>Music</MediaRoot>
-      <SyncPattern>itunes-style</SyncPattern>
-      <RecognizePattern>MSSEMC\Media files</RecognizePattern>
-      <Playlist />
-      <InitialTracks />
-    </Device>
-    <Device>
-      <Name>Generic Player</Name>
-      <MediaRoot>DEVICE</MediaRoot>
-      <SyncPattern>flat</SyncPattern>
-      <RecognizePattern>DEVICE\ITAGENERIC</RecognizePattern>
+      <SyncPattern>itunes</SyncPattern>
+      <RecognizePattern>AnUniqueFileForMyDevice.ita</RecognizePattern>
       <Playlist />
       <InitialTracks />
     </Device>
