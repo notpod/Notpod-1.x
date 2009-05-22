@@ -29,6 +29,8 @@ namespace Jaranweb.iTunesAgent
         private bool deviceConfigurationChanged = false;
         private bool configurationChanged = false;
 
+        private string[] warnOnDrives = new string[] { "C:", "D:" };
+
         /// <summary>
         /// Create a new instance of configuration form.
         /// </summary>
@@ -425,7 +427,42 @@ namespace Jaranweb.iTunesAgent
             //See bug report 1443246.
             // https://sourceforge.net/tracker/index.php?func=detail&aid=1443246&group_id=149133&atid=773786
             if (dlg.SelectedPath.Length >= 3)
-                textMediaRoot.Text = dlg.SelectedPath.Substring(3, dlg.SelectedPath.Length - 3);
+            {
+
+                string path = dlg.SelectedPath;
+                if (CheckSelectedPath(path))
+                    textMediaRoot.Text = dlg.SelectedPath.Substring(3, dlg.SelectedPath.Length - 3);
+
+            }
+        }
+
+        /// <summary>
+        /// Check the provided path against the list of drives to warn about.
+        /// </summary>
+        /// <param name="path">Path to check.</param>
+        /// <returns>True if all is good, false if the process should be aborted.</returns>
+        private bool CheckSelectedPath(string path)
+        {
+            foreach (string drive in warnOnDrives)
+            {
+                if (path.StartsWith(drive))
+                {
+                    DialogResult choice = MessageBox.Show(this, "The folder you selected seems to be located on a drive which may "
+                        + "one of your system drives. Are you sure you want to continue?\n\niTunes Agent "
+                        + "is configured to warn you if you try to add a device which seems to be a system "
+                        + "drive. If you are sure the following path is indeed on your media device, not your local "
+                        + "hard drive, you can safely continue. Otherwise, please make sure you choose the "
+                        + "correct drive to configure as your device.\n\nThe path you selected: " + path,
+                        "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+
+                    if (choice == DialogResult.Cancel)
+                        return false;
+                    else
+                        break;
+                }
+            }
+
+            return true;
         }
 
         /// <summary>
@@ -560,8 +597,12 @@ namespace Jaranweb.iTunesAgent
 
 
             string folder = dlg.SelectedPath;
+            if (!CheckSelectedPath(folder))
+                return;
+
+
             string nameBase = textDeviceName.Text + "-" + DateTime.Now.Ticks.ToString();
-            
+
             // Build the filename which is the MD5 checksum of the nameBase + the .ita extension.
             string fileName = CryptoUtils.Md5Hex(nameBase) + ".ita";
 
