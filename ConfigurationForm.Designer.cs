@@ -37,9 +37,9 @@ namespace Jaranweb.iTunesAgent
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.buttonBrowseMediaRoot = new System.Windows.Forms.Button();
             this.comboSyncPatterns = new System.Windows.Forms.ComboBox();
+            this.buttonCreateUniqueFile = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupDeviceInformation = new System.Windows.Forms.GroupBox();
-            this.buttonCreateUniqueFile = new System.Windows.Forms.Button();
             this.comboAssociatePlaylist = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
             this.buttonDelete = new System.Windows.Forms.Button();
@@ -57,6 +57,7 @@ namespace Jaranweb.iTunesAgent
             this.buttonCancel = new System.Windows.Forms.Button();
             this.buttonOK = new System.Windows.Forms.Button();
             this.helpProvider = new System.Windows.Forms.HelpProvider();
+            this.checkWarnOnSystemDrives = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupDeviceInformation.SuspendLayout();
@@ -64,6 +65,7 @@ namespace Jaranweb.iTunesAgent
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.checkWarnOnSystemDrives);
             this.groupBox1.Controls.Add(this.checkAutocloseSyncWindow);
             this.groupBox1.Controls.Add(this.checkUseListFolder);
             this.groupBox1.Controls.Add(this.checkNotifications);
@@ -136,6 +138,19 @@ namespace Jaranweb.iTunesAgent
             this.toolTip.SetToolTip(this.comboSyncPatterns, "To see a description of the synchronization patterns, select one, the press F1.");
             this.comboSyncPatterns.SelectedIndexChanged += new System.EventHandler(this.comboSyncPatterns_SelectedIndexChanged);
             // 
+            // buttonCreateUniqueFile
+            // 
+            this.buttonCreateUniqueFile.Enabled = false;
+            this.buttonCreateUniqueFile.Location = new System.Drawing.Point(428, 89);
+            this.buttonCreateUniqueFile.Name = "buttonCreateUniqueFile";
+            this.buttonCreateUniqueFile.Size = new System.Drawing.Size(65, 23);
+            this.buttonCreateUniqueFile.TabIndex = 14;
+            this.buttonCreateUniqueFile.Text = "Create";
+            this.toolTip.SetToolTip(this.buttonCreateUniqueFile, "Choose the location of your device and iTunes Agent will create a unique file for" +
+                    " you.");
+            this.buttonCreateUniqueFile.UseVisualStyleBackColor = true;
+            this.buttonCreateUniqueFile.Click += new System.EventHandler(this.buttonCreateUniqueFile_Click);
+            // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.groupDeviceInformation);
@@ -170,19 +185,6 @@ namespace Jaranweb.iTunesAgent
             this.groupDeviceInformation.TabIndex = 1;
             this.groupDeviceInformation.TabStop = false;
             this.groupDeviceInformation.Text = "Device information";
-            // 
-            // buttonCreateUniqueFile
-            // 
-            this.buttonCreateUniqueFile.Enabled = false;
-            this.buttonCreateUniqueFile.Location = new System.Drawing.Point(428, 89);
-            this.buttonCreateUniqueFile.Name = "buttonCreateUniqueFile";
-            this.buttonCreateUniqueFile.Size = new System.Drawing.Size(65, 23);
-            this.buttonCreateUniqueFile.TabIndex = 14;
-            this.buttonCreateUniqueFile.Text = "Create";
-            this.toolTip.SetToolTip(this.buttonCreateUniqueFile, "Choose the location of your device and iTunes Agent will create a unique file for" +
-                    " you.");
-            this.buttonCreateUniqueFile.UseVisualStyleBackColor = true;
-            this.buttonCreateUniqueFile.Click += new System.EventHandler(this.buttonCreateUniqueFile_Click);
             // 
             // comboAssociatePlaylist
             // 
@@ -341,6 +343,19 @@ namespace Jaranweb.iTunesAgent
             this.buttonOK.Text = "&Save";
             this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
             // 
+            // checkWarnOnSystemDrives
+            // 
+            this.checkWarnOnSystemDrives.AutoSize = true;
+            this.checkWarnOnSystemDrives.Location = new System.Drawing.Point(249, 43);
+            this.checkWarnOnSystemDrives.Name = "checkWarnOnSystemDrives";
+            this.checkWarnOnSystemDrives.Size = new System.Drawing.Size(203, 17);
+            this.checkWarnOnSystemDrives.TabIndex = 3;
+            this.checkWarnOnSystemDrives.Text = "Warn if device looks like system drive";
+            this.toolTip.SetToolTip(this.checkWarnOnSystemDrives, "Enabling this will make iTunes Agent check if your device seems to be a system dr" +
+                    "ive.");
+            this.checkWarnOnSystemDrives.UseVisualStyleBackColor = true;
+            this.checkWarnOnSystemDrives.Click += new System.EventHandler(this.checkWarnOnSystemDrives_Click);
+            // 
             // ConfigurationForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -398,5 +413,6 @@ namespace Jaranweb.iTunesAgent
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.CheckBox checkAutocloseSyncWindow;
         private System.Windows.Forms.Button buttonCreateUniqueFile;
+        private System.Windows.Forms.CheckBox checkWarnOnSystemDrives;
     }
 }

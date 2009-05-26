@@ -29,8 +29,6 @@ namespace Jaranweb.iTunesAgent
         private bool deviceConfigurationChanged = false;
         private bool configurationChanged = false;
 
-        private string[] warnOnDrives = new string[] { "C:", "D:" };
-
         /// <summary>
         /// Create a new instance of configuration form.
         /// </summary>
@@ -45,6 +43,7 @@ namespace Jaranweb.iTunesAgent
             this.checkNotifications.Checked = configuration.ShowNotificationPopups;
             this.checkUseListFolder.Checked = configuration.UseListFolder;
             this.checkAutocloseSyncWindow.Checked = configuration.CloseSyncWindowOnSuccess;
+            this.checkWarnOnSystemDrives.Checked = configuration.WarnOnSystemDrives;
 
             this.deviceConfiguration = deviceConfiguration;
             for (int d = 0; d < deviceConfiguration.Devices.Length; d++)
@@ -273,6 +272,14 @@ namespace Jaranweb.iTunesAgent
         /// <param name="e"></param>
         private void buttonNew_Click(object sender, EventArgs e)
         {
+            MessageBox.Show(this, "Please note that any media present in the 'Music folder' on your "
+                + "device will be deleted upon the first synchronization by iTunes Agent, unless "
+                + "this media matches any track added to the device's playlist in iTunes.\n\nIf "
+                + "the media already present on your device is of critical importance, please make sure you take a proper "
+                + "backup, or make sure it is located outside the folder you configure as the "
+                + "'Music folder' which iTunes Agent will manage on your device.", "Before you continue...", 
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
+
             DisableEditFields();
             EnableEditFields(true);
 
@@ -428,41 +435,8 @@ namespace Jaranweb.iTunesAgent
             // https://sourceforge.net/tracker/index.php?func=detail&aid=1443246&group_id=149133&atid=773786
             if (dlg.SelectedPath.Length >= 3)
             {
-
-                string path = dlg.SelectedPath;
-                if (CheckSelectedPath(path))
-                    textMediaRoot.Text = dlg.SelectedPath.Substring(3, dlg.SelectedPath.Length - 3);
-
+                textMediaRoot.Text = dlg.SelectedPath.Substring(3, dlg.SelectedPath.Length - 3);
             }
-        }
-
-        /// <summary>
-        /// Check the provided path against the list of drives to warn about.
-        /// </summary>
-        /// <param name="path">Path to check.</param>
-        /// <returns>True if all is good, false if the process should be aborted.</returns>
-        private bool CheckSelectedPath(string path)
-        {
-            foreach (string drive in warnOnDrives)
-            {
-                if (path.StartsWith(drive))
-                {
-                    DialogResult choice = MessageBox.Show(this, "The folder you selected seems to be located on a drive which may "
-                        + "one of your system drives. Are you sure you want to continue?\n\niTunes Agent "
-                        + "is configured to warn you if you try to add a device which seems to be a system "
-                        + "drive. If you are sure the following path is indeed on your media device, not your local "
-                        + "hard drive, you can safely continue. Otherwise, please make sure you choose the "
-                        + "correct drive to configure as your device.\n\nThe path you selected: " + path,
-                        "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
-
-                    if (choice == DialogResult.Cancel)
-                        return false;
-                    else
-                        break;
-                }
-            }
-
-            return true;
         }
 
         /// <summary>
@@ -493,6 +467,7 @@ namespace Jaranweb.iTunesAgent
             configuration.ShowNotificationPopups = checkNotifications.Checked;
             configuration.UseListFolder = checkUseListFolder.Checked;
             configuration.CloseSyncWindowOnSuccess = checkAutocloseSyncWindow.Checked;
+            configuration.WarnOnSystemDrives = checkWarnOnSystemDrives.Checked;
 
             try
             {
@@ -597,9 +572,7 @@ namespace Jaranweb.iTunesAgent
 
 
             string folder = dlg.SelectedPath;
-            if (!CheckSelectedPath(folder))
-                return;
-
+            
 
             string nameBase = textDeviceName.Text + "-" + DateTime.Now.Ticks.ToString();
 
@@ -618,6 +591,12 @@ namespace Jaranweb.iTunesAgent
                     + "\".\n\nError reported: " + ex.Message, "Unable to create file", MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
             }
+        }
+
+        private void checkWarnOnSystemDrives_Click(object sender, EventArgs e)
+        {
+            configurationChanged = true;
+            buttonOK.Enabled = true;
         }
 
     }
