@@ -3,4 +3,5 @@
   <ShowNotificationPopups>true</ShowNotificationPopups>
   <UseListFolder>true</UseListFolder>
   <CloseSyncWindowOnSuccess>true</CloseSyncWindowOnSuccess>
+  <WarnOnSystemDrives>true</WarnOnSystemDrives>
 </Configuration>
