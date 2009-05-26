@@ -95,7 +95,7 @@ namespace Jaranweb.iTunesAgent
                     + "valid and restart me.\n\nError message: " + ex.Message;
 
                 l.Error(message, ex);
-                
+
                 MessageBox.Show(message, "Configuration not available",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Application.Exit();
@@ -156,7 +156,7 @@ namespace Jaranweb.iTunesAgent
 
 
         }
-                
+
         /// <summary>
         /// Check if the My Devices folder exists, if not create it.
         /// </summary>
@@ -204,14 +204,14 @@ namespace Jaranweb.iTunesAgent
         {
             //Try to create a COM connection to iTunes.
             bool retry = true;
-            while(retry)
+            while (retry)
             {
 
                 try
                 {
                     itunes = new iTunesAppClass();
                     string version = itunes.Version;
-                    SetStatusMessage("iTunes Agent", "I have found iTunes (" + version 
+                    SetStatusMessage("iTunes Agent", "I have found iTunes (" + version
                         + ") on your computer and I am ready to synchronize your devices.",
                         ToolTipIcon.Info);
                     SetEventHandlers();
@@ -221,7 +221,7 @@ namespace Jaranweb.iTunesAgent
                 {
                     l.Warn(ex);
 
-                    if (MessageBox.Show(this, "Unable to communicate with iTunes. Do you want to retry?\n\n(" 
+                    if (MessageBox.Show(this, "Unable to communicate with iTunes. Do you want to retry?\n\n("
                         + ex.Message + ")", "Communication error", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
                     {
                         retry = true;
@@ -229,7 +229,7 @@ namespace Jaranweb.iTunesAgent
                     else
                     {
                         SetStatusMessage("iTunes Agent", "An error occured while communicating with iTunes. Please "
-                            + "make sure iTunes is properly installed and running before restarting the application.", 
+                            + "make sure iTunes is properly installed and running before restarting the application.",
                             ToolTipIcon.Error);
                         return false;
                     }
@@ -258,7 +258,7 @@ namespace Jaranweb.iTunesAgent
         /// <param name="args">Event arguments.</param>
         private void OnDeviceConnected(object sender, CDMEventArgs args)
         {
-            
+
             Device device = args.Device;
 
             if (configuration.ShowNotificationPopups)
@@ -268,9 +268,9 @@ namespace Jaranweb.iTunesAgent
                     + "with the playlist for this device.\n\nDevices currently connected:";
 
 
-                foreach(Device d in connectedDevices.GetConnectedDevices())                 
+                foreach (Device d in connectedDevices.GetConnectedDevices())
                     message += "\n - " + d.Name;
-                
+
 
                 itaTray.ShowBalloonTip(5, "Device connected!", message, ToolTipIcon.Info);
             }
@@ -331,7 +331,7 @@ namespace Jaranweb.iTunesAgent
             {
                 try
                 {
-                                        
+
                     foreach (IITPlaylist playlist in itunes.LibrarySource.Playlists)
                     {
                         if (playlist.Name == name)
@@ -348,9 +348,9 @@ namespace Jaranweb.iTunesAgent
                     {
                         retry = true;
                     }
-                    else 
-                    { 
-                        retry = false; 
+                    else
+                    {
+                        retry = false;
                     }
 
                     continue;
@@ -398,9 +398,9 @@ namespace Jaranweb.iTunesAgent
         /// Set event handlers for iTunes events.
         /// </summary>
         private void SetEventHandlers()
-        {   
+        {
             itunes.OnQuittingEvent += new _IiTunesEvents_OnQuittingEventEventHandler(OniTunesQuitEvent);
-            itunes.OnAboutToPromptUserToQuitEvent 
+            itunes.OnAboutToPromptUserToQuitEvent
                     += new _IiTunesEvents_OnAboutToPromptUserToQuitEventEventHandler(OniTunesQuitEvent);
         }
 
@@ -423,7 +423,7 @@ namespace Jaranweb.iTunesAgent
         private void timerDriveListUpdate_Tick(object sender, EventArgs e)
         {
             DriveInfo[] driveInfos = DriveInfo.GetDrives();
-                                    
+
             //Create a list of all removable drives, which are the only ones 
             //of interest to iTunes Agent.
             ArrayList interestingDrives = new ArrayList();
@@ -478,6 +478,11 @@ namespace Jaranweb.iTunesAgent
                 return;
             }
 
+            if (configuration.WarnOnSystemDrives && !PerformDeviceCheck())
+            {
+                return;
+            }
+
             // Create synchronizer and form.
             synchronizer = new StandardSynchronizer();
             syncForm = new StandardSynchronizerForm();
@@ -486,6 +491,38 @@ namespace Jaranweb.iTunesAgent
 
             Thread thread = new Thread(new ThreadStart(PerformSynchronize));
             thread.Start();
+        }
+
+        /// <summary>
+        /// Perform a simple check of the devices. Warn the user if a device 
+        /// is associated with a drive which may be a system drive.
+        /// </summary>
+        /// <returns>False if the user chooses to abort, true if all is good.</returns>
+        private bool PerformDeviceCheck()
+        {
+            Hashtable deviceinfo = connectedDevices.GetConnectedDevicesWithDrives();
+            IEnumerator keys = deviceinfo.Keys.GetEnumerator();
+
+            while (keys.MoveNext())
+            {
+                string drive = (string)keys.Current;
+                Device device = (Device)deviceinfo[keys.Current];
+
+                if (CheckIfSystemDrive(drive))
+                {
+                    DialogResult choice = MessageBox.Show("The device '" + device.Name
+                        + "' may reference a system hard drive. The drive currently associated"
+                        + " with this device is: " + drive + "\n\nIf you are sure this is "
+                        + "correct, you may continue. If you are unsure, or have misconfigured, "
+                        + "you should click 'Cancel' and make sure your device configuration is correct.",
+                    "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+
+                    if (choice == DialogResult.Cancel)
+                        return false;
+                }
+            }
+
+            return true;
         }
 
         public void PerformSynchronize()
@@ -524,7 +561,7 @@ namespace Jaranweb.iTunesAgent
                 l.Error(ex);
 
                 string message = "I encountered an unexpected error while synchronizing your device(s). "
-                    + "This may be due to a disconnected device.\n\nPlease make sure your devices are properly "
+                    + "\n\nPlease make sure your devices are properly "
                     + "connected and try again.";
 
                 itaTray.ShowBalloonTip(7, "Synchronize error", message, ToolTipIcon.Error);
@@ -641,6 +678,26 @@ namespace Jaranweb.iTunesAgent
             ConfigurationForm conf = new ConfigurationForm(ref configuration, ref deviceConfiguration, ref itunes);
             conf.ShowDialog();
 
+        }
+
+        /// <summary>
+        /// Check the provided path against the list of potential system drives
+        /// </summary>
+        /// <param name="path">Path to check.</param>
+        /// <returns>False if all is good, true if the provided path might be a system drive.</returns>
+        private bool CheckIfSystemDrive(string drive)
+        {
+            string[] warnOnPatterns = new string[] { "WINDOWS\\system32", "WINNT\\system32", "Users", "Documents and Settings" };
+            foreach (string pattern in warnOnPatterns)
+            {
+                DirectoryInfo di = new DirectoryInfo(drive + "\\" + pattern);
+                if (di.Exists)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
     }
