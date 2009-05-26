@@ -280,6 +280,12 @@ namespace Jaranweb.iTunesAgent
                 + "'Music folder' which iTunes Agent will manage on your device.", "Before you continue...", 
                 MessageBoxButtons.OK, MessageBoxIcon.Information);
 
+            PrepareForNewDeviceConfiguration();
+
+        }
+
+        private void PrepareForNewDeviceConfiguration() {
+
             DisableEditFields();
             EnableEditFields(true);
 
@@ -288,7 +294,6 @@ namespace Jaranweb.iTunesAgent
             textRecognizePattern.Text = "";
             comboSyncPatterns.SelectedIndex = 0;
             comboAssociatePlaylist.SelectedIndex = 0;
-
         }
 
         /// <summary>
@@ -320,7 +325,7 @@ namespace Jaranweb.iTunesAgent
                 break;
             }
 
-            buttonNew_Click(this, null);
+            PrepareForNewDeviceConfiguration();
             DisableEditFields();
             SaveDeviceConfiguration();
         }
@@ -411,7 +416,7 @@ namespace Jaranweb.iTunesAgent
             deviceConfigurationChanged = true;
             SaveDeviceConfiguration();
 
-            buttonNew_Click(this, null);
+            PrepareForNewDeviceConfiguration();
             DisableEditFields();
 
             MessageBox.Show(this, "New device configuration registered successfully.", "New device configuration", MessageBoxButtons.OK, MessageBoxIcon.Information);
