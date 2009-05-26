@@ -16,13 +16,21 @@ namespace Jaranweb.iTunesAgent.Configuration12
 
         private bool closeSyncWindowOnSuccess = true;
 
+        private bool warnOnSystemDrives = true;
+                
         /// <summary>
         /// Accessor for showNotificationPopups.
         /// </summary>
         public bool ShowNotificationPopups
         {
-            get { return showNotificationPopups; }
-            set { showNotificationPopups = value; }
+            get
+            {
+                return showNotificationPopups;
+            }
+            set
+            {
+                showNotificationPopups = value;
+            }
         }
 
         /// <summary>
@@ -30,8 +38,14 @@ namespace Jaranweb.iTunesAgent.Configuration12
         /// </summary>
         public bool UseListFolder
         {
-            get { return useListFolder; }
-            set { useListFolder = value; }
+            get
+            {
+                return useListFolder;
+            }
+            set
+            {
+                useListFolder = value;
+            }
         }
 
         /// <summary>
@@ -39,8 +53,29 @@ namespace Jaranweb.iTunesAgent.Configuration12
         /// </summary>
         public bool CloseSyncWindowOnSuccess
         {
-            get { return closeSyncWindowOnSuccess; }
-            set { closeSyncWindowOnSuccess = value; }
+            get
+            {
+                return closeSyncWindowOnSuccess;
+            }
+            set
+            {
+                closeSyncWindowOnSuccess = value;
+            }
+        }
+
+        /// <summary>
+        /// Accessor for warnOnSystemDrives.
+        /// </summary>
+        public bool WarnOnSystemDrives
+        {
+            get
+            {
+                return warnOnSystemDrives;
+            }
+            set
+            {
+                warnOnSystemDrives = value;
+            }
         }
 
     }
