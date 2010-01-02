@@ -341,7 +341,7 @@ namespace Jaranweb.iTunesAgent
             string mediaroot = textMediaRoot.Text;
             string recognizePattern = textRecognizePattern.Text;
             string associatedPlaylist = (string)comboAssociatePlaylist.SelectedItem;
-
+                        
             if (deviceName.Length == 0)
             {
                 MessageBox.Show(this, "Please enter a name for the device.", "Missing information", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
@@ -354,16 +354,18 @@ namespace Jaranweb.iTunesAgent
                 return;
             }
 
-            /*if (mediaroot.Length == 0)
-            {
-                MessageBox.Show(this, "Please enter a media folder for the device.", "Missing information", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                return;
-            }*/
-
             if (recognizePattern.Length == 0)
             {
                 MessageBox.Show(this, "Please enter a recognize pattern for the device.", "Missing information", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
+            }
+
+            if(mediaroot.Length > 0) {
+                DialogResult confirmedMediaRoot = MessageBox.Show(this, "Please confirm that the path below represents a folder on your portable media player, NOT on your local hard drive:\n\n" + textMediaRoot.Text + "\n\nIf you agree that the path above is the location on your portable device where you want the music to be copied TO, click OK to continue. Otherwise click Cancel and choose the correct path on your portable device.", "Confirm path", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation);
+                if (confirmedMediaRoot == DialogResult.Cancel)
+                {
+                    return;
+                }
             }
 
             Device newDevice = new Device();
@@ -431,20 +433,7 @@ namespace Jaranweb.iTunesAgent
             FolderBrowserDialog dlg = new FolderBrowserDialog();
             if (dlg.ShowDialog() == DialogResult.Cancel)
                 return;
-                                    
-            string path = dlg.SelectedPath.ToLower();
-            if (path.Contains("itunes") || path.Contains("c:\\"))
-            {
-                if(MessageBox.Show(this, "It seems the folder you have selected may be your " +
-                    "iTunes Music Folder. The 'Music location on device' setting should be" +
-                    " a folder on your portable media player, not on your computer. I will" +
-                    " be able to find the music on your computer on my own.\n\nUnless you " + 
-                    " are absolutely certain you have selected the correct folder, please " + 
-                    " click Cancel and try again.",
-                    "Oups!", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.Cancel) 
-                return;
-            }
-
+            
             //This check is to make sure that the application do not throw an exception if a path 
             //of length less than 3 is selected. Normally this do not occur, but there has been 
             //reportet incidents where unsupported, special devices have given an empty path in return...
