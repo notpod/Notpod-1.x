@@ -39,6 +39,8 @@ namespace Jaranweb.iTunesAgent
             this.buttonBrowseMediaRoot = new System.Windows.Forms.Button();
             this.comboSyncPatterns = new System.Windows.Forms.ComboBox();
             this.buttonCreateUniqueFile = new System.Windows.Forms.Button();
+            this.textRecognizePattern = new System.Windows.Forms.TextBox();
+            this.textMediaRoot = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupDeviceInformation = new System.Windows.Forms.GroupBox();
             this.comboAssociatePlaylist = new System.Windows.Forms.ComboBox();
@@ -46,9 +48,7 @@ namespace Jaranweb.iTunesAgent
             this.buttonDelete = new System.Windows.Forms.Button();
             this.buttonSave = new System.Windows.Forms.Button();
             this.buttonNew = new System.Windows.Forms.Button();
-            this.textRecognizePattern = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.textMediaRoot = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.textDeviceName = new System.Windows.Forms.TextBox();
@@ -164,6 +164,30 @@ namespace Jaranweb.iTunesAgent
             this.buttonCreateUniqueFile.UseVisualStyleBackColor = true;
             this.buttonCreateUniqueFile.Click += new System.EventHandler(this.buttonCreateUniqueFile_Click);
             // 
+            // textRecognizePattern
+            // 
+            this.textRecognizePattern.Enabled = false;
+            this.helpProvider.SetHelpString(this.textRecognizePattern, "The name of a file or a folder which iTunes Agent should use to recognize this de" +
+                    "vice. The path name should be relative to the root of the device. ");
+            this.textRecognizePattern.Location = new System.Drawing.Point(140, 91);
+            this.textRecognizePattern.Name = "textRecognizePattern";
+            this.helpProvider.SetShowHelp(this.textRecognizePattern, true);
+            this.textRecognizePattern.Size = new System.Drawing.Size(283, 20);
+            this.textRecognizePattern.TabIndex = 8;
+            this.toolTip.SetToolTip(this.textRecognizePattern, "A folder or file which iTunes Agent will use to identify your device. Has to be u" +
+                    "nique for your device, i.e. MySonyPsP.txt");
+            // 
+            // textMediaRoot
+            // 
+            this.textMediaRoot.Enabled = false;
+            this.textMediaRoot.Location = new System.Drawing.Point(140, 67);
+            this.textMediaRoot.Name = "textMediaRoot";
+            this.textMediaRoot.Size = new System.Drawing.Size(283, 20);
+            this.textMediaRoot.TabIndex = 5;
+            this.toolTip.SetToolTip(this.textMediaRoot, "Specify the location on your device where I will store the music when synchronizi" +
+                    "ng. Note that this should be a folder on your device, not on your local computer" +
+                    ".");
+            // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.groupDeviceInformation);
@@ -252,19 +276,6 @@ namespace Jaranweb.iTunesAgent
             this.buttonNew.UseVisualStyleBackColor = true;
             this.buttonNew.Click += new System.EventHandler(this.buttonNew_Click);
             // 
-            // textRecognizePattern
-            // 
-            this.textRecognizePattern.Enabled = false;
-            this.helpProvider.SetHelpString(this.textRecognizePattern, "The name of a file or a folder which iTunes Agent should use to recognize this de" +
-                    "vice. The path name should be relative to the root of the device. ");
-            this.textRecognizePattern.Location = new System.Drawing.Point(140, 91);
-            this.textRecognizePattern.Name = "textRecognizePattern";
-            this.helpProvider.SetShowHelp(this.textRecognizePattern, true);
-            this.textRecognizePattern.Size = new System.Drawing.Size(283, 20);
-            this.textRecognizePattern.TabIndex = 8;
-            this.toolTip.SetToolTip(this.textRecognizePattern, "A folder or file which iTunes Agent will use to identify your device. Has to be u" +
-                    "nique for your device, i.e. MySonyPsP.txt");
-            // 
             // label4
             // 
             this.label4.AutoSize = true;
@@ -273,17 +284,6 @@ namespace Jaranweb.iTunesAgent
             this.label4.Size = new System.Drawing.Size(122, 13);
             this.label4.TabIndex = 7;
             this.label4.Text = "Recognize by folder/file:";
-            // 
-            // textMediaRoot
-            // 
-            this.textMediaRoot.Enabled = false;
-            this.textMediaRoot.Location = new System.Drawing.Point(140, 67);
-            this.textMediaRoot.Name = "textMediaRoot";
-            this.textMediaRoot.Size = new System.Drawing.Size(283, 20);
-            this.textMediaRoot.TabIndex = 5;
-            this.toolTip.SetToolTip(this.textMediaRoot, "Specify the location on your device where I will store the music when synchronizi" +
-                    "ng. Note that this should be a folder on your device, not on your local computer" +
-                    ".");
             // 
             // label3
             // 
