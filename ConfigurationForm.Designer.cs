@@ -148,7 +148,7 @@ namespace Jaranweb.iTunesAgent
             this.comboSyncPatterns.Name = "comboSyncPatterns";
             this.comboSyncPatterns.Size = new System.Drawing.Size(354, 21);
             this.comboSyncPatterns.TabIndex = 3;
-            this.toolTip.SetToolTip(this.comboSyncPatterns, "To see a description of the synchronization patterns, select one, the press F1.");
+            this.toolTip.SetToolTip(this.comboSyncPatterns, "To see a description of the synchronization patterns, select one, then press F1.");
             this.comboSyncPatterns.SelectedIndexChanged += new System.EventHandler(this.comboSyncPatterns_SelectedIndexChanged);
             // 
             // buttonCreateUniqueFile
