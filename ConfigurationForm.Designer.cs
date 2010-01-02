@@ -31,6 +31,7 @@ namespace Jaranweb.iTunesAgent
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConfigurationForm));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.checkWarnOnSystemDrives = new System.Windows.Forms.CheckBox();
             this.checkAutocloseSyncWindow = new System.Windows.Forms.CheckBox();
             this.checkUseListFolder = new System.Windows.Forms.CheckBox();
             this.checkNotifications = new System.Windows.Forms.CheckBox();
@@ -57,7 +58,6 @@ namespace Jaranweb.iTunesAgent
             this.buttonCancel = new System.Windows.Forms.Button();
             this.buttonOK = new System.Windows.Forms.Button();
             this.helpProvider = new System.Windows.Forms.HelpProvider();
-            this.checkWarnOnSystemDrives = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupDeviceInformation.SuspendLayout();
@@ -75,6 +75,19 @@ namespace Jaranweb.iTunesAgent
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Agent";
+            // 
+            // checkWarnOnSystemDrives
+            // 
+            this.checkWarnOnSystemDrives.AutoSize = true;
+            this.checkWarnOnSystemDrives.Location = new System.Drawing.Point(249, 43);
+            this.checkWarnOnSystemDrives.Name = "checkWarnOnSystemDrives";
+            this.checkWarnOnSystemDrives.Size = new System.Drawing.Size(203, 17);
+            this.checkWarnOnSystemDrives.TabIndex = 3;
+            this.checkWarnOnSystemDrives.Text = "Warn if device looks like system drive";
+            this.toolTip.SetToolTip(this.checkWarnOnSystemDrives, "Enabling this will make iTunes Agent check if your device seems to be a system dr" +
+                    "ive.");
+            this.checkWarnOnSystemDrives.UseVisualStyleBackColor = true;
+            this.checkWarnOnSystemDrives.Click += new System.EventHandler(this.checkWarnOnSystemDrives_Click);
             // 
             // checkAutocloseSyncWindow
             // 
@@ -131,9 +144,9 @@ namespace Jaranweb.iTunesAgent
             this.comboSyncPatterns.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboSyncPatterns.Enabled = false;
             this.comboSyncPatterns.FormattingEnabled = true;
-            this.comboSyncPatterns.Location = new System.Drawing.Point(134, 40);
+            this.comboSyncPatterns.Location = new System.Drawing.Point(140, 40);
             this.comboSyncPatterns.Name = "comboSyncPatterns";
-            this.comboSyncPatterns.Size = new System.Drawing.Size(360, 21);
+            this.comboSyncPatterns.Size = new System.Drawing.Size(354, 21);
             this.comboSyncPatterns.TabIndex = 3;
             this.toolTip.SetToolTip(this.comboSyncPatterns, "To see a description of the synchronization patterns, select one, the press F1.");
             this.comboSyncPatterns.SelectedIndexChanged += new System.EventHandler(this.comboSyncPatterns_SelectedIndexChanged);
@@ -193,9 +206,9 @@ namespace Jaranweb.iTunesAgent
             this.comboAssociatePlaylist.FormattingEnabled = true;
             this.comboAssociatePlaylist.Items.AddRange(new object[] {
             "Use device name..."});
-            this.comboAssociatePlaylist.Location = new System.Drawing.Point(134, 115);
+            this.comboAssociatePlaylist.Location = new System.Drawing.Point(140, 115);
             this.comboAssociatePlaylist.Name = "comboAssociatePlaylist";
-            this.comboAssociatePlaylist.Size = new System.Drawing.Size(360, 21);
+            this.comboAssociatePlaylist.Size = new System.Drawing.Size(354, 21);
             this.comboAssociatePlaylist.TabIndex = 13;
             // 
             // label5
@@ -210,32 +223,32 @@ namespace Jaranweb.iTunesAgent
             // buttonDelete
             // 
             this.buttonDelete.Enabled = false;
-            this.buttonDelete.Location = new System.Drawing.Point(284, 139);
+            this.buttonDelete.Location = new System.Drawing.Point(290, 138);
             this.buttonDelete.Name = "buttonDelete";
-            this.buttonDelete.Size = new System.Drawing.Size(75, 23);
+            this.buttonDelete.Size = new System.Drawing.Size(84, 23);
             this.buttonDelete.TabIndex = 11;
-            this.buttonDelete.Text = "&Delete";
+            this.buttonDelete.Text = "&Delete device";
             this.buttonDelete.UseVisualStyleBackColor = true;
             this.buttonDelete.Click += new System.EventHandler(this.buttonDelete_Click);
             // 
             // buttonSave
             // 
             this.buttonSave.Enabled = false;
-            this.buttonSave.Location = new System.Drawing.Point(209, 139);
+            this.buttonSave.Location = new System.Drawing.Point(215, 138);
             this.buttonSave.Name = "buttonSave";
             this.buttonSave.Size = new System.Drawing.Size(75, 23);
             this.buttonSave.TabIndex = 10;
-            this.buttonSave.Text = "&Save";
+            this.buttonSave.Text = "&Save device";
             this.buttonSave.UseVisualStyleBackColor = true;
             this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
             // 
             // buttonNew
             // 
-            this.buttonNew.Location = new System.Drawing.Point(134, 139);
+            this.buttonNew.Location = new System.Drawing.Point(140, 138);
             this.buttonNew.Name = "buttonNew";
             this.buttonNew.Size = new System.Drawing.Size(75, 23);
             this.buttonNew.TabIndex = 9;
-            this.buttonNew.Text = "&New";
+            this.buttonNew.Text = "&New device";
             this.buttonNew.UseVisualStyleBackColor = true;
             this.buttonNew.Click += new System.EventHandler(this.buttonNew_Click);
             // 
@@ -244,11 +257,13 @@ namespace Jaranweb.iTunesAgent
             this.textRecognizePattern.Enabled = false;
             this.helpProvider.SetHelpString(this.textRecognizePattern, "The name of a file or a folder which iTunes Agent should use to recognize this de" +
                     "vice. The path name should be relative to the root of the device. ");
-            this.textRecognizePattern.Location = new System.Drawing.Point(134, 91);
+            this.textRecognizePattern.Location = new System.Drawing.Point(140, 91);
             this.textRecognizePattern.Name = "textRecognizePattern";
             this.helpProvider.SetShowHelp(this.textRecognizePattern, true);
-            this.textRecognizePattern.Size = new System.Drawing.Size(289, 20);
+            this.textRecognizePattern.Size = new System.Drawing.Size(283, 20);
             this.textRecognizePattern.TabIndex = 8;
+            this.toolTip.SetToolTip(this.textRecognizePattern, "A folder or file which iTunes Agent will use to identify your device. Has to be u" +
+                    "nique for your device, i.e. MySonyPsP.txt");
             // 
             // label4
             // 
@@ -262,19 +277,22 @@ namespace Jaranweb.iTunesAgent
             // textMediaRoot
             // 
             this.textMediaRoot.Enabled = false;
-            this.textMediaRoot.Location = new System.Drawing.Point(134, 67);
+            this.textMediaRoot.Location = new System.Drawing.Point(140, 67);
             this.textMediaRoot.Name = "textMediaRoot";
-            this.textMediaRoot.Size = new System.Drawing.Size(289, 20);
+            this.textMediaRoot.Size = new System.Drawing.Size(283, 20);
             this.textMediaRoot.TabIndex = 5;
+            this.toolTip.SetToolTip(this.textMediaRoot, "Specify the location on your device where I will store the music when synchronizi" +
+                    "ng. Note that this should be a folder on your device, not on your local computer" +
+                    ".");
             // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(6, 71);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(67, 13);
+            this.label3.Size = new System.Drawing.Size(128, 13);
             this.label3.TabIndex = 4;
-            this.label3.Text = "Music folder:";
+            this.label3.Text = "Music location on device:";
             // 
             // label2
             // 
@@ -288,9 +306,9 @@ namespace Jaranweb.iTunesAgent
             // textDeviceName
             // 
             this.textDeviceName.Enabled = false;
-            this.textDeviceName.Location = new System.Drawing.Point(134, 16);
+            this.textDeviceName.Location = new System.Drawing.Point(140, 16);
             this.textDeviceName.Name = "textDeviceName";
-            this.textDeviceName.Size = new System.Drawing.Size(360, 20);
+            this.textDeviceName.Size = new System.Drawing.Size(354, 20);
             this.textDeviceName.TabIndex = 1;
             // 
             // label1
@@ -342,19 +360,6 @@ namespace Jaranweb.iTunesAgent
             this.buttonOK.TabIndex = 3;
             this.buttonOK.Text = "&Save";
             this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
-            // 
-            // checkWarnOnSystemDrives
-            // 
-            this.checkWarnOnSystemDrives.AutoSize = true;
-            this.checkWarnOnSystemDrives.Location = new System.Drawing.Point(249, 43);
-            this.checkWarnOnSystemDrives.Name = "checkWarnOnSystemDrives";
-            this.checkWarnOnSystemDrives.Size = new System.Drawing.Size(203, 17);
-            this.checkWarnOnSystemDrives.TabIndex = 3;
-            this.checkWarnOnSystemDrives.Text = "Warn if device looks like system drive";
-            this.toolTip.SetToolTip(this.checkWarnOnSystemDrives, "Enabling this will make iTunes Agent check if your device seems to be a system dr" +
-                    "ive.");
-            this.checkWarnOnSystemDrives.UseVisualStyleBackColor = true;
-            this.checkWarnOnSystemDrives.Click += new System.EventHandler(this.checkWarnOnSystemDrives_Click);
             // 
             // ConfigurationForm
             // 
