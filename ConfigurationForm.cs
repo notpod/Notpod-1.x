@@ -121,8 +121,6 @@ namespace Jaranweb.iTunesAgent
 
             }
 
-
-
         }
 
         /// <summary>
@@ -272,19 +270,20 @@ namespace Jaranweb.iTunesAgent
         /// <param name="e"></param>
         private void buttonNew_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(this, "Please note that any media present in the 'Music folder' on your "
-                + "device will be deleted upon the first synchronization by iTunes Agent, unless "
+            MessageBox.Show(this, "Please note that any media present in the folder specified as 'Music location on device' "
+                + "will be deleted upon the first synchronization by iTunes Agent, unless "
                 + "this media matches any track added to the device's playlist in iTunes.\n\nIf "
                 + "the media already present on your device is of critical importance, please make sure you take a proper "
                 + "backup, or make sure it is located outside the folder you configure as the "
-                + "'Music folder' which iTunes Agent will manage on your device.", "Before you continue...", 
+                + "'Music location on device'.", "Before you continue...",
                 MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             PrepareForNewDeviceConfiguration();
 
         }
 
-        private void PrepareForNewDeviceConfiguration() {
+        private void PrepareForNewDeviceConfiguration()
+        {
 
             DisableEditFields();
             EnableEditFields(true);
@@ -432,6 +431,19 @@ namespace Jaranweb.iTunesAgent
             FolderBrowserDialog dlg = new FolderBrowserDialog();
             if (dlg.ShowDialog() == DialogResult.Cancel)
                 return;
+                                    
+            string path = dlg.SelectedPath.ToLower();
+            if (path.Contains("itunes") || path.Contains("c:\\"))
+            {
+                if(MessageBox.Show(this, "It seems the folder you have selected may be your " +
+                    "iTunes Music Folder. The 'Music location on device' setting should be" +
+                    " a folder on your portable media player, not on your computer. I will" +
+                    " be able to find the music on your computer on my own.\n\nUnless you " + 
+                    " are absolutely certain you have selected the correct folder, please " + 
+                    " click Cancel and try again.",
+                    "Oups!", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.Cancel) 
+                return;
+            }
 
             //This check is to make sure that the application do not throw an exception if a path 
             //of length less than 3 is selected. Normally this do not occur, but there has been 
@@ -577,7 +589,7 @@ namespace Jaranweb.iTunesAgent
 
 
             string folder = dlg.SelectedPath;
-            
+
 
             string nameBase = textDeviceName.Text + "-" + DateTime.Now.Ticks.ToString();
 
