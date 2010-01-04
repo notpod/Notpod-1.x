@@ -58,6 +58,7 @@ namespace Jaranweb.iTunesAgent
             this.buttonCancel = new System.Windows.Forms.Button();
             this.buttonOK = new System.Windows.Forms.Button();
             this.helpProvider = new System.Windows.Forms.HelpProvider();
+            this.checkConfirmMusicLocation = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupDeviceInformation.SuspendLayout();
@@ -65,13 +66,14 @@ namespace Jaranweb.iTunesAgent
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.checkConfirmMusicLocation);
             this.groupBox1.Controls.Add(this.checkWarnOnSystemDrives);
             this.groupBox1.Controls.Add(this.checkAutocloseSyncWindow);
             this.groupBox1.Controls.Add(this.checkUseListFolder);
             this.groupBox1.Controls.Add(this.checkNotifications);
-            this.groupBox1.Location = new System.Drawing.Point(2, 1);
+            this.groupBox1.Location = new System.Drawing.Point(2, 2);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(512, 77);
+            this.groupBox1.Size = new System.Drawing.Size(512, 96);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Agent";
@@ -79,7 +81,7 @@ namespace Jaranweb.iTunesAgent
             // checkWarnOnSystemDrives
             // 
             this.checkWarnOnSystemDrives.AutoSize = true;
-            this.checkWarnOnSystemDrives.Location = new System.Drawing.Point(249, 43);
+            this.checkWarnOnSystemDrives.Location = new System.Drawing.Point(274, 43);
             this.checkWarnOnSystemDrives.Name = "checkWarnOnSystemDrives";
             this.checkWarnOnSystemDrives.Size = new System.Drawing.Size(203, 17);
             this.checkWarnOnSystemDrives.TabIndex = 3;
@@ -106,7 +108,7 @@ namespace Jaranweb.iTunesAgent
             // checkUseListFolder
             // 
             this.checkUseListFolder.AutoSize = true;
-            this.checkUseListFolder.Location = new System.Drawing.Point(249, 20);
+            this.checkUseListFolder.Location = new System.Drawing.Point(274, 20);
             this.checkUseListFolder.Name = "checkUseListFolder";
             this.checkUseListFolder.Size = new System.Drawing.Size(219, 17);
             this.checkUseListFolder.TabIndex = 1;
@@ -192,9 +194,9 @@ namespace Jaranweb.iTunesAgent
             // 
             this.groupBox2.Controls.Add(this.groupDeviceInformation);
             this.groupBox2.Controls.Add(this.listDevices);
-            this.groupBox2.Location = new System.Drawing.Point(2, 84);
+            this.groupBox2.Location = new System.Drawing.Point(2, 104);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(512, 377);
+            this.groupBox2.Size = new System.Drawing.Size(512, 357);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Devices";
@@ -216,7 +218,7 @@ namespace Jaranweb.iTunesAgent
             this.groupDeviceInformation.Controls.Add(this.label2);
             this.groupDeviceInformation.Controls.Add(this.textDeviceName);
             this.groupDeviceInformation.Controls.Add(this.label1);
-            this.groupDeviceInformation.Location = new System.Drawing.Point(6, 204);
+            this.groupDeviceInformation.Location = new System.Drawing.Point(6, 182);
             this.groupDeviceInformation.Name = "groupDeviceInformation";
             this.groupDeviceInformation.Size = new System.Drawing.Size(500, 167);
             this.groupDeviceInformation.TabIndex = 1;
@@ -327,10 +329,10 @@ namespace Jaranweb.iTunesAgent
             this.columnName});
             this.listDevices.FullRowSelect = true;
             this.listDevices.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
-            this.listDevices.Location = new System.Drawing.Point(9, 21);
+            this.listDevices.Location = new System.Drawing.Point(9, 16);
             this.listDevices.MultiSelect = false;
             this.listDevices.Name = "listDevices";
-            this.listDevices.Size = new System.Drawing.Size(497, 177);
+            this.listDevices.Size = new System.Drawing.Size(497, 160);
             this.listDevices.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.listDevices.TabIndex = 0;
             this.listDevices.UseCompatibleStateImageBehavior = false;
@@ -360,6 +362,17 @@ namespace Jaranweb.iTunesAgent
             this.buttonOK.TabIndex = 3;
             this.buttonOK.Text = "&Save";
             this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
+            // 
+            // checkConfirmMusicLocation
+            // 
+            this.checkConfirmMusicLocation.AutoSize = true;
+            this.checkConfirmMusicLocation.Location = new System.Drawing.Point(9, 66);
+            this.checkConfirmMusicLocation.Name = "checkConfirmMusicLocation";
+            this.checkConfirmMusicLocation.Size = new System.Drawing.Size(289, 17);
+            this.checkConfirmMusicLocation.TabIndex = 4;
+            this.checkConfirmMusicLocation.Text = "Confirm music location setting when configuring devices";
+            this.checkConfirmMusicLocation.UseVisualStyleBackColor = true;
+            this.checkConfirmMusicLocation.Click += new System.EventHandler(this.checkConfirmMusicLocation_Click);
             // 
             // ConfigurationForm
             // 
@@ -419,5 +432,6 @@ namespace Jaranweb.iTunesAgent
         private System.Windows.Forms.CheckBox checkAutocloseSyncWindow;
         private System.Windows.Forms.Button buttonCreateUniqueFile;
         private System.Windows.Forms.CheckBox checkWarnOnSystemDrives;
+        private System.Windows.Forms.CheckBox checkConfirmMusicLocation;
     }
 }

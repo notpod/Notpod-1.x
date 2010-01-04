@@ -44,6 +44,7 @@ namespace Jaranweb.iTunesAgent
             this.checkUseListFolder.Checked = configuration.UseListFolder;
             this.checkAutocloseSyncWindow.Checked = configuration.CloseSyncWindowOnSuccess;
             this.checkWarnOnSystemDrives.Checked = configuration.WarnOnSystemDrives;
+            this.checkConfirmMusicLocation.Checked = configuration.ConfirmMusicLocation;
 
             this.deviceConfiguration = deviceConfiguration;
             for (int d = 0; d < deviceConfiguration.Devices.Length; d++)
@@ -360,7 +361,7 @@ namespace Jaranweb.iTunesAgent
                 return;
             }
 
-            if(mediaroot.Length > 0) {
+            if(mediaroot.Length > 0 && configuration.ConfirmMusicLocation) {
                 DialogResult confirmedMediaRoot = MessageBox.Show(this, "Please confirm that the path below represents a folder on your portable media player, NOT on your local hard drive:\n\n" + textMediaRoot.Text + "\n\nIf you agree that the path above is the location on your portable device where you want the music to be copied TO, click OK to continue. Otherwise click Cancel and choose the correct path on your portable device.", "Confirm path", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation);
                 if (confirmedMediaRoot == DialogResult.Cancel)
                 {
@@ -474,6 +475,7 @@ namespace Jaranweb.iTunesAgent
             configuration.UseListFolder = checkUseListFolder.Checked;
             configuration.CloseSyncWindowOnSuccess = checkAutocloseSyncWindow.Checked;
             configuration.WarnOnSystemDrives = checkWarnOnSystemDrives.Checked;
+            configuration.ConfirmMusicLocation = checkConfirmMusicLocation.Checked;
 
             try
             {
@@ -600,6 +602,12 @@ namespace Jaranweb.iTunesAgent
         }
 
         private void checkWarnOnSystemDrives_Click(object sender, EventArgs e)
+        {
+            configurationChanged = true;
+            buttonOK.Enabled = true;
+        }
+
+        private void checkConfirmMusicLocation_Click(object sender, EventArgs e)
         {
             configurationChanged = true;
             buttonOK.Enabled = true;
