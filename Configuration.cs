@@ -17,6 +17,8 @@ namespace Jaranweb.iTunesAgent.Configuration12
         private bool closeSyncWindowOnSuccess = true;
 
         private bool warnOnSystemDrives = true;
+
+        private bool confirmMusicLocation = true;
                 
         /// <summary>
         /// Accessor for showNotificationPopups.
@@ -75,6 +77,22 @@ namespace Jaranweb.iTunesAgent.Configuration12
             set
             {
                 warnOnSystemDrives = value;
+            }
+        }
+
+        /// <summary>
+        /// Accessor for confirmMusicLocation.
+        /// </summary>
+        public bool ConfirmMusicLocation
+        {
+
+            get
+            {
+                return confirmMusicLocation;
+            }
+            set
+            {
+                confirmMusicLocation = value;
             }
         }
 
