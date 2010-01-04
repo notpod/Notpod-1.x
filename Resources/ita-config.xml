@@ -4,4 +4,5 @@
   <UseListFolder>true</UseListFolder>
   <CloseSyncWindowOnSuccess>true</CloseSyncWindowOnSuccess>
   <WarnOnSystemDrives>true</WarnOnSystemDrives>
+  <ConfirmMusicLocation>true</ConfirmMusicLocation>
 </Configuration>
