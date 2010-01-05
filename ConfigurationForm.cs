@@ -360,15 +360,7 @@ namespace Jaranweb.iTunesAgent
                 MessageBox.Show(this, "Please enter a recognize pattern for the device.", "Missing information", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
             }
-
-            if(mediaroot.Length > 0 && configuration.ConfirmMusicLocation) {
-                DialogResult confirmedMediaRoot = MessageBox.Show(this, "Please confirm that the path below represents a folder on your portable media player, NOT on your local hard drive:\n\n" + textMediaRoot.Text + "\n\nIf you agree that the path above is the location on your portable device where you want the music to be copied TO, click OK to continue. Otherwise click Cancel and choose the correct path on your portable device.", "Confirm path", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation);
-                if (confirmedMediaRoot == DialogResult.Cancel)
-                {
-                    return;
-                }
-            }
-
+                        
             Device newDevice = new Device();
             newDevice.Name = deviceName;
             newDevice.MediaRoot = mediaroot;
