@@ -482,7 +482,7 @@ namespace Jaranweb.iTunesAgent
             {
                 return;
             }
-
+                        
             // Create synchronizer and form.
             synchronizer = new StandardSynchronizer();
             syncForm = new StandardSynchronizerForm();
@@ -491,6 +491,17 @@ namespace Jaranweb.iTunesAgent
 
             Thread thread = new Thread(new ThreadStart(PerformSynchronize));
             thread.Start();
+        }
+
+        private bool GetMusicLocationConfirmation(string path)
+        {
+            DialogResult confirmedMediaRoot = MessageBox.Show("Please confirm that the path below represents a folder on your portable media player, NOT on your local hard drive:\n\n" + path + "\n\nIf you agree that the path above is the location on your portable device where you want the music to be copied TO, click OK to continue. Otherwise click Cancel and reconfigure your device under Preferences.", "Confirm music location", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation);
+            if (confirmedMediaRoot == DialogResult.Cancel)
+            {
+                return false;
+            }
+
+            return true;
         }
 
         /// <summary>
@@ -537,6 +548,14 @@ namespace Jaranweb.iTunesAgent
                 {
                     string drive = (string)keys.Current;
                     Device device = (Device)deviceinfo[keys.Current];
+
+                    if (configuration.ConfirmMusicLocation && !GetMusicLocationConfirmation(drive + device.MediaRoot))
+                    {
+                        syncForm.CloseSafe();
+                        syncForm = null;
+                        synchronizer = null;
+                        return;
+                    }
 
                     IITPlaylist playlist = PlaylistExists(device);
                     if (playlist == null)
