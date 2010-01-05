@@ -31,6 +31,7 @@ namespace Jaranweb.iTunesAgent
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConfigurationForm));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.checkConfirmMusicLocation = new System.Windows.Forms.CheckBox();
             this.checkWarnOnSystemDrives = new System.Windows.Forms.CheckBox();
             this.checkAutocloseSyncWindow = new System.Windows.Forms.CheckBox();
             this.checkUseListFolder = new System.Windows.Forms.CheckBox();
@@ -58,7 +59,6 @@ namespace Jaranweb.iTunesAgent
             this.buttonCancel = new System.Windows.Forms.Button();
             this.buttonOK = new System.Windows.Forms.Button();
             this.helpProvider = new System.Windows.Forms.HelpProvider();
-            this.checkConfirmMusicLocation = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupDeviceInformation.SuspendLayout();
@@ -77,6 +77,19 @@ namespace Jaranweb.iTunesAgent
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Agent";
+            // 
+            // checkConfirmMusicLocation
+            // 
+            this.checkConfirmMusicLocation.AutoSize = true;
+            this.checkConfirmMusicLocation.Location = new System.Drawing.Point(9, 66);
+            this.checkConfirmMusicLocation.Name = "checkConfirmMusicLocation";
+            this.checkConfirmMusicLocation.Size = new System.Drawing.Size(231, 17);
+            this.checkConfirmMusicLocation.TabIndex = 4;
+            this.checkConfirmMusicLocation.Text = "Confirm music location before synchronizing";
+            this.toolTip.SetToolTip(this.checkConfirmMusicLocation, "Checking this will display a confirmation message before devices are synchronized" +
+                    " to prevent misconfiguration.");
+            this.checkConfirmMusicLocation.UseVisualStyleBackColor = true;
+            this.checkConfirmMusicLocation.Click += new System.EventHandler(this.checkConfirmMusicLocation_Click);
             // 
             // checkWarnOnSystemDrives
             // 
@@ -362,17 +375,6 @@ namespace Jaranweb.iTunesAgent
             this.buttonOK.TabIndex = 3;
             this.buttonOK.Text = "&Save";
             this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
-            // 
-            // checkConfirmMusicLocation
-            // 
-            this.checkConfirmMusicLocation.AutoSize = true;
-            this.checkConfirmMusicLocation.Location = new System.Drawing.Point(9, 66);
-            this.checkConfirmMusicLocation.Name = "checkConfirmMusicLocation";
-            this.checkConfirmMusicLocation.Size = new System.Drawing.Size(289, 17);
-            this.checkConfirmMusicLocation.TabIndex = 4;
-            this.checkConfirmMusicLocation.Text = "Confirm music location setting when configuring devices";
-            this.checkConfirmMusicLocation.UseVisualStyleBackColor = true;
-            this.checkConfirmMusicLocation.Click += new System.EventHandler(this.checkConfirmMusicLocation_Click);
             // 
             // ConfigurationForm
             // 
