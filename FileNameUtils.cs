@@ -17,10 +17,14 @@ namespace Jaranweb.iTunesAgent
         /// <returns>Filename with illegal characters converted to underscore</returns>
         public static string ConvertIllegalCharacters(string filename)
         {
-            string[] illegal = new string[] { ":", "*", "?", "\"", "<", ">", "|", "/" };
+            string[] illegal = new string[] { ":", "*", "?", "\"", "<", ">", "|", "/", };
             string replaceWith = "_";
             foreach (string ic in illegal)
                 filename = filename.Replace(ic, replaceWith);
+
+            filename = filename.Replace(".\\", "_\\");
+            filename = filename.Replace(",\\", "_\\");
+            filename = filename.Replace(" \\", "_\\");
 
             return filename;
         }
