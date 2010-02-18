@@ -156,7 +156,7 @@ namespace Jaranweb.iTunesAgent
 
                     try
                     {
-                        pathOnDevice = SyncPatternTranslator.Translate(devicePattern, (IITFileOrCDTrack)addTrack);
+                        pathOnDevice = SyncPatternTranslator.Translate(devicePattern, (IITFileOrCDTrack)addTrack);                        
                     }
                     catch (Exception ex)
                     {
@@ -166,6 +166,7 @@ namespace Jaranweb.iTunesAgent
                         continue;
                     }
                     string fullPath = deviceMediaRoot + pathOnDevice;
+                    l.Debug(fullPath);
 
                     // Check if the list already contains a key - this happens in cases where there are duplicate 
                     // entries in the playlist for the same track. Although the track may have different locations on 
@@ -209,6 +210,8 @@ namespace Jaranweb.iTunesAgent
                 //Remove tracks from device which are no longer in the playlist.
                 foreach (FileInfo file in files)
                 {
+                    l.Debug("Checking file: " + file.FullName);
+
                     // Check for cancelled operation.
                     if (syncForm.GetOperationCancelled())
                     {
@@ -226,7 +229,7 @@ namespace Jaranweb.iTunesAgent
                     //if (file.Extension != ".mp3" && file.Extension != ".acc" && file.Extension != ".m4p" && file.Extension != ".m4a")
                     if (!extensions.Contains(file.Extension))
                         continue;
-
+                    
                     if (syncList.ContainsKey(file.FullName))
                     {
                         FileInfo fi = new FileInfo(file.FullName);
@@ -237,6 +240,9 @@ namespace Jaranweb.iTunesAgent
                     //If the track was not found --- delete it!
                     string fileFullName = file.FullName;
                     file.Delete();
+                    
+                    l.Debug("Removing file no longer in playlist: " + fileFullName);
+                    
                     CheckAndRemoveFolders(fileFullName, drive, device);
 
                     tracksRemoved++;
@@ -323,6 +329,7 @@ namespace Jaranweb.iTunesAgent
                     syncForm.SetProgressValue(syncForm.GetProgressValue() + 1);
 
                     string trackPath = filePath.Substring(deviceMediaRoot.Length); // hack: cut out media root
+                    l.Debug("Checking for copy: " + filePath);
 
                     if (File.Exists(filePath))
                         continue;
@@ -339,6 +346,7 @@ namespace Jaranweb.iTunesAgent
 
                         syncForm.AddLogText(filePath + " copied successfully.", Color.Green);
 
+                        l.Debug("Copied: " + filePath);
                     }
                     catch (Exception ex)
                     {
@@ -408,6 +416,8 @@ namespace Jaranweb.iTunesAgent
                 directoryPath += "\\" + folder;
                 if (Directory.Exists(directoryPath))
                     continue;
+
+                l.Debug("Creating folder " + directoryPath);
 
                 Directory.CreateDirectory(directoryPath);
 
