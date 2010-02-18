@@ -40,7 +40,6 @@ namespace Jaranweb.iTunesAgent
         private DeviceConfiguration deviceConfiguration;
         private Configuration configuration;
 
-        private ISynchronizer synchronizer;
         private ISynchronizeForm syncForm;
 
         private Hashtable deviceInitialPlaylists = new Hashtable();
@@ -482,13 +481,9 @@ namespace Jaranweb.iTunesAgent
             {
                 return;
             }
-                        
-            // Create synchronizer and form.
-            synchronizer = new StandardSynchronizer();
-            syncForm = new StandardSynchronizerForm();
-            synchronizer.Form = syncForm;
-            syncForm.Show();
 
+            syncForm = new StandardSynchronizerForm();
+            syncForm.Show();
             Thread thread = new Thread(new ThreadStart(PerformSynchronize));
             thread.Start();
         }
@@ -544,8 +539,13 @@ namespace Jaranweb.iTunesAgent
             IEnumerator keys = deviceinfo.Keys.GetEnumerator();
             try
             {
+                // Create synchronizer and form.
+                ISynchronizer synchronizer = new StandardSynchronizer();                
+                synchronizer.Form = syncForm;                
+
                 while (keys.MoveNext())
                 {
+                    
                     string drive = (string)keys.Current;
                     Device device = (Device)deviceinfo[keys.Current];
 
@@ -574,6 +574,7 @@ namespace Jaranweb.iTunesAgent
                     synchronizer.SynchronizeDevice((IITUserPlaylist)playlist, drive, device);
 
                 }
+                                
             }
             catch (Exception ex)
             {
@@ -585,6 +586,9 @@ namespace Jaranweb.iTunesAgent
 
                 itaTray.ShowBalloonTip(7, "Synchronize error", message, ToolTipIcon.Error);
             }
+
+            if (syncForm != null && configuration.CloseSyncWindowOnSuccess)
+                syncForm.CloseSafe();
         }
 
         private void OnSynchronizeError(object sender, SyncErrorArgs args)
@@ -593,10 +597,7 @@ namespace Jaranweb.iTunesAgent
         }
 
         private void OnSynchronizeComplete(object sender)
-        {
-            if (syncForm != null && configuration.CloseSyncWindowOnSuccess)
-                syncForm.CloseSafe();
-
+        {            
             if (configuration.ShowNotificationPopups)
                 itaTray.ShowBalloonTip(5, "Synchronize complete", "Your device was successfully synchronized with iTunes.", ToolTipIcon.Info);
         }
