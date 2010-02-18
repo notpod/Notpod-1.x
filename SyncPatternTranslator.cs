@@ -32,46 +32,19 @@ namespace Jaranweb.iTunesAgent
                 if (track == null)
                     l.Debug("Track is null!");
 
-                string patternstring = ((track.Compilation && pattern.CompilationsPattern != null && pattern.CompilationsPattern.Length > 0) ? pattern.CompilationsPattern : pattern.Pattern);
-
-                string artist = (track.Artist == null ? "Unknown Artist" : track.Artist);
-
-                if (track.Compilation && pattern.CompilationsPattern != null && pattern.CompilationsPattern.Length > 0)
-                    artist = "Compilations";
-
-                patternstring = patternstring.Replace("%ARTIST%", artist);
-                patternstring = patternstring.Replace("%ALBUM%", (track.Album == null ? "Unknown Album" : track.Album));
-                patternstring = patternstring.Replace("%NAME%", (track.Name == null ? "Unknown Track" : track.Name));
-
-                //Replace track number with a number only if the iTunes track has this field set
-                if (track.TrackNumber != 0)
-                {
-                    //%TRACKNUMSPACE%
-                    patternstring = patternstring.Replace("%TRACKNUMSPACE%",
-                        (track.TrackNumber.ToString().Length == 1 ?
-                        "0" + track.TrackNumber.ToString() : track.TrackNumber.ToString()) + " ");
-
-                    //%TRACKNUM%
-                    patternstring = patternstring.Replace("%TRACKNUM%",
-                        (track.TrackNumber.ToString().Length == 1 ?
-                        "0" + track.TrackNumber.ToString() : track.TrackNumber.ToString()));
-                }
-                else //If there are no track number set for the track
-                {
-                    //%TRACKNUMSPACE%
-                    patternstring = patternstring.Replace("%TRACKNUMSPACE%", "");
-                    //%TRACKNUM%
-                    patternstring = patternstring.Replace("%TRACKNUM%", "");
-                }
-
                 if (track.Location == null)
                 {
                     l.Debug("track.Location is null!");
                     throw new MissingTrackException(track);
                 }
 
-                int extensionstart = track.Location.LastIndexOf(".");
-                patternstring = patternstring + track.Location.Substring(extensionstart, track.Location.Length - extensionstart);
+                string patternstring = ((track.Compilation && pattern.CompilationsPattern != null && pattern.CompilationsPattern.Length > 0) ? pattern.CompilationsPattern : pattern.Pattern);
+
+                patternstring = TranslateArtist(pattern, track, patternstring);
+                patternstring = TranslateAlbum(track.Album, patternstring);
+                patternstring = TranslateName(track, patternstring);
+                patternstring = TranslateTrackNumber(track, patternstring);
+                patternstring = TranslateExtension(track, patternstring);
 
                 l.Debug("patternstring=" + patternstring);
 
@@ -90,6 +63,92 @@ namespace Jaranweb.iTunesAgent
                 throw new ArgumentException(message, ex);
             }            
             
+        }
+
+        /// <summary>
+        /// Translate file extension.
+        /// </summary>
+        /// <param name="track"></param>
+        /// <param name="patternstring"></param>
+        /// <returns></returns>
+        private static string TranslateExtension(IITFileOrCDTrack track, string patternstring)
+        {
+            int extensionstart = track.Location.LastIndexOf(".");
+            patternstring = patternstring + track.Location.Substring(extensionstart, track.Location.Length - extensionstart);
+            return patternstring;
+        }
+
+        /// <summary>
+        /// Translate track name.
+        /// </summary>
+        /// <param name="track"></param>
+        /// <param name="patternstring"></param>
+        /// <returns></returns>
+        private static string TranslateName(IITFileOrCDTrack track, string patternstring)
+        {
+            patternstring = patternstring.Replace("%NAME%", (track.Name == null ? "Unknown Track" : track.Name));
+            return patternstring;
+        }
+
+        /// <summary>
+        /// Translate track number.
+        /// </summary>
+        /// <param name="track"></param>
+        /// <param name="patternstring"></param>
+        /// <returns></returns>
+        private static string TranslateTrackNumber(IITFileOrCDTrack track, string patternstring)
+        {
+            //Replace track number with a number only if the iTunes track has this field set
+            if (track.TrackNumber != 0)
+            {
+                //%TRACKNUMSPACE%
+                patternstring = patternstring.Replace("%TRACKNUMSPACE%",
+                    (track.TrackNumber.ToString().Length == 1 ?
+                    "0" + track.TrackNumber.ToString() : track.TrackNumber.ToString()) + " ");
+
+                //%TRACKNUM%
+                patternstring = patternstring.Replace("%TRACKNUM%",
+                    (track.TrackNumber.ToString().Length == 1 ?
+                    "0" + track.TrackNumber.ToString() : track.TrackNumber.ToString()));
+            }
+            else //If there are no track number set for the track
+            {
+                //%TRACKNUMSPACE%
+                patternstring = patternstring.Replace("%TRACKNUMSPACE%", "");
+                //%TRACKNUM%
+                patternstring = patternstring.Replace("%TRACKNUM%", "");
+            }
+            return patternstring;
+        }
+
+        /// <summary>
+        /// Translate track album.
+        /// </summary>
+        /// <param name="trackAlbum"></param>
+        /// <param name="patternstring"></param>
+        /// <returns></returns>
+        private static string TranslateAlbum(string trackAlbum, string patternstring)
+        {
+            string album = (trackAlbum == null ? "Unknown Album" : trackAlbum);
+            patternstring = patternstring.Replace("%ALBUM%", album);
+            return patternstring;
+        }
+
+        /// <summary>
+        /// Translate track artist.
+        /// </summary>
+        /// <param name="pattern"></param>
+        /// <param name="track"></param>
+        /// <param name="patternstring"></param>
+        /// <returns></returns>
+        private static string TranslateArtist(SyncPattern pattern, IITFileOrCDTrack track, string patternstring)
+        {
+            string artist = (track.Artist == null ? "Unknown Artist" : track.Artist);            
+            if (track.Compilation && pattern.CompilationsPattern != null && pattern.CompilationsPattern.Length > 0)
+                artist = "Compilations";
+
+            patternstring = patternstring.Replace("%ARTIST%", artist);
+            return patternstring;
         }
         
     }
