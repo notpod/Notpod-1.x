@@ -245,7 +245,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="logging.xml" />
+    <None Include="logging.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Content Include="Resources\device-config.xml" />
     <None Include="Resources\exit.png" />
     <None Include="Resources\help.png" />
