@@ -1,16 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <log4net>  
-  <appender name="LogFile" type="log4net.Appender.FileAppender">
-    <file value="ita.log" />
-    <appendToFile value="true" />
-
+  <appender name="Console" type="log4net.Appender.ConsoleAppender">
     <layout type="log4net.Layout.PatternLayout">
       <conversionPattern value="%5level [%thread] (%logger:%line) - %message%newline" />
     </layout>
   </appender>
 
   <root>
-    <level value="INFO" />
-    <appender-ref ref="LogFile" />
+    <level value="DEBUG" />
+    <appender-ref ref="Console" />
   </root>
 </log4net>
