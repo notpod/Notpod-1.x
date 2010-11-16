@@ -16,13 +16,46 @@ namespace Jaranweb.iTunesAgent.Test
         private int tracknumber;
         private string location;
         private int bookmarktime;
+        private bool compilation;
+                
+        
 
-        #region IITFileOrCDTrack Members
-
-        public IITArtwork AddArtworkFromFile(string filePath)
+        public int BookmarkTime
         {
-            throw new Exception("The method or operation is not implemented.");
+            get
+            {
+                return bookmarktime;
+            }
+            set
+            {
+                this.bookmarktime = value;
+            }
         }
+
+        public int TrackNumber
+        {
+            get
+            {
+                return tracknumber;
+            }
+            set
+            {
+                this.tracknumber = value;
+            }
+        }
+
+        public string Name
+        {
+            get
+            {
+                return name;
+            }
+            set
+            {
+                this.name = value;
+            }
+        }
+
 
         public string Album
         {
@@ -48,37 +81,67 @@ namespace Jaranweb.iTunesAgent.Test
             }
         }
 
+       
+        public string Location
+        {
+            get { return location; }
+            set { location = value; }
+        }
+
+
+
+        #region IITFileOrCDTrack Members
+
+        public IITArtwork AddArtworkFromFile(string filePath)
+        {
+            throw new Exception("The method or operation is not implemented.");
+        }
+
+        public string AlbumArtist
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         public IITArtworkCollection Artwork
         {
-            get { throw new Exception("The method or operation is not implemented."); }
+            get { throw new NotImplementedException(); }
         }
 
         public int BPM
         {
             get
             {
-                throw new Exception("The method or operation is not implemented.");
+                throw new NotImplementedException();
             }
             set
             {
-                throw new Exception("The method or operation is not implemented.");
+                throw new NotImplementedException();
             }
         }
 
         public int BitRate
         {
-            get { throw new Exception("The method or operation is not implemented."); }
+            get { throw new NotImplementedException(); }
         }
+
+        
 
         public string Category
         {
             get
             {
-                throw new Exception("The method or operation is not implemented.");
+                throw new NotImplementedException();
             }
             set
             {
-                throw new Exception("The method or operation is not implemented.");
+                throw new NotImplementedException();
             }
         }
 
@@ -86,11 +149,11 @@ namespace Jaranweb.iTunesAgent.Test
         {
             get
             {
-                throw new Exception("The method or operation is not implemented.");
+                throw new NotImplementedException();
             }
             set
             {
-                throw new Exception("The method or operation is not implemented.");
+                throw new NotImplementedException();
             }
         }
 
@@ -98,11 +161,11 @@ namespace Jaranweb.iTunesAgent.Test
         {
             get
             {
-                throw new Exception("The method or operation is not implemented.");
+                return compilation;
             }
             set
             {
-                throw new Exception("The method or operation is not implemented.");
+                compilation = value;
             }
         }
 
@@ -110,33 +173,33 @@ namespace Jaranweb.iTunesAgent.Test
         {
             get
             {
-                throw new Exception("The method or operation is not implemented.");
+                throw new NotImplementedException();
             }
             set
             {
-                throw new Exception("The method or operation is not implemented.");
+                throw new NotImplementedException();
             }
         }
 
         public DateTime DateAdded
         {
-            get { throw new Exception("The method or operation is not implemented."); }
+            get { throw new NotImplementedException(); }
         }
 
         public void Delete()
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         public string Description
         {
             get
             {
-                throw new Exception("The method or operation is not implemented.");
+                throw new NotImplementedException();
             }
             set
             {
-                throw new Exception("The method or operation is not implemented.");
+                throw new NotImplementedException();
             }
         }
 
@@ -144,11 +207,11 @@ namespace Jaranweb.iTunesAgent.Test
         {
             get
             {
-                throw new Exception("The method or operation is not implemented.");
+                throw new NotImplementedException();
             }
             set
             {
-                throw new Exception("The method or operation is not implemented.");
+                throw new NotImplementedException();
             }
         }
 
@@ -156,28 +219,28 @@ namespace Jaranweb.iTunesAgent.Test
         {
             get
             {
-                throw new Exception("The method or operation is not implemented.");
+                throw new NotImplementedException();
             }
             set
             {
-                throw new Exception("The method or operation is not implemented.");
+                throw new NotImplementedException();
             }
         }
 
         public int Duration
         {
-            get { throw new Exception("The method or operation is not implemented."); }
+            get { throw new NotImplementedException(); }
         }
 
         public string EQ
         {
             get
             {
-                throw new Exception("The method or operation is not implemented.");
+                throw new NotImplementedException();
             }
             set
             {
-                throw new Exception("The method or operation is not implemented.");
+                throw new NotImplementedException();
             }
         }
 
@@ -185,11 +248,35 @@ namespace Jaranweb.iTunesAgent.Test
         {
             get
             {
-                throw new Exception("The method or operation is not implemented.");
+                throw new NotImplementedException();
             }
             set
             {
-                throw new Exception("The method or operation is not implemented.");
+                throw new NotImplementedException();
+            }
+        }
+
+        public string EpisodeID
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public int EpisodeNumber
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
             }
         }
 
@@ -197,11 +284,11 @@ namespace Jaranweb.iTunesAgent.Test
         {
             get
             {
-                throw new Exception("The method or operation is not implemented.");
+                throw new NotImplementedException();
             }
             set
             {
-                throw new Exception("The method or operation is not implemented.");
+                throw new NotImplementedException();
             }
         }
 
@@ -209,11 +296,11 @@ namespace Jaranweb.iTunesAgent.Test
         {
             get
             {
-                throw new Exception("The method or operation is not implemented.");
+                throw new NotImplementedException();
             }
             set
             {
-                throw new Exception("The method or operation is not implemented.");
+                throw new NotImplementedException();
             }
         }
 
@@ -221,61 +308,55 @@ namespace Jaranweb.iTunesAgent.Test
         {
             get
             {
-                throw new Exception("The method or operation is not implemented.");
+                throw new NotImplementedException();
             }
             set
             {
-                throw new Exception("The method or operation is not implemented.");
+                throw new NotImplementedException();
             }
         }
 
         public void GetITObjectIDs(out int sourceID, out int playlistID, out int trackID, out int databaseID)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         public string Grouping
         {
             get
             {
-                throw new Exception("The method or operation is not implemented.");
+                throw new NotImplementedException();
             }
             set
             {
-                throw new Exception("The method or operation is not implemented.");
+                throw new NotImplementedException();
             }
         }
 
         public int Index
         {
-            get { throw new Exception("The method or operation is not implemented."); }
+            get { throw new NotImplementedException(); }
         }
 
         public ITTrackKind Kind
         {
-            get { throw new Exception("The method or operation is not implemented."); }
+            get { throw new NotImplementedException(); }
         }
 
         public string KindAsString
         {
-            get { throw new Exception("The method or operation is not implemented."); }
-        }
-
-        public string Location
-        {
-            get { return Location; }
-            set { location = value; }
+            get { throw new NotImplementedException(); }
         }
 
         public string LongDescription
         {
             get
             {
-                throw new Exception("The method or operation is not implemented.");
+                throw new NotImplementedException();
             }
             set
             {
-                throw new Exception("The method or operation is not implemented.");
+                throw new NotImplementedException();
             }
         }
 
@@ -283,50 +364,52 @@ namespace Jaranweb.iTunesAgent.Test
         {
             get
             {
-                throw new Exception("The method or operation is not implemented.");
+                throw new NotImplementedException();
             }
             set
             {
-                throw new Exception("The method or operation is not implemented.");
+                throw new NotImplementedException();
             }
         }
 
         public DateTime ModificationDate
         {
-            get { throw new Exception("The method or operation is not implemented."); }
+            get { throw new NotImplementedException(); }
         }
 
-        public string Name
+        
+
+        public bool PartOfGaplessAlbum
         {
             get
             {
-                return name;
+                throw new NotImplementedException();
             }
             set
             {
-                name = value;
+                throw new NotImplementedException();
             }
         }
 
         public void Play()
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         public int PlayOrderIndex
         {
-            get { throw new Exception("The method or operation is not implemented."); }
+            get { throw new NotImplementedException(); }
         }
 
         public int PlayedCount
         {
             get
             {
-                throw new Exception("The method or operation is not implemented.");
+                throw new NotImplementedException();
             }
             set
             {
-                throw new Exception("The method or operation is not implemented.");
+                throw new NotImplementedException();
             }
         }
 
@@ -334,33 +417,33 @@ namespace Jaranweb.iTunesAgent.Test
         {
             get
             {
-                throw new Exception("The method or operation is not implemented.");
+                throw new NotImplementedException();
             }
             set
             {
-                throw new Exception("The method or operation is not implemented.");
+                throw new NotImplementedException();
             }
         }
 
         public IITPlaylist Playlist
         {
-            get { throw new Exception("The method or operation is not implemented."); }
+            get { throw new NotImplementedException(); }
         }
 
         public bool Podcast
         {
-            get { throw new Exception("The method or operation is not implemented."); }
+            get { throw new NotImplementedException(); }
         }
 
         public int Rating
         {
             get
             {
-                throw new Exception("The method or operation is not implemented.");
+                throw new NotImplementedException();
             }
             set
             {
-                throw new Exception("The method or operation is not implemented.");
+                throw new NotImplementedException();
             }
         }
 
@@ -368,89 +451,233 @@ namespace Jaranweb.iTunesAgent.Test
         {
             get
             {
-                throw new Exception("The method or operation is not implemented.");
+                throw new NotImplementedException();
             }
             set
             {
-                throw new Exception("The method or operation is not implemented.");
+                throw new NotImplementedException();
             }
         }
 
         public int SampleRate
         {
-            get { throw new Exception("The method or operation is not implemented."); }
+            get { throw new NotImplementedException(); }
+        }
+
+        public int SeasonNumber
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public string Show
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
         }
 
         public int Size
         {
-            get { throw new Exception("The method or operation is not implemented."); }
+            get { throw new NotImplementedException(); }
+        }
+
+        public int Size64High
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public int Size64Low
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public int SkippedCount
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public DateTime SkippedDate
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public string SortAlbum
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public string SortAlbumArtist
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public string SortArtist
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public string SortComposer
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public string SortName
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public string SortShow
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
         }
 
         public int Start
         {
             get
             {
-                throw new Exception("The method or operation is not implemented.");
+                throw new NotImplementedException();
             }
             set
             {
-                throw new Exception("The method or operation is not implemented.");
+                throw new NotImplementedException();
             }
         }
 
         public string Time
         {
-            get { throw new Exception("The method or operation is not implemented."); }
+            get { throw new NotImplementedException(); }
         }
 
         public int TrackCount
         {
             get
             {
-                throw new Exception("The method or operation is not implemented.");
+                throw new NotImplementedException();
             }
             set
             {
-                throw new Exception("The method or operation is not implemented.");
+                throw new NotImplementedException();
             }
         }
 
         public int TrackDatabaseID
         {
-            get { throw new Exception("The method or operation is not implemented."); }
+            get { throw new NotImplementedException(); }
         }
 
-        public int TrackNumber
+        
+
+        public bool Unplayed
         {
             get
             {
-                return tracknumber;
+                throw new NotImplementedException();
             }
             set
             {
-                tracknumber = value;
+                throw new NotImplementedException();
             }
         }
 
         public void UpdateInfoFromFile()
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         public void UpdatePodcastFeed()
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
+        }
+
+        public ITVideoKind VideoKind
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
         }
 
         public int VolumeAdjustment
         {
             get
             {
-                throw new Exception("The method or operation is not implemented.");
+                throw new NotImplementedException();
             }
             set
             {
-                throw new Exception("The method or operation is not implemented.");
+                throw new NotImplementedException();
             }
         }
 
@@ -458,1141 +685,27 @@ namespace Jaranweb.iTunesAgent.Test
         {
             get
             {
-                throw new Exception("The method or operation is not implemented.");
+                throw new NotImplementedException();
             }
             set
             {
-                throw new Exception("The method or operation is not implemented.");
+                throw new NotImplementedException();
             }
         }
 
         public int playlistID
         {
-            get { throw new Exception("The method or operation is not implemented."); }
+            get { throw new NotImplementedException(); }
         }
 
         public int sourceID
         {
-            get { throw new Exception("The method or operation is not implemented."); }
+            get { throw new NotImplementedException(); }
         }
 
         public int trackID
         {
-            get { throw new Exception("The method or operation is not implemented."); }
-        }
-        
-        public int BookmarkTime
-        {
-            get
-            {
-                return bookmarktime;
-            }
-            set
-            {
-                bookmarktime = value;
-            }
-        }
-        #endregion
-
-        #region IITFileOrCDTrack Members
-
-
-        #endregion
-
-        #region IITFileOrCDTrack Members
-
-        IITArtwork IITFileOrCDTrack.AddArtworkFromFile(string filePath)
-        {
-            throw new Exception("The method or operation is not implemented.");
-        }
-
-        string IITFileOrCDTrack.Album
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        string IITFileOrCDTrack.AlbumArtist
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        string IITFileOrCDTrack.Artist
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        IITArtworkCollection IITFileOrCDTrack.Artwork
-        {
-            get { throw new Exception("The method or operation is not implemented."); }
-        }
-
-        int IITFileOrCDTrack.BPM
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        int IITFileOrCDTrack.BitRate
-        {
-            get { throw new Exception("The method or operation is not implemented."); }
-        }
-
-        int IITFileOrCDTrack.BookmarkTime
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        string IITFileOrCDTrack.Category
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        string IITFileOrCDTrack.Comment
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        bool IITFileOrCDTrack.Compilation
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        string IITFileOrCDTrack.Composer
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        DateTime IITFileOrCDTrack.DateAdded
-        {
-            get { throw new Exception("The method or operation is not implemented."); }
-        }
-
-        void IITFileOrCDTrack.Delete()
-        {
-            throw new Exception("The method or operation is not implemented.");
-        }
-
-        string IITFileOrCDTrack.Description
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        int IITFileOrCDTrack.DiscCount
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        int IITFileOrCDTrack.DiscNumber
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        int IITFileOrCDTrack.Duration
-        {
-            get { throw new Exception("The method or operation is not implemented."); }
-        }
-
-        string IITFileOrCDTrack.EQ
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        bool IITFileOrCDTrack.Enabled
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        string IITFileOrCDTrack.EpisodeID
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        int IITFileOrCDTrack.EpisodeNumber
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        bool IITFileOrCDTrack.ExcludeFromShuffle
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        int IITFileOrCDTrack.Finish
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        string IITFileOrCDTrack.Genre
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        void IITFileOrCDTrack.GetITObjectIDs(out int sourceID, out int playlistID, out int trackID, out int databaseID)
-        {
-            throw new Exception("The method or operation is not implemented.");
-        }
-
-        string IITFileOrCDTrack.Grouping
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        int IITFileOrCDTrack.Index
-        {
-            get { throw new Exception("The method or operation is not implemented."); }
-        }
-
-        ITTrackKind IITFileOrCDTrack.Kind
-        {
-            get { throw new Exception("The method or operation is not implemented."); }
-        }
-
-        string IITFileOrCDTrack.KindAsString
-        {
-            get { throw new Exception("The method or operation is not implemented."); }
-        }
-
-        string IITFileOrCDTrack.Location
-        {
-            get { throw new Exception("The method or operation is not implemented."); }
-        }
-
-        string IITFileOrCDTrack.LongDescription
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        string IITFileOrCDTrack.Lyrics
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        DateTime IITFileOrCDTrack.ModificationDate
-        {
-            get { throw new Exception("The method or operation is not implemented."); }
-        }
-
-        string IITFileOrCDTrack.Name
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        bool IITFileOrCDTrack.PartOfGaplessAlbum
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        void IITFileOrCDTrack.Play()
-        {
-            throw new Exception("The method or operation is not implemented.");
-        }
-
-        int IITFileOrCDTrack.PlayOrderIndex
-        {
-            get { throw new Exception("The method or operation is not implemented."); }
-        }
-
-        int IITFileOrCDTrack.PlayedCount
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        DateTime IITFileOrCDTrack.PlayedDate
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        IITPlaylist IITFileOrCDTrack.Playlist
-        {
-            get { throw new Exception("The method or operation is not implemented."); }
-        }
-
-        bool IITFileOrCDTrack.Podcast
-        {
-            get { throw new Exception("The method or operation is not implemented."); }
-        }
-
-        int IITFileOrCDTrack.Rating
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        bool IITFileOrCDTrack.RememberBookmark
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        int IITFileOrCDTrack.SampleRate
-        {
-            get { throw new Exception("The method or operation is not implemented."); }
-        }
-
-        int IITFileOrCDTrack.SeasonNumber
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        string IITFileOrCDTrack.Show
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        int IITFileOrCDTrack.Size
-        {
-            get { throw new Exception("The method or operation is not implemented."); }
-        }
-
-        int IITFileOrCDTrack.Size64High
-        {
-            get { throw new Exception("The method or operation is not implemented."); }
-        }
-
-        int IITFileOrCDTrack.Size64Low
-        {
-            get { throw new Exception("The method or operation is not implemented."); }
-        }
-
-        int IITFileOrCDTrack.SkippedCount
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        DateTime IITFileOrCDTrack.SkippedDate
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        string IITFileOrCDTrack.SortAlbum
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        string IITFileOrCDTrack.SortAlbumArtist
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        string IITFileOrCDTrack.SortArtist
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        string IITFileOrCDTrack.SortComposer
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        string IITFileOrCDTrack.SortName
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        string IITFileOrCDTrack.SortShow
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        int IITFileOrCDTrack.Start
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        string IITFileOrCDTrack.Time
-        {
-            get { throw new Exception("The method or operation is not implemented."); }
-        }
-
-        int IITFileOrCDTrack.TrackCount
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        int IITFileOrCDTrack.TrackDatabaseID
-        {
-            get { throw new Exception("The method or operation is not implemented."); }
-        }
-
-        int IITFileOrCDTrack.TrackNumber
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        bool IITFileOrCDTrack.Unplayed
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        void IITFileOrCDTrack.UpdateInfoFromFile()
-        {
-            throw new Exception("The method or operation is not implemented.");
-        }
-
-        void IITFileOrCDTrack.UpdatePodcastFeed()
-        {
-            throw new Exception("The method or operation is not implemented.");
-        }
-
-        ITVideoKind IITFileOrCDTrack.VideoKind
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        int IITFileOrCDTrack.VolumeAdjustment
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        int IITFileOrCDTrack.Year
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        int IITFileOrCDTrack.playlistID
-        {
-            get { throw new Exception("The method or operation is not implemented."); }
-        }
-
-        int IITFileOrCDTrack.sourceID
-        {
-            get { throw new Exception("The method or operation is not implemented."); }
-        }
-
-        int IITFileOrCDTrack.trackID
-        {
-            get { throw new Exception("The method or operation is not implemented."); }
-        }
-
-        #endregion
-
-        #region IITTrack Members
-
-        IITArtwork IITTrack.AddArtworkFromFile(string filePath)
-        {
-            throw new Exception("The method or operation is not implemented.");
-        }
-
-        string IITTrack.Album
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        string IITTrack.Artist
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        IITArtworkCollection IITTrack.Artwork
-        {
-            get { throw new Exception("The method or operation is not implemented."); }
-        }
-
-        int IITTrack.BPM
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        int IITTrack.BitRate
-        {
-            get { throw new Exception("The method or operation is not implemented."); }
-        }
-
-        string IITTrack.Comment
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        bool IITTrack.Compilation
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        string IITTrack.Composer
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        DateTime IITTrack.DateAdded
-        {
-            get { throw new Exception("The method or operation is not implemented."); }
-        }
-
-        void IITTrack.Delete()
-        {
-            throw new Exception("The method or operation is not implemented.");
-        }
-
-        int IITTrack.DiscCount
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        int IITTrack.DiscNumber
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        int IITTrack.Duration
-        {
-            get { throw new Exception("The method or operation is not implemented."); }
-        }
-
-        string IITTrack.EQ
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        bool IITTrack.Enabled
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        int IITTrack.Finish
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        string IITTrack.Genre
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        void IITTrack.GetITObjectIDs(out int sourceID, out int playlistID, out int trackID, out int databaseID)
-        {
-            throw new Exception("The method or operation is not implemented.");
-        }
-
-        string IITTrack.Grouping
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        int IITTrack.Index
-        {
-            get { throw new Exception("The method or operation is not implemented."); }
-        }
-
-        ITTrackKind IITTrack.Kind
-        {
-            get { throw new Exception("The method or operation is not implemented."); }
-        }
-
-        string IITTrack.KindAsString
-        {
-            get { throw new Exception("The method or operation is not implemented."); }
-        }
-
-        DateTime IITTrack.ModificationDate
-        {
-            get { throw new Exception("The method or operation is not implemented."); }
-        }
-
-        string IITTrack.Name
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        void IITTrack.Play()
-        {
-            throw new Exception("The method or operation is not implemented.");
-        }
-
-        int IITTrack.PlayOrderIndex
-        {
-            get { throw new Exception("The method or operation is not implemented."); }
-        }
-
-        int IITTrack.PlayedCount
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        DateTime IITTrack.PlayedDate
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        IITPlaylist IITTrack.Playlist
-        {
-            get { throw new Exception("The method or operation is not implemented."); }
-        }
-
-        int IITTrack.Rating
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        int IITTrack.SampleRate
-        {
-            get { throw new Exception("The method or operation is not implemented."); }
-        }
-
-        int IITTrack.Size
-        {
-            get { throw new Exception("The method or operation is not implemented."); }
-        }
-
-        int IITTrack.Start
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        string IITTrack.Time
-        {
-            get { throw new Exception("The method or operation is not implemented."); }
-        }
-
-        int IITTrack.TrackCount
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        int IITTrack.TrackDatabaseID
-        {
-            get { throw new Exception("The method or operation is not implemented."); }
-        }
-
-        int IITTrack.TrackNumber
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        int IITTrack.VolumeAdjustment
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        int IITTrack.Year
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        int IITTrack.playlistID
-        {
-            get { throw new Exception("The method or operation is not implemented."); }
-        }
-
-        int IITTrack.sourceID
-        {
-            get { throw new Exception("The method or operation is not implemented."); }
-        }
-
-        int IITTrack.trackID
-        {
-            get { throw new Exception("The method or operation is not implemented."); }
-        }
-
-        #endregion
-
-        #region IITObject Members
-
-        void IITObject.GetITObjectIDs(out int sourceID, out int playlistID, out int trackID, out int databaseID)
-        {
-            throw new Exception("The method or operation is not implemented.");
-        }
-
-        int IITObject.Index
-        {
-            get { throw new Exception("The method or operation is not implemented."); }
-        }
-
-        string IITObject.Name
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-        int IITObject.TrackDatabaseID
-        {
-            get { throw new Exception("The method or operation is not implemented."); }
-        }
-
-        int IITObject.playlistID
-        {
-            get { throw new Exception("The method or operation is not implemented."); }
-        }
-
-        int IITObject.sourceID
-        {
-            get { throw new Exception("The method or operation is not implemented."); }
-        }
-
-        int IITObject.trackID
-        {
-            get { throw new Exception("The method or operation is not implemented."); }
+            get { throw new NotImplementedException(); }
         }
 
         #endregion
