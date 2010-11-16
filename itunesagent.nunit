@@ -1,0 +1,39 @@
+﻿<NUnitProject>
+  <Settings activeconfig="Debug" />
+  <Config name="Debug" binpathtype="Auto">
+    <assembly path="bin\Debug\iTunes Agent.exe" />
+  </Config>
+  <Config name="Release" binpathtype="Auto">
+    <assembly path="bin\Release\iTunes Agent.exe" />
+  </Config>
+  <Config name="Release x86" binpathtype="Auto">
+    <assembly path="bin\Release x86\iTunes Agent.exe" />
+  </Config>
+  <Config name="Debug|x86" binpathtype="Auto">
+    <assembly path="bin\x86\Debug\iTunes Agent.exe" />
+  </Config>
+  <Config name="Release|x86" binpathtype="Auto">
+    <assembly path="bin\x86\Release\iTunes Agent.exe" />
+  </Config>
+  <Config name="Release x86|x86" binpathtype="Auto">
+    <assembly path="bin\x86\Release x86\iTunes Agent.exe" />
+  </Config>
+  <Config name="Release x64" binpathtype="Auto">
+    <assembly path="bin\Release x64\iTunes Agent.exe" />
+  </Config>
+  <Config name="Release x64|x86" binpathtype="Auto">
+    <assembly path="bin\x86\Release x64\iTunes Agent.exe" />
+  </Config>
+  <Config name="Debug|x64" binpathtype="Auto">
+    <assembly path="bin\x64\Debug\iTunes Agent.exe" />
+  </Config>
+  <Config name="Release|x64" binpathtype="Auto">
+    <assembly path="bin\x64\Release\iTunes Agent.exe" />
+  </Config>
+  <Config name="Release x86|x64" binpathtype="Auto">
+    <assembly path="bin\x64\Release x86\iTunes Agent.exe" />
+  </Config>
+  <Config name="Release x64|x64" binpathtype="Auto">
+    <assembly path="bin\x64\Release x64\iTunes Agent.exe" />
+  </Config>
+</NUnitProject>
