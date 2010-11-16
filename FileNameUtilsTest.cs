@@ -17,8 +17,8 @@ namespace Jaranweb.iTunesAgent.Test
         public void TestConvertIllegalCharacters()
         {
 
-            string filenamei = "??\\**\\::\\\"\"\\<<\\>>\\||";
-            string filenameo = "__\\__\\__\\__\\__\\__\\__";
+            string filenamei = "??\\**\\::\\\"\"\\<<\\>>\\||\\\0\\";
+            string filenameo = "__\\__\\__\\__\\__\\__\\__\\_\\";
 
             Assert.AreEqual(filenameo, FileNameUtils.ConvertIllegalCharacters(filenamei));
 
