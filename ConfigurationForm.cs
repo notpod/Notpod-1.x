@@ -10,11 +10,11 @@ using System.Xml;
 using System.IO;
 using System.Runtime.InteropServices;
 using iTunesLib;
-using Jaranweb.iTunesAgent.Configuration12;
+using Notpod.Configuration12;
 using log4net;
 using System.Security.Cryptography;
 
-namespace Jaranweb.iTunesAgent
+namespace Notpod
 {
     /// <summary>
     /// Form for modifying settings for the application.
@@ -145,9 +145,9 @@ namespace Jaranweb.iTunesAgent
             //Display a warning message about how the change of file structure works and how it 
             //inflicts any changes on the already managed devices.
             MessageBox.Show("Note that this setting only applies to devices not already managed "
-                + "by iTunes Agent. If you want to change the file structure of a device already "
-                + "synchronized with iTunes Agent you will have to clear the music folder of your "
-                + "device, including the '.itastruct' file, in order for iTunes Agent to manage "
+                + "by Notpod. If you want to change the file structure of a device already "
+                + "synchronized with Notpod you will have to clear the music folder of your "
+                + "device, including the '.itastruct' file, in order for Notpod to manage "
                 + "the device with the new structure.\n\nFor new devices the new structure setting "
                 + "will be applied upon first iTunes-to-device synchronization.", "Please note",
                 MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -272,7 +272,7 @@ namespace Jaranweb.iTunesAgent
         private void buttonNew_Click(object sender, EventArgs e)
         {
             MessageBox.Show(this, "Please note that any media present in the folder specified as 'Music location on device' "
-                + "will be deleted upon the first synchronization by iTunes Agent, unless "
+                + "will be deleted upon the first synchronization by Notpod, unless "
                 + "this media matches any track added to the device's playlist in iTunes.\n\nIf "
                 + "the media already present on your device is of critical importance, please make sure you take a proper "
                 + "backup, or make sure it is located outside the folder you configure as the "

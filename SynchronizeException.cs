@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Jaranweb.iTunesAgent
+namespace Notpod
 {
     /// <summary>
     /// Exception class used by ISynchronizer implementations.

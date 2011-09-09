@@ -5,7 +5,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Reflection;
 
-namespace Jaranweb.iTunesAgent
+namespace Notpod
 {
     partial class AboutBox : Form
     {

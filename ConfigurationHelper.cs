@@ -5,11 +5,11 @@ using System.Windows.Forms;
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
-using Jaranweb.iTunesAgent.Properties;
-using Jaranweb.iTunesAgent.Configuration12;
+using Notpod.Properties;
+using Notpod.Configuration12;
 using log4net;
 
-namespace Jaranweb.iTunesAgent
+namespace Notpod
 {
     /// <summary>
     /// Contains methods for managing configuration.
@@ -66,11 +66,11 @@ namespace Jaranweb.iTunesAgent
 
 
 
-            if (MessageBox.Show("Do you want me to import old device configuration?\n\nIf this is a fresh installation of iTunes Agent, not an upgrade, you can safely choose 'No'.", "Upgrade device configuration?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            if (MessageBox.Show("Do you want me to import old device configuration?\n\nIf this is a fresh installation of Notpod, not an upgrade, you can safely choose 'No'.", "Upgrade device configuration?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 FolderBrowserDialog folders = new FolderBrowserDialog();
                 folders.ShowNewFolderButton = false;
-                folders.Description = "Please choose the installation folder of your pre 1.2 iTunes Agent installation";
+                folders.Description = "Please choose the installation folder of your pre Notpod installation";
 
                 if (folders.ShowDialog() == DialogResult.OK)
                 {

@@ -8,11 +8,11 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
-using Jaranweb.iTunesAgent.Configuration12;
+using Notpod.Configuration12;
 using System.Security.AccessControl;
 using log4net;
 
-namespace Jaranweb.iTunesAgent
+namespace Notpod
 {
     /// <summary>
     /// Standard Synchronizer. Implementation of ISynchronizer. Has a simple progressbar UI.
@@ -52,7 +52,7 @@ namespace Jaranweb.iTunesAgent
         }
 
         /// <summary>
-        /// <see cref="Jaranweb.iTunesAgent.ISynchronizer#SynchronizeDevice(IITUserPlaylist, string, Device)"/>
+        /// <see cref="Notpod.ISynchronizer#SynchronizeDevice(IITUserPlaylist, string, Device)"/>
         /// </summary>
         public void SynchronizeDevice(IITUserPlaylist playlist, string drive, Device device)
         {
@@ -79,7 +79,7 @@ namespace Jaranweb.iTunesAgent
                 syncForm.AddLogText(message, Color.Red);
             }
 
-            // Perform a write check to make sure iTunes Agent has write 
+            // Perform a write check to make sure Notpod has write 
             // access to the music folder of the device.
             String writeCheckPath = drive + device.MediaRoot + "\\wrtchk.ita";
             try
@@ -170,7 +170,7 @@ namespace Jaranweb.iTunesAgent
 
                     // Check if the list already contains a key - this happens in cases where there are duplicate 
                     // entries in the playlist for the same track. Although the track may have different locations on 
-                    // the user's computer, iTunes Agent will not handle this.
+                    // the user's computer, Notpod will not handle this.
                     if (syncList.ContainsKey(fullPath))
                     {
                         syncForm.AddLogText("You have duplicate listings for " + track.Artist + " - " + track.Name

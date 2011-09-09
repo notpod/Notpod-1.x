@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using System.Xml.Schema;
 using System.ComponentModel;
 
-namespace Jaranweb.iTunesAgent.Configuration12
+namespace Notpod.Configuration12
 {
 
     public class DeviceConfiguration

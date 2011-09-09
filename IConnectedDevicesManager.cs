@@ -2,9 +2,9 @@ using System;
 using System.Collections;
 using System.Text;
 using System.IO;
-using Jaranweb.iTunesAgent.Configuration12;
+using Notpod.Configuration12;
 
-namespace Jaranweb.iTunesAgent
+namespace Notpod
 {
 
     public delegate void DeviceConnectedEventHandler(object sender, CDMEventArgs args);

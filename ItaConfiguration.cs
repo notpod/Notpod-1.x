@@ -13,7 +13,7 @@ using System.Collections;
 using System.Xml.Schema;
 using System.ComponentModel;
 
-namespace Jaranweb.iTunesAgent
+namespace Notpod
 {
 
     //public struct Declarations

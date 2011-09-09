@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Jaranweb.iTunesAgent;
+using Notpod;
 using NUnit.Framework;
 
 
-namespace Jaranweb.iTunesAgent.Test
+namespace Notpod.Test
 {
     [TestFixture]
     /// <summary>

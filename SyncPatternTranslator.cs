@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using iTunesLib;
-using Jaranweb.iTunesAgent.Configuration12;
+using Notpod.Configuration12;
 using log4net;
-namespace Jaranweb.iTunesAgent
+namespace Notpod
 {
     /// <summary>
     /// Contains methods for translating a synchronization patterns into a file paths.

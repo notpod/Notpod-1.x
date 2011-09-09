@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Jaranweb.iTunesAgent
+namespace Notpod
 {
     /// <summary>
     /// Contains methods of handling file names.

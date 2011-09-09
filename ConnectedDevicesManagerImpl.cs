@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Text;
 using System.IO;
-using Jaranweb.iTunesAgent.Configuration12;
+using Notpod.Configuration12;
 
-namespace Jaranweb.iTunesAgent
+namespace Notpod
 {
     /// <summary>
     /// Implementation of IConnectedDevicesManger.
@@ -23,7 +23,7 @@ namespace Jaranweb.iTunesAgent
         public event DeviceDisconnectedEventHandler DeviceDisconnected;
 
         /// <summary>
-        /// <see cref="Jaranweb.iTunesAgent.IConnectedDevicesManagerImpl#DeviceConfiguration"/>
+        /// <see cref="Notpod.IConnectedDevicesManagerImpl#DeviceConfiguration"/>
         /// </summary>
         public DeviceConfiguration DeviceConfig
         {
@@ -39,7 +39,7 @@ namespace Jaranweb.iTunesAgent
         }
 
         /// <summary>
-        /// <see cref="Jaranweb.iTunesAgent.IConnectedDevicesManagerImpl#Synchronize(DriveInfo[])"/>
+        /// <see cref="Notpod.IConnectedDevicesManagerImpl#Synchronize(DriveInfo[])"/>
         /// </summary>
         /// <param name="drives"></param>
         public void Synchronize(ArrayList drives)
@@ -92,7 +92,7 @@ namespace Jaranweb.iTunesAgent
         {
 
             //Loop over all DriveInfo's and check if any of them matches 
-            //the defined patterns for devices that iTunes Agent recognizes.
+            //the defined patterns for devices that Notpod recognizes.
             foreach (DriveInfo di in drives)
             {
                 Device recognized = RecognizeDevice(di);
@@ -166,7 +166,7 @@ namespace Jaranweb.iTunesAgent
         }
 
         /// <summary>
-        /// <see cref="Jaranweb.iTunesAgent.IConnectedDevicesManager#GetConnectedDevices()"/>
+        /// <see cref="Notpod.IConnectedDevicesManager#GetConnectedDevices()"/>
         /// </summary>
         /// <returns>A Hashtable with Device objects representing the connected devices.</returns>
         public ICollection GetConnectedDevices()
@@ -176,7 +176,7 @@ namespace Jaranweb.iTunesAgent
 
 
         /// <summary>
-        /// <see cref="Jaranweb.iTunesAgent.IConnectedDevicesManager#GetConnectedDevicesWithDrives()"/>
+        /// <see cref="Notpod.IConnectedDevicesManager#GetConnectedDevicesWithDrives()"/>
         /// </summary>
         public Hashtable GetConnectedDevicesWithDrives()
         {

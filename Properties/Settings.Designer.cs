@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Jaranweb.iTunesAgent.Properties {
+namespace Notpod.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

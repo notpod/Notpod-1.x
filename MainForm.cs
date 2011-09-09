@@ -12,12 +12,12 @@ using System.Xml.Serialization;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Diagnostics;
-using Jaranweb.iTunesAgent.Configuration12;
-using Jaranweb.iTunesAgent.Properties;
+using Notpod.Configuration12;
+using Notpod.Properties;
 using System.Security.AccessControl;
 using log4net;
 
-namespace Jaranweb.iTunesAgent
+namespace Notpod
 {
     public partial class MainForm : Form
     {
@@ -210,7 +210,7 @@ namespace Jaranweb.iTunesAgent
                 {
                     itunes = new iTunesAppClass();
                     string version = itunes.Version;
-                    SetStatusMessage("iTunes Agent", "I have found iTunes (" + version
+                    SetStatusMessage("Notpod", "I have found iTunes (" + version
                         + ") on your computer and I am ready to synchronize your devices.",
                         ToolTipIcon.Info);
                     SetEventHandlers();
@@ -227,7 +227,7 @@ namespace Jaranweb.iTunesAgent
                     }
                     else
                     {
-                        SetStatusMessage("iTunes Agent", "An error occured while communicating with iTunes. Please "
+                        SetStatusMessage("Notpod", "An error occured while communicating with iTunes. Please "
                             + "make sure iTunes is properly installed and running before restarting the application.",
                             ToolTipIcon.Error);
                         return false;
@@ -424,7 +424,7 @@ namespace Jaranweb.iTunesAgent
             DriveInfo[] driveInfos = DriveInfo.GetDrives();
 
             //Create a list of all removable drives, which are the only ones 
-            //of interest to iTunes Agent.
+            //of interest to Notpod.
             ArrayList interestingDrives = new ArrayList();
             foreach (DriveInfo di in driveInfos)
             {
@@ -562,7 +562,7 @@ namespace Jaranweb.iTunesAgent
                     {
                         MessageBox.Show("I could not synchronize '" + device.Name + "' because "
                             + "the playlist does not exist! Try reconnecting the device. If the problem continues"
-                            + " please report the problem to the iTunes Agent developers at http://www.sourceforge.net/projects/ita.",
+                            + " please report the problem to the Notpod developers at http://www.sourceforge.net/projects/ita.",
                             "Internal synchronization error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         continue;
                     }
@@ -665,7 +665,7 @@ namespace Jaranweb.iTunesAgent
         }
 
         /// <summary>
-        /// Event handler for the tray context menu "About iTunes Agent..."
+        /// Event handler for the tray context menu "About Notpod..."
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>

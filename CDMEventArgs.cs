@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
-using Jaranweb.iTunesAgent.Configuration12;
+using Notpod.Configuration12;
 
-namespace Jaranweb.iTunesAgent
+namespace Notpod
 {
     /// <summary>
     /// Event arguments class for Connected Device Managers.

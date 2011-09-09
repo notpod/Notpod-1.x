@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("iTunes Agent")]
+[assembly: AssemblyTitle("Notpod")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Jaran Nilsen")]
-[assembly: AssemblyProduct("iTunes Agent")]
+[assembly: AssemblyProduct("Notpod")]
 [assembly: AssemblyCopyright("Copyright 2005-2010, Jaran Nilsen")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

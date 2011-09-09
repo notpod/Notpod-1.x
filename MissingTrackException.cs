@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using iTunesLib;
-namespace Jaranweb.iTunesAgent
+namespace Notpod
 {
     public class MissingTrackException : ApplicationException
     {

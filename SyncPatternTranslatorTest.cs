@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Text;
 using NUnit.Framework;
 using iTunesLib;
-using Jaranweb.iTunesAgent;
-using Jaranweb.iTunesAgent.Configuration12;
+using Notpod;
+using Notpod.Configuration12;
 
-namespace Jaranweb.iTunesAgent.Test
+namespace Notpod.Test
 {
     
     [TestFixture]

@@ -5,7 +5,7 @@ using System.IO;
 using System.Text;
 using log4net.Config;
 
-namespace Jaranweb.iTunesAgent
+namespace Notpod
 {
     static class Program
     {

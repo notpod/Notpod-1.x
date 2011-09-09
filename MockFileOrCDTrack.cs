@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using iTunesLib;
 
-namespace Jaranweb.iTunesAgent.Test
+namespace Notpod.Test
 {
     /// <summary>
     /// Mock implementation of IITFileOrCDTrack.

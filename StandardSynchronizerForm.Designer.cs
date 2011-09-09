@@ -1,4 +1,4 @@
-namespace Jaranweb.iTunesAgent
+namespace Notpod
 {
     partial class StandardSynchronizerForm
     {
@@ -114,7 +114,7 @@ namespace Jaranweb.iTunesAgent
             this.MinimizeBox = false;
             this.Name = "StandardSynchronizerForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "iTunes Agent is synchronizing...";
+            this.Text = "Notpod is synchronizing...";
             this.Activated += new System.EventHandler(this.StandardSynchronizerForm_Activated);
             this.ResumeLayout(false);
             this.PerformLayout();

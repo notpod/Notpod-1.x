@@ -1,4 +1,4 @@
-namespace Jaranweb.iTunesAgent
+namespace Notpod
 {
     partial class ConfigurationForm
     {
@@ -99,7 +99,7 @@ namespace Jaranweb.iTunesAgent
             this.checkWarnOnSystemDrives.Size = new System.Drawing.Size(203, 17);
             this.checkWarnOnSystemDrives.TabIndex = 3;
             this.checkWarnOnSystemDrives.Text = "Warn if device looks like system drive";
-            this.toolTip.SetToolTip(this.checkWarnOnSystemDrives, "Enabling this will make iTunes Agent check if your device seems to be a system dr" +
+            this.toolTip.SetToolTip(this.checkWarnOnSystemDrives, "Enabling this will make Notpod check if your device seems to be a system dr" +
                     "ive.");
             this.checkWarnOnSystemDrives.UseVisualStyleBackColor = true;
             this.checkWarnOnSystemDrives.Click += new System.EventHandler(this.checkWarnOnSystemDrives_Click);
@@ -174,7 +174,7 @@ namespace Jaranweb.iTunesAgent
             this.buttonCreateUniqueFile.Size = new System.Drawing.Size(65, 23);
             this.buttonCreateUniqueFile.TabIndex = 14;
             this.buttonCreateUniqueFile.Text = "Create";
-            this.toolTip.SetToolTip(this.buttonCreateUniqueFile, "Choose the location of your device and iTunes Agent will create a unique file for" +
+            this.toolTip.SetToolTip(this.buttonCreateUniqueFile, "Choose the location of your device and Notpod will create a unique file for" +
                     " you.");
             this.buttonCreateUniqueFile.UseVisualStyleBackColor = true;
             this.buttonCreateUniqueFile.Click += new System.EventHandler(this.buttonCreateUniqueFile_Click);
@@ -182,14 +182,14 @@ namespace Jaranweb.iTunesAgent
             // textRecognizePattern
             // 
             this.textRecognizePattern.Enabled = false;
-            this.helpProvider.SetHelpString(this.textRecognizePattern, "The name of a file or a folder which iTunes Agent should use to recognize this de" +
+            this.helpProvider.SetHelpString(this.textRecognizePattern, "The name of a file or a folder which Notpod should use to recognize this de" +
                     "vice. The path name should be relative to the root of the device. ");
             this.textRecognizePattern.Location = new System.Drawing.Point(140, 91);
             this.textRecognizePattern.Name = "textRecognizePattern";
             this.helpProvider.SetShowHelp(this.textRecognizePattern, true);
             this.textRecognizePattern.Size = new System.Drawing.Size(283, 20);
             this.textRecognizePattern.TabIndex = 8;
-            this.toolTip.SetToolTip(this.textRecognizePattern, "A folder or file which iTunes Agent will use to identify your device. Has to be u" +
+            this.toolTip.SetToolTip(this.textRecognizePattern, "A folder or file which Notpod will use to identify your device. Has to be u" +
                     "nique for your device, i.e. MySonyPsP.txt");
             // 
             // textMediaRoot
@@ -393,7 +393,7 @@ namespace Jaranweb.iTunesAgent
             this.MinimizeBox = false;
             this.Name = "ConfigurationForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "iTunes Agent Preferences";
+            this.Text = "Notpod Preferences";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ConfigurationForm_FormClosing);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

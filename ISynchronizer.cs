@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using iTunesLib;
-using Jaranweb.iTunesAgent.Configuration12;
+using Notpod.Configuration12;
 
-namespace Jaranweb.iTunesAgent
+namespace Notpod
 {
 
     public delegate void SynchronizeErrorEventHandler(object sender, SyncErrorArgs args);

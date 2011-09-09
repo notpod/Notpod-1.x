@@ -4,7 +4,7 @@ using System.Collections;
 using System.Text;
 using System.Xml.Serialization;
 
-namespace Jaranweb.iTunesAgent.Configuration12
+namespace Notpod.Configuration12
 {
     public class Device
     {

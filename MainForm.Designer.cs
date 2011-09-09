@@ -1,4 +1,4 @@
-namespace Jaranweb.iTunesAgent
+namespace Notpod
 {
     partial class MainForm
     {
@@ -48,10 +48,10 @@ namespace Jaranweb.iTunesAgent
             this.itaTray.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             this.itaTray.BalloonTipText = "You may now attach compatible devices to your system. They will appear in iTunes " +
                 "as playlists where you can manage their tracks.";
-            this.itaTray.BalloonTipTitle = "iTunes Agent is now running";
+            this.itaTray.BalloonTipTitle = "Notpod is now running";
             this.itaTray.ContextMenuStrip = this.contextTray;
             this.itaTray.Icon = ((System.Drawing.Icon)(resources.GetObject("itaTray.Icon")));
-            this.itaTray.Text = "iTunes Agent";
+            this.itaTray.Text = "Notpod";
             this.itaTray.Visible = true;
             // 
             // contextTray
@@ -76,7 +76,7 @@ namespace Jaranweb.iTunesAgent
             // 
             // ctxTrayHelp
             // 
-            this.ctxTrayHelp.Image = global::Jaranweb.iTunesAgent.Properties.Resources.help;
+            this.ctxTrayHelp.Image = global::Notpod.Properties.Resources.help;
             this.ctxTrayHelp.Name = "ctxTrayHelp";
             this.ctxTrayHelp.Size = new System.Drawing.Size(209, 22);
             this.ctxTrayHelp.Text = "&Online help...";
@@ -86,7 +86,7 @@ namespace Jaranweb.iTunesAgent
             // 
             this.ctxTrayAbout.Name = "ctxTrayAbout";
             this.ctxTrayAbout.Size = new System.Drawing.Size(209, 22);
-            this.ctxTrayAbout.Text = "&About iTunes Agent";
+            this.ctxTrayAbout.Text = "&About Notpod";
             this.ctxTrayAbout.Click += new System.EventHandler(this.ctxTrayAbout_Click);
             // 
             // toolStripSeparator4
@@ -96,7 +96,7 @@ namespace Jaranweb.iTunesAgent
             // 
             // ctxTrayExit
             // 
-            this.ctxTrayExit.Image = global::Jaranweb.iTunesAgent.Properties.Resources.exit;
+            this.ctxTrayExit.Image = global::Notpod.Properties.Resources.exit;
             this.ctxTrayExit.Name = "ctxTrayExit";
             this.ctxTrayExit.Size = new System.Drawing.Size(209, 22);
             this.ctxTrayExit.Text = "E&xit";
@@ -130,7 +130,7 @@ namespace Jaranweb.iTunesAgent
             this.MaximizeBox = false;
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "iTunes Agent";
+            this.Text = "Notpod";
             this.WindowState = System.Windows.Forms.FormWindowState.Minimized;
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.contextTray.ResumeLayout(false);
