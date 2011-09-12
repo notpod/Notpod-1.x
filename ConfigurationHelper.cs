@@ -18,15 +18,15 @@ namespace Notpod
     {
         private static ILog l = LogManager.GetLogger(typeof(ConfigurationHelper));
         /// <summary>
-        /// Move configuration from iTA 1.x to 1.2
+        /// Move configuration from iTA to Notpod
         /// </summary>
         /// <returns></returns>
-        public static bool MovePre12Configuration()
+        public static bool MovePreNotpodConfiguration()
         {
-            MessageBox.Show("It seems that you have recently installed me, or upgraded me from an earlier version than 1.2. "
+            MessageBox.Show("It seems that you have recently installed me, or upgraded me from iTunes Agent - my previous name. "
                 + "I need to configure myself for this new version.\n\nIf you "
-                + "have existing configuration from a pre 1.2 version of the application, then I will help "
-                + "you convert this. Please click 'OK' to continue.",
+                + "have existing configuration from an earlier version of the application, then I will help "
+                + "you copy this. Please click 'OK' to continue.",
                 "Configuration changes required", MessageBoxButtons.OK,
                 MessageBoxIcon.Information);
 
@@ -37,7 +37,7 @@ namespace Notpod
             catch (Exception ex)
             {
                 string message = "I failed to write default configuration to "
-                    + MainForm.DATA_PATH + "\\ita-config.xml. I can "
+                    + MainForm.DATA_PATH + "\\notpod-config.xml. I can "
                     + "not continue without this configuration.";
                 
                 l.Error(message, ex);
@@ -66,7 +66,7 @@ namespace Notpod
 
 
 
-            if (MessageBox.Show("Do you want me to import old device configuration?\n\nIf this is a fresh installation of Notpod, not an upgrade, you can safely choose 'No'.", "Upgrade device configuration?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            if (MessageBox.Show("Do you want me to import old device configuration from a previous version of Notpod, or iTunes Agent?\n\nIf this is a fresh installation of Notpod, not an upgrade, you can safely choose 'No'.", "Upgrade device configuration?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 FolderBrowserDialog folders = new FolderBrowserDialog();
                 folders.ShowNewFolderButton = false;
@@ -88,7 +88,7 @@ namespace Notpod
 
                         XmlSerializer serializer = new XmlSerializer(typeof(Configuration));
                         XmlTextWriter xtw = new XmlTextWriter(new StreamWriter(MainForm.DATA_PATH
-                            + "\\ita-config.xml"));
+                            + "\\notpod-config.xml"));
                         serializer.Serialize(xtw, newConfig);
                         xtw.Close();
 
@@ -97,7 +97,7 @@ namespace Notpod
                     {
                         string message = "I was unable to read the old configuration file in " + appPath
                             + ", or write existing configuration to the new location " + MainForm.DATA_PATH
-                            + "\\ita-config.xml. I will now exit. You may start me again and try another "
+                            + "\\notpod-config.xml. I will now exit. You may start me again and try another "
                             + "time, or simply continue using the new default configration.\n\nError was: "
                             + ex.Message;
 
@@ -134,7 +134,7 @@ namespace Notpod
                     {
                         string message = "I was unable to read the old configuration file in " + appPath
                             + ", or write existing configuration to the new location " + MainForm.DATA_PATH
-                            + "\\ita-config.xml. I will now exit. You may start me again and try another "
+                            + "\\notpod-config.xml. I will now exit. You may start me again and try another "
                             + "time, or simply continue using the new default configration.\n\nError was: "
                             + ex.Message;
 
@@ -152,7 +152,7 @@ namespace Notpod
             // Done. Write file indicating that the upgrade was successful.
             try
             {
-                File.Create(MainForm.DATA_PATH + "\\.upgraded_12");
+                File.Create(MainForm.DATA_PATH + "\\.ita-convert");
                 MessageBox.Show("I have successfully configured myself and we're ready to go. Enjoy!.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
@@ -184,7 +184,7 @@ namespace Notpod
         /// 
         protected static void WriteNewConfiguration()
         {
-            StreamWriter fw = new StreamWriter(MainForm.DATA_PATH + "\\ita-config.xml");
+            StreamWriter fw = new StreamWriter(MainForm.DATA_PATH + "\\notpod-config.xml");
             fw.Write(Resources.ita_config);
             fw.Flush();
             fw.Close();

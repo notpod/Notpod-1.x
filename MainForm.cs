@@ -65,9 +65,9 @@ namespace Notpod
             this.ShowInTaskbar = true;
 
             // Check application configuration
-            if (!File.Exists(MainForm.DATA_PATH + "\\.upgraded_12"))
+            if (!File.Exists(MainForm.DATA_PATH + "\\.ita-convert"))
             {
-                if (!ConfigurationHelper.MovePre12Configuration())
+                if (!ConfigurationHelper.MovePreNotpodConfiguration())
                 {
                     Application.Exit();
                     return;
@@ -81,7 +81,7 @@ namespace Notpod
             try
             {
                 XmlSerializer serializer = new XmlSerializer(typeof(Configuration));
-                stream = new StreamReader(MainForm.DATA_PATH + "\\ita-config.xml");
+                stream = new StreamReader(MainForm.DATA_PATH + "\\notpod-config.xml");
                 reader = new XmlTextReader(stream);
 
                 configuration = (Configuration)serializer.Deserialize(reader);
