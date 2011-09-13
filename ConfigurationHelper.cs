@@ -66,7 +66,10 @@ namespace Notpod
 
 
 
-            if (MessageBox.Show("Do you want me to import old device configuration from a previous version of Notpod, or iTunes Agent?\n\nIf this is a fresh installation of Notpod, not an upgrade, you can safely choose 'No'.", "Upgrade device configuration?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            if (MessageBox.Show("Do you want me to import old device configuration from a previous version of "
+                                + "Notpod, or iTunes Agent?\n\nIf this is a fresh installation of Notpod, not "
+                                + "an upgrade, you can safely choose 'No'.", "Upgrade device configuration?", 
+                                MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 FolderBrowserDialog folders = new FolderBrowserDialog();
                 folders.ShowNewFolderButton = false;
@@ -153,7 +156,7 @@ namespace Notpod
             try
             {
                 File.Create(MainForm.DATA_PATH + "\\.ita-convert");
-                MessageBox.Show("I have successfully configured myself and we're ready to go. Enjoy!.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("I have successfully configured myself and we're ready to go. Enjoy!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
