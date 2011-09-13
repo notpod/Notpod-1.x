@@ -360,6 +360,8 @@ namespace Notpod
                 MessageBox.Show(this, "Please enter a recognize pattern for the device.", "Missing information", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
             }
+            
+            
                         
             Device newDevice = new Device();
             newDevice.Name = deviceName;
