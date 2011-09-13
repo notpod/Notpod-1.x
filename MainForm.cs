@@ -513,19 +513,43 @@ namespace Notpod
             {
                 string drive = (string)keys.Current;
                 Device device = (Device)deviceinfo[keys.Current];
-
+                
                 if (CheckIfSystemDrive(drive))
                 {
+                    l.Warn(String.Format("Detected possible system drive for {0} ({1}).", device.Name, drive));
+                    
                     DialogResult choice = MessageBox.Show("The device '" + device.Name
                         + "' may reference a system hard drive. The drive currently associated"
                         + " with this device is: " + drive + "\n\nIf you are sure this is "
                         + "correct, you may continue. If you are unsure, or have misconfigured, "
-                        + "you should click 'Cancel' and make sure your device configuration is correct.",
+                        + "you should click 'Cancel' and make sure your device configuration is "
+                        + "correct before attempting a new synchronization.\n\nAre you sure you "
+                        + "want to continue?",
                     "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
 
                     if (choice == DialogResult.Cancel)
                         return false;
+                
                 }
+                
+                if(CheckIfiTunesLibrary(drive))
+                {
+                    l.Warn(String.Format("Detected possible iTunes library location for {0} ({1}).", 
+                                         device.Name, drive));
+                    
+                    DialogResult choice = MessageBox.Show("The device '" + device.Name
+                        + "' may reference your local iTunes library. The drive currently associated"
+                        + " with this device is: " + drive + "\n\nIf you are sure this is "
+                        + "correct, you may continue. If you are unsure, or have misconfigured, "
+                        + "you should click 'Cancel' and make sure your device configuration is correct "
+                        + "before attempting a new synchronization.\n\nAre you sure you want to continue?",
+                    "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+
+                    if (choice == DialogResult.Cancel)
+                        return false;
+                    
+                }
+                
             }
 
             return true;
@@ -706,8 +730,10 @@ namespace Notpod
         /// <param name="path">Path to check.</param>
         /// <returns>False if all is good, true if the provided path might be a system drive.</returns>
         private bool CheckIfSystemDrive(string drive)
-        {
-            string[] warnOnPatterns = new string[] { "WINDOWS\\system32", "WINNT\\system32", "Users", "Documents and Settings" };
+        {                                   
+            string[] warnOnPatterns = new string[] { "WINDOWS\\system32", "WINNT\\system32", "Users", 
+                "Documents and Settings"};
+            
             foreach (string pattern in warnOnPatterns)
             {
                 DirectoryInfo di = new DirectoryInfo(drive + "\\" + pattern);
@@ -718,6 +744,26 @@ namespace Notpod
             }
 
             return false;
+        }
+        
+        /// <summary>
+        /// Check if device drive may be iTunes library folder. This could happen in case 
+        /// the user misconfigure the device and this check should help prevent loss of data.
+        /// </summary>
+        /// <param name="drive"></param>
+        /// <returns></returns>
+        private bool CheckIfiTunesLibrary(string drive) 
+        {
+            string libraryPath = itunes.LibraryXMLPath;
+            if(libraryPath == null) 
+            {
+                return false;
+            }
+            
+            libraryPath = libraryPath.Substring(3, libraryPath.LastIndexOf("\\")-3);
+            DirectoryInfo di = new DirectoryInfo(drive + "\\" + libraryPath);
+            return di.Exists;
+            
         }
 
     }
