@@ -386,7 +386,7 @@ namespace Notpod
         	this.Controls.Add(this.groupBox1);
         	this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
         	this.HelpButton = true;
-        	this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+        	this.Icon = global::Notpod.Properties.Resources.ita_new;
         	this.MaximizeBox = false;
         	this.MinimizeBox = false;
         	this.Name = "ConfigurationForm";
