@@ -16,9 +16,11 @@ BrandingText "${PRODUCT_NAME}"
 
  !include "MUI2.nsh"
  !insertmacro MUI_PAGE_LICENSE "LICENSE.TXT"
+ !insertmacro MUI_PAGE_LICENSE "Docs\INSTALL NOTES.TXT"
  !insertmacro MUI_PAGE_DIRECTORY
  !insertmacro MUI_PAGE_INSTFILES
-
+ !insertmacro MUI_PAGE_FINISH
+ 
  Section "${PRODUCT_NAME}" SecMain
 
         SetOutPath "$INSTDIR"
