@@ -709,5 +709,43 @@ namespace Notpod.Test
         }
 
         #endregion
+        
+        public int AlbumRating {
+            get {
+                throw new NotImplementedException();
+            }
+            set {
+                throw new NotImplementedException();
+            }
+        }
+        
+        public ITRatingKind AlbumRatingKind {
+            get {
+                throw new NotImplementedException();
+            }
+        }
+        
+        public ITRatingKind ratingKind {
+            get {
+                throw new NotImplementedException();
+            }
+        }
+        
+        public IITPlaylistCollection Playlists {
+            get {
+                throw new NotImplementedException();
+            }
+        }
+        
+        public DateTime ReleaseDate {
+            get {
+                throw new NotImplementedException();
+            }
+        }
+        
+        public void Reveal()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

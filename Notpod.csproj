@@ -106,10 +106,8 @@
     <OutputPath>bin\x64\Release x64\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Interop.iTunesLib, Version=1.9.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Resources\Interop.iTunesLib.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Interop.iTunesLib">
+      <HintPath>lib\Interop.iTunesLib.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
       <HintPath>lib\log4net.dll</HintPath>
