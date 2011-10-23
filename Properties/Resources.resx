@@ -121,7 +121,7 @@
   <data name="aboutimg" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAIMAAAEDCAYAAAAWWrcKAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsIAAA7CARUoSoAAAAAGYktHRAD/AP8A/6C9p5MAAAAHdElNRQfbCREJHCyK5h72
+        YQUAAAAJcEhZcwAADsEAAA7BAbiRa+0AAAAGYktHRAD/AP8A/6C9p5MAAAAHdElNRQfbCREJHCyK5h72
         AAAAHWlUWHRDb21tZW50AAAAAABDcmVhdGVkIHdpdGggR0lNUGQuZQcAABPFSURBVHhe7Z2JdxzVscb5
         l15e2GISsmOCceBAHjlZeFl4OSzhZYUYDNgk3mPHgBeMsQ0GTLB5wQlYRhCHECMHa18sabRLo10z2iVL
         tiy5XtUdWh7Jmu6e0UhVkr85pw8cq2eq+n6/W1X39u2+1xE+aIHPWuA6tARawGsBwAAWplsAMAAGwAAG
@@ -251,7 +251,7 @@
   <data name="exit" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAACxIAAAsSAdLdfvwAAAAHdElNRQfXBhsSEhy44PiLAAADjElEQVQ4Tz2Tf0yUdRzH
+        YQUAAAAJcEhZcwAACxEAAAsRAX9kX5EAAAAHdElNRQfXBhsSEhy44PiLAAADjElEQVQ4Tz2Tf0yUdRzH
         n5gpMXTSlFiZ3uS4APFOiEgQTljXE53rQLs4o5Ocih0o5ojMbi0/Fangj9l02U7Ac6u2VpZlf7VqNYyE
         +KO1ahrC/Xruuefu4OKwWhxPvPs8x+q7vff96/P6fN6fH4LAb/r9cyTteoQkZxUFm8opaC/7X4GGEgrY
         isj/eD5LTz7LKrpRvZLGel8iLVaYfu8sxY52IHHhKOInuxB7zQXFvRPKISeUru2IdDZB7mhEuH0Lwq0W
@@ -273,7 +273,7 @@
   <data name="help" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAACxIAAAsSAdLdfvwAAAAHdElNRQfXBhsSEQ35fYu6AAADIUlEQVQ4T1WT228bVRDG
+        YQUAAAAJcEhZcwAACxEAAAsRAX9kX5EAAAAHdElNRQfXBhsSEQ35fYu6AAADIUlEQVQ4T1WT228bVRDG
         9y8qoUkvgoIs6BPiCYF4QaKkdR3aNKoKbXgKxlQBqiZCeUBKIrWliOSBKkBxqQwtKzvgJr7VsePEShzX
         t6yvWa/t9fqC6x/HjqiSkUZn95wz3/fNnBlJOmA1XTeFYqo1njVIFwyUUpNkziCu1EkpKul02tpsNk0H
         Y158l8p1Ob5bQ2906Fn3oIsfTW8TjCpsRrcol8uHQcI7qmm3aPQDS23wavBrCn6IdLkVhPtRyNfgebfL
@@ -714,7 +714,7 @@
     <value>&lt;?xml version="1.0" encoding="utf-8" ?&gt;
 &lt;log4net&gt;
   &lt;appender name="LogFile" type="log4net.Appender.FileAppender"&gt;
-    &lt;file value="ita.log" /&gt;
+    &lt;file value="notpod.log" /&gt;
     &lt;appendToFile value="true" /&gt;
 
     &lt;layout type="log4net.Layout.PatternLayout"&gt;
