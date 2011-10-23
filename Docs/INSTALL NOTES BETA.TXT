@@ -1,0 +1,22 @@
+Notpod Installation Notes
+===============================
+
+PLEASE NOTE: THIS IS A BETA VERSION OF Notpod! Please back up your configuration before continuing.
+
+Thank you for test driving Notpod. Please read these few lines carefully before continuing.
+
+IMPORTANT: Before starting to use Notpod with your device, it should NOT contain any music files. This will ensure that the device is properly synchronized. Any music files on the device, in the configured music folder, will be deleted at first synchronization unless their name match one of the tracks you put in the playlist for the device.
+
+Notpod installations downloaded from http://www.notpod.com are guaranteed virus, spyware and adware free. 
+
+Please make sure to visit http://www.notpod.com frequently to check for updates and stay tuned with the development status.
+
+Have problems with the application? Have you found a bug? Please report these issues on the Notpod Help Forums. We would also like to hear from you if you have a device which is compatible with Notpod, but is not listed in the default device configuration.
+
+IMPORTANT! Before you start using Notpod, make sure you have done the following:
+* Always backup important data on your portable devices. The Notpod development team is not responsible for any data loss due to use of Notpod. 
+
+PLEASE NOTE: This is a TEST VERSION of Notpod. It may contain errors and unwanted behaviour - make sure your data is properly backed up. This version of Notpod should only be used for testing purposes. Feedback and bug reports can be reported on the Notpod project pages at http://www.notpod.com.
+
+- The Notpod development team.
+
