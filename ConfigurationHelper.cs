@@ -73,6 +73,7 @@ namespace Notpod
             {
                 FolderBrowserDialog folders = new FolderBrowserDialog();
                 folders.ShowNewFolderButton = false;
+                folders.SelectedPath = GetLikelyPreNotpodPath();                                
                 folders.Description = "Please choose the installation folder of your pre Notpod installation";
 
                 if (folders.ShowDialog() == DialogResult.OK)
@@ -117,10 +118,15 @@ namespace Notpod
                         XmlSerializer deserializer = new XmlSerializer(typeof(DeviceConfiguration));
                         DeviceConfiguration oldConfig = (DeviceConfiguration)deserializer.Deserialize(
                             new XmlTextReader(new StreamReader(appPath + "\\device-config.xml")));
-                        DeviceConfiguration newConfig = new DeviceConfiguration();
+                        DeviceConfiguration newConfig = (DeviceConfiguration)deserializer.Deserialize(
+                            new XmlTextReader(new StringReader(Resources.device_config)));
 
-                        foreach (SyncPattern sp in oldConfig.SyncPatterns)
-                            newConfig.AddSyncPattern(sp);
+                        foreach (SyncPattern sp in oldConfig.SyncPatterns) {
+                            
+                            if(!newConfig.ContainsSyncPattern(sp)) {
+                                newConfig.AddSyncPattern(sp);
+                            }
+                        }
 
                         foreach (Device d in oldConfig.Devices)
                             newConfig.AddDevice(d);
@@ -155,7 +161,8 @@ namespace Notpod
             // Done. Write file indicating that the upgrade was successful.
             try
             {
-                File.Create(MainForm.DATA_PATH + "\\.ita-convert");
+                FileStream convertDoneFile = File.Create(MainForm.DATA_PATH + "\\.ita-convert");
+                convertDoneFile.Close();
                 MessageBox.Show("I have successfully configured myself and we're ready to go. Enjoy!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
@@ -168,6 +175,19 @@ namespace Notpod
 
             return true;
                                 
+        }
+        
+        static string GetLikelyPreNotpodPath()
+        {
+            string dataPath = ConfigurationHelper.GetAppDataPath();
+            
+            l.Info("Determining likely pre Notpod data path from \"" + dataPath + "\".");
+            
+            int corpIndex = dataPath.IndexOf("Jaran Nilsen");
+            string pathBeforeCorp = dataPath.Substring(0, corpIndex);
+            pathBeforeCorp += "Jaran Nilsen\\iTunes Agent";
+            
+            return pathBeforeCorp;
         }
 
         /// <summary>

@@ -21,6 +21,8 @@ namespace Notpod
         /// %NAME%          = The track name
         /// %TRACKNUMSPACE% = The track number with a trailing space
         /// %TRACKNUM%      = The track number (no trailing space)
+        /// %DISCNUMDASH%   = The disc number with a trailing minus and space
+        /// %DISCNUM%       = The disc number (no trailing space)
         /// </summary>
         /// <param name="pattern">SyncPattern to translate.</param>
         /// <param name="track">iTunes track containing track information.</param>
@@ -41,6 +43,7 @@ namespace Notpod
                 string patternstring = ((track.Compilation && pattern.CompilationsPattern != null && pattern.CompilationsPattern.Length > 0) ? pattern.CompilationsPattern : pattern.Pattern);
 
                 patternstring = TranslateArtist(pattern, track, patternstring);
+                patternstring = TranslateDiscNumber(track, patternstring);
                 patternstring = TranslateAlbum(track.Album, patternstring);
                 patternstring = TranslateName(track, patternstring);
                 patternstring = TranslateTrackNumber(track, patternstring);
@@ -148,6 +151,35 @@ namespace Notpod
                 artist = "Compilations";
 
             patternstring = patternstring.Replace("%ARTIST%", artist);
+            return patternstring;
+        }
+        
+        /// <summary>
+        /// Translate disc number.
+        /// </summary>
+        /// <param name="track"></param>
+        /// <param name="patternstring"></param>
+        /// <returns></returns>
+        private static string TranslateDiscNumber(IITFileOrCDTrack track, string patternstring)
+        {
+            //Replace track number with a number only if the iTunes track has this field set
+            if (track.DiscNumber != 0 && track.DiscCount > 1)
+            {
+                //%DISCNUMDASH%%
+                patternstring = patternstring.Replace("%DISCNUMDASH%",
+                    track.DiscNumber.ToString() + "-");
+
+                //%DISCNUM%
+                patternstring = patternstring.Replace("%DISCNUM%",
+                    track.DiscNumber.ToString());
+            }
+            else //If there are no track number set for the track
+            {
+                //%DISCNUMDASH%
+                patternstring = patternstring.Replace("%DISCNUMDASH%", "");
+                //%DISCNUM%
+                patternstring = patternstring.Replace("%DISCNUM%", "");
+            }
             return patternstring;
         }
         

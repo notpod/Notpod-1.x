@@ -60,5 +60,6 @@ namespace Notpod.Configuration12
             get { return compilationsPattern; }
             set { compilationsPattern = value; }
         }
+        
     }
 }

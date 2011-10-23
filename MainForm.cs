@@ -89,7 +89,7 @@ namespace Notpod
             }
             catch (Exception ex)
             {
-                string message = "I could not locate 'ita-config.xml' which contains configuration data,"
+                string message = "I could not locate 'notpod-config.xml' which contains configuration data,"
                     + " or the file exists, but is invalid. Please make sure this file is "
                     + "valid and restart me.\n\nError message: " + ex.Message;
 

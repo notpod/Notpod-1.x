@@ -73,9 +73,9 @@ namespace Notpod.Properties {
         ///  &lt;SyncPatterns&gt;
         ///    &lt;SyncPattern&gt;
         ///      &lt;Identifier&gt;itunes-style&lt;/Identifier&gt;
-        ///      &lt;Name&gt;iTunes&lt;/Name&gt;
+        ///      &lt;Name&gt;Artist\Album\Track&lt;/Name&gt;
         ///      &lt;Pattern&gt;%ARTIST%\%ALBUM%\%TRACKNUMSPACE%%NAME%&lt;/Pattern&gt;
-        ///      &lt;Description&gt;This pattern places the tracks the same way iTunes places tracks in a managed iTunes music folder. Files are organized by Artist\Album\TrackNumber Name. This [rest of string was truncated]&quot;;.
+        ///      &lt;Description&gt;This pattern places the tracks the same way iTunes places tracks in a managed iTunes music folder. Files are organized by Artist\Album\TrackNumbe [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string device_config {
             get {
