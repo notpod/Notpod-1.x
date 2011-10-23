@@ -1,22 +1,17 @@
-Notpod Installation Notes
+Installation Notes
 ===============================
 
-PLEASE NOTE: THIS IS A BETA VERSION OF Notpod! Please back up your configuration before continuing.
+Source code for Notpod is available from http://www.notpod.com
 
-Thank you for test driving Notpod. Please read these few lines carefully before continuing.
+Please ensure you always back up your music library and other important files on your computer. Before continuing with this installation, please make sure you save any open files to prevent loss of data in case a computer reboot is necessary. It's always important to back up both your computer and portable devices.
 
-IMPORTANT: Before starting to use Notpod with your device, it should NOT contain any music files. This will ensure that the device is properly synchronized. Any music files on the device, in the configured music folder, will be deleted at first synchronization unless their name match one of the tracks you put in the playlist for the device.
+Notpod (the Application) is distributed "as is", and the Application's developer or the Producer and Distributor of any media player used with the Application takes no responsiblity for damages or lost files due to the use of the Application. If uncertain about proper use of the Application, please refer to the Application website at http://www.notpod.com.
 
-Notpod installations downloaded from http://www.notpod.com are guaranteed virus, spyware and adware free. 
+Before starting to use the the Application with your device, it should not contain any music files. This will ensure that the device is properly synchronized. Any music files on the device, in the configured music folder, will be deleted at first synchronization unless their name match one of the tracks you put in the playlist for the device.
 
-Please make sure to visit http://www.notpod.com frequently to check for updates and stay tuned with the development status.
+Please make sure to visit http://www.notpod.com frequently to check for updates.
 
-Have problems with the application? Have you found a bug? Please report these issues on the Notpod Help Forums. We would also like to hear from you if you have a device which is compatible with Notpod, but is not listed in the default device configuration.
+The Application, the website http://www.notpod.com and the Application developers are not in any way supported by, or associated with, Apple Computer Inc. (http://www.apple.com) - or any other device or media software manufacturer that Notpod may be distributed by or used with.
 
-IMPORTANT! Before you start using Notpod, make sure you have done the following:
-* Always backup important data on your portable devices. The Notpod development team is not responsible for any data loss due to use of Notpod. 
-
-PLEASE NOTE: This is a TEST VERSION of Notpod. It may contain errors and unwanted behaviour - make sure your data is properly backed up. This version of Notpod should only be used for testing purposes. Feedback and bug reports can be reported on the Notpod project pages at http://www.notpod.com.
-
-- The Notpod development team.
+Thank you for choosing to use Notpod. We hope you will enjoy synchronizing your music library to your portable media device.
 
