@@ -46,8 +46,8 @@ BrandingText "${PRODUCT_NAME}"
         File "bin\Release\logging.xml"
         File "bin\Release\Interop.iTunesLib.dll"
         File "LICENSE.TXT"
-        createShortCut "$SMPROGRAMS\Notpod\Notpod.lnk" "$INSTDIR\Notpod.exe"
-        createShortCut "$SMPROGRAMS\Notpod\Uninstall.lnk" "$INSTDIR\uninstaller.exe"
+        createShortCut "$SMPROGRAMS\${PRODUCT_NAME}\${PRODUCT_NAME}.lnk" "$INSTDIR\${PRODUCT_NAME}.exe"
+        createShortCut "$SMPROGRAMS\${PRODUCT_NAME}\Uninstall.lnk" "$INSTDIR\uninstaller.exe"
         
         # define uninstaller name
         writeUninstaller $INSTDIR\uninstaller.exe
@@ -64,7 +64,7 @@ BrandingText "${PRODUCT_NAME}"
     delete $INSTDIR\log4net.dll
     delete $INSTDIR\logging.xml
     delete $INSTDIR\LICENSE.txt
-	delete $INSTDIR\notpod.log
+	delete $INSTDIR\icherrymm.log
 	delete $INSTDIR\Interop.iTunesLib.dll
 	delete $INSTDIR
 
