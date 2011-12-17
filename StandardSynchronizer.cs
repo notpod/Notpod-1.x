@@ -100,7 +100,7 @@ namespace Notpod
                 return;
             }
 
-            FileInfo[] files = di.GetFiles("*.*", SearchOption.AllDirectories);
+            FileInfo[] files = FileHelper.GetFilesRecursive(di.ToString()).ToArray();
 
             //Find correct synchronize pattern for the device.
             SyncPattern devicePattern = null;
