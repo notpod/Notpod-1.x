@@ -1,12 +1,12 @@
 Installation Notes
 ===============================
 
-Welcome to the first release of the application under the name Notpod. There are a few changes in this version, but the big news is the new name. We hope you will continue to enjoy using the application under it's new name.
+Thanks for choosing Notpod! Please make sure you read this file carefully, as it does in fact contain important information.
 
 Noteworthy changes in this version: 
 
-* Added new synchronize patterns which respects disc numbers
-* Added another check for misconfigured devices.
+* Fixed issue where in some cases synchronization would fail due to invalid characters in folder names on the device. (https://github.com/notpod/Notpod-1.x/pull/1)
+* Updated web links.
 
 Source code for Notpod is available from http://www.notpod.com
 
