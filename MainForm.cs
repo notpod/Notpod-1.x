@@ -682,7 +682,7 @@ namespace Notpod
         {
 
             //Open URL in default browser
-            ProcessStartInfo info = new ProcessStartInfo("http://ita.sourceforge.net/");
+            ProcessStartInfo info = new ProcessStartInfo("http://notpod.com/");
             info.Verb = "open";
             Process.Start(info);
 
@@ -707,7 +707,7 @@ namespace Notpod
         private void ctxTrayHelp_Click(object sender, EventArgs e)
         {
             //Open URL in default browser
-            ProcessStartInfo info = new ProcessStartInfo("http://ita.sourceforge.net/help");
+            ProcessStartInfo info = new ProcessStartInfo("http://notpod.com/support.html");
             info.Verb = "open";
             Process.Start(info);
         }
