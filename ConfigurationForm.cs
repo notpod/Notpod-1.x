@@ -578,8 +578,8 @@ namespace Notpod
 
             string nameBase = textDeviceName.Text + "-" + DateTime.Now.Ticks.ToString();
 
-            // Build the filename which is the MD5 checksum of the nameBase + the .ita extension.
-            string fileName = CryptoUtils.Md5Hex(nameBase) + ".ita";
+            // Build the filename which is the MD5 checksum of the nameBase + the .notpodextension.
+            string fileName = CryptoUtils.Md5Hex(nameBase) + ".notpod";
 
             try
             {
