@@ -7,6 +7,7 @@ Noteworthy changes in this version:
 
 * Fixed issue where in some cases synchronization would fail due to invalid characters in folder names on the device. (https://github.com/notpod/Notpod-1.x/pull/1)
 * Updated web links.
+* New files used to recognize devices will now have the extension .notpod, rather than .ita. Existing device configuation will continue to work as normal, even if they are using the .ita extension.
 
 Source code for Notpod is available from http://www.notpod.com
 
