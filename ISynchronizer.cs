@@ -25,7 +25,7 @@ namespace Notpod
         /// <param name="playlist">iTunes playlist representing the device.</param>
         /// <param name="drive">The drive where the device is located, e.g. K:\</param>
         /// <param name="device">Device object describing the device to synchronize.</param>
-        void SynchronizeDevice(IITUserPlaylist playlist, string drive, Device device);
+        void SynchronizeDevice(List<IITPlaylist> playlist, string drive, Device device);
 
         /// <summary>
         /// Property for setting whether the GUI for the synchronizer (if available) should be 
