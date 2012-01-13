@@ -36,6 +36,13 @@
       <Description>This pattern organizes all tracks in the root media folder of the device. All tracks from all artists are in one folder and names like this: Artist - Name.</Description>
       <CompilationsPattern />
     </SyncPattern>
+    <SyncPattern>
+      <Identifier>one-folder-playlist</Identifier>
+      <Name>Playlist</Name>
+      <Pattern>%PLAYLIST%\%ARTIST% - %NAME%</Pattern>
+      <Description>This pattern organizes the tracks in folders named by playlist. Files are organized like this: Artist - Name.</Description>
+      <CompilationsPattern />
+    </SyncPattern>
   </SyncPatterns>
   <Devices>
     <Device>
