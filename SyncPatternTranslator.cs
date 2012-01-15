@@ -17,6 +17,7 @@ namespace Notpod
         /// Translate a SyncPattern into a string using the provided IITFileOrCDTrack.
         /// Currently translating the following macros:
         /// %ARTIST%        = The artist name
+        /// %ALBUMARTIST%   = The album artist name
         /// %ALBUM%         = The album name
         /// %NAME%          = The track name
         /// %TRACKNUMSPACE% = The track number with a trailing space
@@ -43,6 +44,7 @@ namespace Notpod
                 string patternstring = ((track.Compilation && pattern.CompilationsPattern != null && pattern.CompilationsPattern.Length > 0) ? pattern.CompilationsPattern : pattern.Pattern);
 
                 patternstring = TranslateArtist(pattern, track, patternstring);
+                patternstring = TranslateAlbumArtist(pattern, track, patternstring);
                 patternstring = TranslateDiscNumber(track, patternstring);
                 patternstring = TranslateAlbum(track.Album, patternstring);
                 patternstring = TranslateName(track, patternstring);
@@ -151,6 +153,23 @@ namespace Notpod
                 artist = "Compilations";
 
             patternstring = patternstring.Replace("%ARTIST%", artist);
+            return patternstring;
+        }
+        
+          /// <summary>
+        /// Translate track album artist.
+        /// </summary>
+        /// <param name="pattern"></param>
+        /// <param name="track"></param>
+        /// <param name="patternstring"></param>
+        /// <returns></returns>
+        private static string TranslateAlbumArtist(SyncPattern pattern, IITFileOrCDTrack track, string patternstring)
+        {
+            string artist = (track.AlbumArtist == null ? "Unknown Artist" : track.AlbumArtist);            
+            if (track.Compilation && pattern.CompilationsPattern != null && pattern.CompilationsPattern.Length > 0)
+                artist = "Compilations";
+
+            patternstring = patternstring.Replace("%ALBUMARTIST%", artist);
             return patternstring;
         }
         
