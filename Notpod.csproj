@@ -144,6 +144,7 @@
     <Compile Include="AboutBox.Designer.cs">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="SyncPatternCollection.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="CDMEventArgs.cs" />
     <Compile Include="ConfigurationForm.cs">
@@ -222,6 +223,7 @@
     <Compile Include="SyncPattern.cs" />
     <Compile Include="SyncPatternTranslator.cs" />
     <Compile Include="SyncPatternTranslatorTest.cs" />
+    <None Include="Resources\syncpatterns.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DeviceConfiguration.xsd" />

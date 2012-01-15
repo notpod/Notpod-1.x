@@ -19,28 +19,10 @@ namespace Notpod.Configuration12
     public class DeviceConfiguration
     {
 
+        [XmlIgnore]
         private ICollection<SyncPattern> syncPatterns = new List<SyncPattern>();
 
         private ICollection<Device> devices = new List<Device>();
-
-        /// <summary>
-        /// Accessor for syncPatterns.
-        /// </summary>
-        public SyncPattern[] SyncPatterns
-        {
-            get
-            {
-                SyncPattern[] patterns = new SyncPattern[syncPatterns.Count];
-                syncPatterns.CopyTo(patterns, 0);
-                return patterns;
-            }
-            set
-            {
-                syncPatterns.Clear();
-                foreach (SyncPattern sp in value)
-                    syncPatterns.Add(sp);
-            }
-        }
 
         /// <summary>
         /// Accessor for devices.
@@ -64,6 +46,13 @@ namespace Notpod.Configuration12
             }
         }
         
+        [XmlIgnore]
+        public SyncPattern[] SyncPatterns {
+            
+            set { }
+            get { return new SyncPattern[0]; }
+        }
+        
         /// <summary>
         /// Add a device.
         /// </summary>
@@ -83,23 +72,11 @@ namespace Notpod.Configuration12
             return devices.Remove(d);
         }
 
-        /// <summary>
-        /// Add a SyncPattern.
-        /// </summary>
-        /// <param name="sp">SyncPattern sp</param>
-        public void AddSyncPattern(SyncPattern sp)
-        {
-            syncPatterns.Add(sp);
-        }
-                
-        /// <summary>
-        /// Remove a SyncPattern.
-        /// </summary>
-        /// <param name="sp">SyncPattern to remove.</param>
-        /// <returns></returns>
-        public bool RemoveSyncPattern(SyncPattern sp)
-        {
-            return syncPatterns.Remove(sp);
+        [XmlIgnore]
+        public ICollection<SyncPattern> SyncPattern {
+         
+            get { return syncPatterns; }
+            set { syncPatterns = value;}
         }
         
         public bool ContainsSyncPattern(SyncPattern sp) 

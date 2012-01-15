@@ -1,0 +1,80 @@
+﻿<?xml version="1.0"?>
+<SyncPatterns xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <SyncPattern>
+      <Identifier>itunes-style</Identifier>
+      <Name>Artist\Album\Track</Name>
+      <Pattern>%ARTIST%\%ALBUM%\%TRACKNUMSPACE%%NAME%</Pattern>
+      <Description>This pattern places the tracks the same way iTunes places tracks in a managed iTunes music folder. Files are organized by Artist\Album\TrackNumber Name.</Description>
+      <CompilationsPattern>Compilations\%ALBUM%\%TRACKNUMSPACE%%NAME%</CompilationsPattern>
+    </SyncPattern>
+    <SyncPattern>
+      <Identifier>itunes-style-disc</Identifier>
+      <Name>Artist\Album\Track (with disc number)</Name>
+      <Pattern>%ARTIST%\%ALBUM%\%DISCNUMDASH%%TRACKNUMSPACE%%NAME%</Pattern>
+      <Description>This pattern places the tracks the same way iTunes places tracks in a managed iTunes music folder. Files are organized by Artist\Album\DiscNumber-TrackNumber Name.</Description>
+      <CompilationsPattern>Compilations\%ALBUM%\%DISCNUMDASH%%TRACKNUMSPACE%%NAME%</CompilationsPattern>
+    </SyncPattern>
+    <SyncPattern>
+      <Identifier>albumartist-itunes-style</Identifier>
+      <Name>Album Artist\Album\Track</Name>
+      <Pattern>%ALBUMARTIST%\%ALBUM%\%TRACKNUMSPACE%%NAME%</Pattern>
+      <Description>This pattern places the tracks the same way iTunes places tracks in a managed iTunes music folder. Files are organized by Album Artist\Album\TrackNumber Name.</Description>
+      <CompilationsPattern>Compilations\%ALBUM%\%TRACKNUMSPACE%%NAME%</CompilationsPattern>
+    </SyncPattern>
+    <SyncPattern>
+      <Identifier>albumartist-itunes-style-disc</Identifier>
+      <Name>Album Artist\Album\Track (with disc number)</Name>
+      <Pattern>%ALBUMARTIST%\%ALBUM%\%DISCNUMDASH%%TRACKNUMSPACE%%NAME%</Pattern>
+      <Description>This pattern places the tracks the same way iTunes places tracks in a managed iTunes music folder. Files are organized by Album Artist\Album\DiscNumber-TrackNumber Name.</Description>
+      <CompilationsPattern>Compilations\%ALBUM%\%DISCNUMDASH%%TRACKNUMSPACE%%NAME%</CompilationsPattern>
+    </SyncPattern>
+    <SyncPattern>
+      <Identifier>one-folder</Identifier>
+      <Name>Artist - Album\Track</Name>
+      <Pattern>%ARTIST% - %ALBUM%\%TRACKNUMSPACE%%NAME%</Pattern>
+      <Description>This pattern organizes the tracks in folders named by Artist and album. Files are organized like this: Artist - Album\TrackNumber Name.</Description>
+      <CompilationsPattern>%ALBUM%\%TRACKNUMSPACE%%NAME%</CompilationsPattern>
+    </SyncPattern>    
+    <SyncPattern>
+      <Identifier>one-folder-disc</Identifier>
+      <Name>Artist - Album\Track (with disc number)</Name>
+      <Pattern>%ARTIST% - %ALBUM%\%DISCNUMDASH%%TRACKNUMSPACE%%NAME%</Pattern>
+      <Description>This pattern organizes the tracks in folders named by Artist and album. Files are organized like this: Artist - Album\DiscNumber-TrackNumber Name.</Description>
+      <CompilationsPattern>%ALBUM%\%DISCNUMDASH%%TRACKNUMSPACE%%NAME%</CompilationsPattern>
+    </SyncPattern>
+    <SyncPattern>
+      <Identifier>one-folder-albumartist</Identifier>
+      <Name>Album Artist - Album\Track</Name>
+      <Pattern>%ALBUMARTIST% - %ALBUM%\%TRACKNUMSPACE%%NAME%</Pattern>
+      <Description>This pattern organizes the tracks in folders named by Album Artist and album. Files are organized like this: Album Artist - Album\TrackNumber Name.</Description>
+      <CompilationsPattern>%ALBUMARTIST%\%TRACKNUMSPACE%%NAME%</CompilationsPattern>
+    </SyncPattern>    
+    <SyncPattern>
+      <Identifier>one-folder-disc-albumartist</Identifier>
+      <Name>Album Artist - Album\Track (with disc number)</Name>
+      <Pattern>%ALBUMARTIST% - %ALBUM%\%DISCNUMDASH%%TRACKNUMSPACE%%NAME%</Pattern>
+      <Description>This pattern organizes the tracks in folders named by Album Artist and album. Files are organized like this: Album Artist - Album\DiscNumber-TrackNumber Name.</Description>
+      <CompilationsPattern>%ALBUMARTIST%\%DISCNUMDASH%%TRACKNUMSPACE%%NAME%</CompilationsPattern>
+    </SyncPattern>
+    <SyncPattern>
+      <Identifier>artistonly</Identifier>
+      <Name>Artist\Track</Name>
+      <Pattern>%ARTIST%\%TRACKNUMSPACE%%NAME%</Pattern>
+      <Description>This pattern organizes the tracks in folders named by Artist only. Files are organized like this: Artist\TrackNumber Name.</Description>
+      <CompilationsPattern>%ALBUMARTIST%\%TRACKNUMSPACE%%NAME%</CompilationsPattern>
+    </SyncPattern>    
+    <SyncPattern>
+      <Identifier>artistonly-disc</Identifier>
+      <Name>Artist\Track (with disc number)</Name>
+      <Pattern>%ARTIST%\%DISCNUMDASH%%TRACKNUMSPACE%%NAME%</Pattern>
+      <Description>This pattern organizes the tracks in folders named by Artist only (including disc number). Files are organized like this: Artist\DiscNumber-TrackNumber Name.</Description>
+      <CompilationsPattern>%ARTIST%\%DISCNUMDASH%%TRACKNUMSPACE%%NAME%</CompilationsPattern>
+    </SyncPattern>
+    <SyncPattern>
+      <Identifier>flat</Identifier>
+      <Name>Artist - Track</Name>
+      <Pattern>%ARTIST% - %NAME%</Pattern>
+      <Description>This pattern organizes all tracks in the root media folder of the device. All tracks from all artists are in one folder and names like this: Artist - Name.</Description>
+      <CompilationsPattern />
+    </SyncPattern>
+  </SyncPatterns>

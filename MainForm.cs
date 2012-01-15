@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
@@ -38,6 +39,7 @@ namespace Notpod
         private IConnectedDevicesManager connectedDevices;
 
         private DeviceConfiguration deviceConfiguration;
+        private SyncPatternCollection syncPatterns;
         private Configuration configuration;
 
         private ISynchronizeForm syncForm;
@@ -135,6 +137,10 @@ namespace Notpod
                 if (dcReader != null)
                     dcReader.Close();
             }
+            
+            LoadSyncPatterns();
+            deviceConfiguration.SyncPattern = syncPatterns.SyncPatterns;
+                        
 
             if (!CreateITunesInstance())
             {
@@ -156,6 +162,36 @@ namespace Notpod
 
         }
 
+        private void LoadSyncPatterns() {
+            
+            //Load devices that the agent recognizes
+            StringReader stream = null;
+            XmlTextReader reader = null;
+            try
+            {
+                XmlSerializer serializer = new XmlSerializer(typeof(SyncPatternCollection));
+                stream = new StringReader(Resources.syncpatterns);
+                reader = new XmlTextReader(stream);
+
+                syncPatterns = (SyncPatternCollection)serializer.Deserialize(reader);
+
+            }
+            catch (Exception ex)
+            {
+                l.Error(ex);
+
+                MessageBox.Show("Unable to load available organization patterns.\n\nReason for failure: " + ex.Message,
+                    "Missing list of devices", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Application.Exit();
+            }
+            finally
+            {
+                if (stream != null)
+                    stream.Close();
+                if (reader != null)
+                    reader.Close();
+            }
+        }
         /// <summary>
         /// Check if the My Devices folder exists, if not create it.
         /// </summary>

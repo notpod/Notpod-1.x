@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml.Serialization;
@@ -68,21 +69,9 @@ namespace Notpod
             }
 
             //Add synchronize patterns to combo box.
-            for (int s = 0; s < deviceConfiguration.SyncPatterns.Length; s++)
+            for (int s = 0; s < deviceConfiguration.SyncPattern.Count; s++)
             {
-                SyncPattern pattern = deviceConfiguration.SyncPatterns[s];
-                if (comboSyncPatterns.Items.Contains(pattern.Name))
-                {
-                    MessageBox.Show(this, "An inconsistency was found in the synchronize pattern "
-                        + "configuration. The same name was found for two synchronize patterns. One will be deleted.",
-                        "Invalid configuration", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-
-                    deviceConfigurationChanged = true;
-                    deviceConfiguration.RemoveSyncPattern(pattern);
-                    buttonOK.Enabled = true;
-                    continue;
-                }
-
+                SyncPattern pattern = deviceConfiguration.SyncPattern.ElementAt(s);
                 comboSyncPatterns.Items.Add(pattern.Name);
             }
 
@@ -172,7 +161,7 @@ namespace Notpod
                 textMediaRoot.Text = device.MediaRoot;
                 textRecognizePattern.Text = device.RecognizePattern;
 
-                foreach (SyncPattern pattern in deviceConfiguration.SyncPatterns)
+                foreach (SyncPattern pattern in deviceConfiguration.SyncPattern)
                 {
                     if (pattern.Identifier != device.SyncPattern)
                         continue;
@@ -255,7 +244,7 @@ namespace Notpod
         private void comboSyncPatterns_SelectedIndexChanged(object sender, EventArgs e)
         {
 
-            foreach (SyncPattern pattern in deviceConfiguration.SyncPatterns)
+            foreach (SyncPattern pattern in deviceConfiguration.SyncPattern)
             {
                 if (pattern.Name != (string)comboSyncPatterns.SelectedItem)
                     continue;
@@ -368,7 +357,7 @@ namespace Notpod
             newDevice.MediaRoot = mediaroot;
             newDevice.RecognizePattern = recognizePattern;
             newDevice.Playlist = (associatedPlaylist == "Use device name..." ? "" : associatedPlaylist);
-            foreach (SyncPattern sp in deviceConfiguration.SyncPatterns)
+            foreach (SyncPattern sp in deviceConfiguration.SyncPattern)
             {
                 if (sp.Name != syncPattern)
                     continue;

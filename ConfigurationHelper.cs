@@ -120,13 +120,13 @@ namespace Notpod
                             new XmlTextReader(new StreamReader(appPath + "\\device-config.xml")));
                         DeviceConfiguration newConfig = (DeviceConfiguration)deserializer.Deserialize(
                             new XmlTextReader(new StringReader(Resources.device_config)));
-
-                        foreach (SyncPattern sp in oldConfig.SyncPatterns) {
-                            
-                            if(!newConfig.ContainsSyncPattern(sp)) {
-                                newConfig.AddSyncPattern(sp);
-                            }
-                        }
+//
+//                        foreach (SyncPattern sp in oldConfig.SyncPatterns) {
+//                            
+//                            if(!newConfig.ContainsSyncPattern(sp)) {
+//                                newConfig.AddSyncPattern(sp);
+//                            }
+//                        }
 
                         foreach (Device d in oldConfig.Devices)
                             newConfig.AddDevice(d);

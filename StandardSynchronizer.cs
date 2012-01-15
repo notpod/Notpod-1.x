@@ -104,7 +104,7 @@ namespace Notpod
 
             //Find correct synchronize pattern for the device.
             SyncPattern devicePattern = null;
-            foreach (SyncPattern sp in configuration.SyncPatterns)
+            foreach (SyncPattern sp in configuration.SyncPattern)
             {
                 if (sp.Identifier == device.SyncPattern)
                     devicePattern = sp;

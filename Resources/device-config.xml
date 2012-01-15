@@ -1,48 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <DeviceConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <SyncPatterns>
-    <SyncPattern>
-      <Identifier>itunes-style</Identifier>
-      <Name>Artist\Album\Track</Name>
-      <Pattern>%ARTIST%\%ALBUM%\%TRACKNUMSPACE%%NAME%</Pattern>
-      <Description>This pattern places the tracks the same way iTunes places tracks in a managed iTunes music folder. Files are organized by Artist\Album\TrackNumber Name.</Description>
-      <CompilationsPattern>Compilations\%ALBUM%\%TRACKNUMSPACE%%NAME%</CompilationsPattern>
-    </SyncPattern>
-    <SyncPattern>
-      <Identifier>itunes-style-disc</Identifier>
-      <Name>Artist\Album\Track (with disc number)</Name>
-      <Pattern>%ARTIST%\%ALBUM%\%DISCNUMDASH%%TRACKNUMSPACE%%NAME%</Pattern>
-      <Description>This pattern places the tracks the same way iTunes places tracks in a managed iTunes music folder. Files are organized by Artist\Album\DiscNumber-TrackNumber Name.</Description>
-      <CompilationsPattern>Compilations\%ALBUM%\%DISCNUMDASH%%TRACKNUMSPACE%%NAME%</CompilationsPattern>
-    </SyncPattern>
-    <SyncPattern>
-      <Identifier>one-folder</Identifier>
-      <Name>Artist\Track</Name>
-      <Pattern>%ARTIST% - %ALBUM%\%TRACKNUMSPACE%%NAME%</Pattern>
-      <Description>This pattern organizes the tracks in folders named by Artist and album. Files are organized like this: Artist - Album\TrackNumber Name.</Description>
-      <CompilationsPattern>%ALBUM%\%TRACKNUMSPACE%%NAME%</CompilationsPattern>
-    </SyncPattern>    
-    <SyncPattern>
-      <Identifier>one-folder-disc</Identifier>
-      <Name>Artist\Track (with disc number)</Name>
-      <Pattern>%ARTIST% - %ALBUM%\%DISCNUMDASH%%TRACKNUMSPACE%%NAME%</Pattern>
-      <Description>This pattern organizes the tracks in folders named by Artist and album. Files are organized like this: Artist - Album\DiscNumber-TrackNumber Name.</Description>
-      <CompilationsPattern>%ALBUM%\%DISCNUMDASH%%TRACKNUMSPACE%%NAME%</CompilationsPattern>
-    </SyncPattern>
-    <SyncPattern>
-      <Identifier>flat</Identifier>
-      <Name>Artist - Track</Name>
-      <Pattern>%ARTIST% - %NAME%</Pattern>
-      <Description>This pattern organizes all tracks in the root media folder of the device. All tracks from all artists are in one folder and names like this: Artist - Name.</Description>
-      <CompilationsPattern />
-    </SyncPattern>
-  </SyncPatterns>
   <Devices>
     <Device>
       <Name>Example Configuration</Name>
       <MediaRoot>Music</MediaRoot>
       <SyncPattern>itunes-style</SyncPattern>
-      <RecognizePattern>AnUniqueFileForMyDevice.ita</RecognizePattern>
+      <RecognizePattern>AnUniqueFileForMyDevice.notpod</RecognizePattern>
       <Playlist />
       <InitialTracks />
     </Device>

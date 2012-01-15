@@ -143,5 +143,20 @@ namespace Notpod.Properties {
                 return ResourceManager.GetString("logging", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;SyncPatterns xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot;&gt;
+        ///    &lt;SyncPattern&gt;
+        ///      &lt;Identifier&gt;itunes-style&lt;/Identifier&gt;
+        ///      &lt;Name&gt;Artist\Album\Track&lt;/Name&gt;
+        ///      &lt;Pattern&gt;%ARTIST%\%ALBUM%\%TRACKNUMSPACE%%NAME%&lt;/Pattern&gt;
+        ///      &lt;Description&gt;This pattern places the tracks the same way iTunes places tracks in a managed iTunes music folder. Files are organized by Artist\Album\TrackNumber Name.&lt;/Description&gt;
+        ///      &lt;CompilationsPattern&gt;Compilations\%A [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string syncpatterns {
+            get {
+                return ResourceManager.GetString("syncpatterns", resourceCulture);
+            }
+        }
     }
 }
