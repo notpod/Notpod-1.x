@@ -57,7 +57,7 @@ namespace Notpod.Configuration12
         }
 
         /// <summary>
-        /// Accessor for playlist.
+        /// Accessor for playlist |-delimited string.
         /// </summary>
         public string Playlist
         {
