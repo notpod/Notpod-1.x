@@ -23,7 +23,6 @@ namespace Notpod
             this.labelVersion.Text = String.Format("Version {0} {1}", AssemblyVersion, AssemblyDescription);
             this.labelCopyright.Text = AssemblyCopyright;
             this.labelCompanyName.Text = AssemblyCompany;
-            //this.textBoxDescription.Text = AssemblyDescription;
         }
 
         #region Assembly Attibute Accessors
