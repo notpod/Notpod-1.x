@@ -28,7 +28,7 @@ namespace Notpod
         /// <param name="pattern">SyncPattern to translate.</param>
         /// <param name="track">iTunes track containing track information.</param>
         /// <returns>A string representation of pattern and track.</returns>
-        public static string Translate(SyncPattern pattern, IITFileOrCDTrack track)
+        public static string Translate(SyncPattern pattern, IITFileOrCDTrack track, string playlistName)
         {
             try
             {
@@ -49,6 +49,7 @@ namespace Notpod
                 patternstring = TranslateAlbum(track.Album, patternstring);
                 patternstring = TranslateName(track, patternstring);
                 patternstring = TranslateTrackNumber(track, patternstring);
+                patternstring = TranslatePlaylist(playlistName, patternstring);
                 patternstring = TranslateExtension(track, patternstring);
 
                 l.Debug("patternstring=" + patternstring);
@@ -202,5 +203,28 @@ namespace Notpod
             return patternstring;
         }
         
+        /// <summary>
+        /// Translate playlist name.
+        /// </summary>
+        /// <param name="playlistName"></param>
+        /// <param name="patternstring"></param>
+        /// <returns></returns>
+        private static string TranslatePlaylist(string playlistName, string patternstring)
+        {
+            string s;
+
+            if (!string.IsNullOrEmpty(playlistName))
+            {
+                s = playlistName;
+                foreach (var c in System.IO.Path.GetInvalidFileNameChars()) { s = s.Replace(c, '_'); }
+            }
+            else
+            {
+                s = "Unknown Playlist";
+            }
+            patternstring = patternstring.Replace("%PLAYLIST%", s);
+            return patternstring;
+        }
+
     }
 }

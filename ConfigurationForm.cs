@@ -88,10 +88,9 @@ namespace Notpod
                             && pl.Kind != ITPlaylistKind.ITPlaylistKindDevice
                             && pl.Kind != ITPlaylistKind.ITPlaylistKindCD
                             && pl.Visible)
-                            comboAssociatePlaylist.Items.Add(pl.Name);
+                            clbAssocPlaylist.Items.Add(pl.Name);
                     }
 
-                    comboAssociatePlaylist.SelectedIndex = 0;
                     retry = false;
                 }
                 catch (COMException comex)
@@ -101,7 +100,7 @@ namespace Notpod
                     if (MessageBox.Show(this, "An error occured while getting the list of playlists from iTunes. This may be because iTunes is busy. Do you want to retry?\n\n(" + comex.Message + ")", "Communication error", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
                     {
                         retry = true;
-                        comboAssociatePlaylist.Items.Clear();
+                        clbAssocPlaylist.Items.Clear();
                     }
                     else
                     {
@@ -180,20 +179,25 @@ namespace Notpod
                     break;
                 }
 
+                uncheckAllAssocPlaylists();
+
                 //Set selected associated playlist.
-                comboAssociatePlaylist.SelectedIndex = 0;
                 if (device.Playlist != null && device.Playlist.Length > 0)
                 {
+                    List<string> aplList = new List<string>(device.Playlist.Split('|'));
 
-                    foreach (string playlist in comboAssociatePlaylist.Items)
+
+                    for (int i = 0; i < aplList.Count; i++)
                     {
-                        if (playlist == device.Playlist)
+                        for (int j = 0; j < clbAssocPlaylist.Items.Count; j++)
                         {
-                            comboAssociatePlaylist.SelectedItem = playlist;
+                            if (aplList[i] == clbAssocPlaylist.Items[j].ToString())
+                            {
+                                clbAssocPlaylist.SetItemChecked(j, true);
+                                break;
+                            }
                         }
                     }
-
-
                 }
 
                 break;
@@ -212,14 +216,14 @@ namespace Notpod
             comboSyncPatterns.Enabled = true;
             textMediaRoot.Enabled = true;
             textRecognizePattern.Enabled = true;
-            comboAssociatePlaylist.Enabled = true;
+            clbAssocPlaylist.Enabled = true;
 
             if (!forNewDevice)
                 buttonDelete.Enabled = true;
             buttonSave.Enabled = true;
             buttonBrowseMediaRoot.Enabled = true;
             buttonCreateUniqueFile.Enabled = true;
-            comboAssociatePlaylist.Enabled = true;
+            clbAssocPlaylist.Enabled = true;
 
         }
 
@@ -232,13 +236,13 @@ namespace Notpod
             comboSyncPatterns.Enabled = false;
             textMediaRoot.Enabled = false;
             textRecognizePattern.Enabled = false;
-            comboAssociatePlaylist.Enabled = false;
+            clbAssocPlaylist.Enabled = false;
 
             buttonBrowseMediaRoot.Enabled = false;
             buttonCreateUniqueFile.Enabled = false;
             buttonDelete.Enabled = false;
             buttonSave.Enabled = false;
-            comboAssociatePlaylist.Enabled = false;
+            clbAssocPlaylist.Enabled = false;
         }
 
         private void comboSyncPatterns_SelectedIndexChanged(object sender, EventArgs e)
@@ -282,7 +286,8 @@ namespace Notpod
             textMediaRoot.Text = "";
             textRecognizePattern.Text = "";
             comboSyncPatterns.SelectedIndex = 0;
-            comboAssociatePlaylist.SelectedIndex = 0;
+            uncheckAllAssocPlaylists();
+            listDevices.SelectedItems.Clear();
         }
 
         /// <summary>
@@ -330,8 +335,15 @@ namespace Notpod
             string syncPattern = (string)comboSyncPatterns.SelectedItem;
             string mediaroot = textMediaRoot.Text;
             string recognizePattern = textRecognizePattern.Text;
-            string associatedPlaylist = (string)comboAssociatePlaylist.SelectedItem;
-                        
+            List<string> aplList = new List<string>();
+            string associatedPlaylist;
+
+            foreach (string pl in clbAssocPlaylist.CheckedItems)
+            {
+                aplList.Add(pl);
+            }
+            associatedPlaylist = string.Join("|", aplList.ToArray());
+            
             if (deviceName.Length == 0)
             {
                 MessageBox.Show(this, "Please enter a name for the device.", "Missing information", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
@@ -350,8 +362,7 @@ namespace Notpod
                 return;
             }
             
-            
-                        
+
             Device newDevice = new Device();
             newDevice.Name = deviceName;
             newDevice.MediaRoot = mediaroot;
@@ -596,5 +607,12 @@ namespace Notpod
             buttonOK.Enabled = true;
         }
 
+        private void uncheckAllAssocPlaylists()
+        {
+            for (int i = 0; i < clbAssocPlaylist.Items.Count; i++)
+            {
+                clbAssocPlaylist.SetItemChecked(i, false);
+            }
+        }
     }
 }

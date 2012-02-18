@@ -52,9 +52,9 @@ namespace Notpod
         }
 
         /// <summary>
-        /// <see cref="Notpod.ISynchronizer#SynchronizeDevice(IITUserPlaylist, string, Device)"/>
+        /// <see cref="Notpod.ISynchronizer#SynchronizeDevice(List<IITPlaylist>, string, Device)"/>
         /// </summary>
-        public void SynchronizeDevice(IITUserPlaylist playlist, string drive, Device device)
+        public void SynchronizeDevice(List<IITPlaylist> playlist, string drive, Device device)
         {
             //Check that configuration has been set.
             if (configuration == null)
@@ -121,7 +121,12 @@ namespace Notpod
             syncForm.SetDeviceName(device.Name, drive);
 
             syncForm.SetCurrentStatus("Initializing...");
-            syncForm.SetMaxProgressValue(playlist.Tracks.Count);
+            int trackCount = 0;
+            for (int i = 0; i < playlist.Count; i++)
+            {
+                trackCount += playlist[i].Tracks.Count;
+            }
+            syncForm.SetMaxProgressValue(trackCount);
             syncForm.SetProgressValue(0);
 
 
@@ -133,53 +138,59 @@ namespace Notpod
 
             try
             {
-                foreach (IITTrack track in playlist.Tracks)
+                foreach (IITPlaylist pl in playlist)
                 {
-                    if (syncForm.GetOperationCancelled())
+                    foreach (IITTrack track in pl.Tracks)
                     {
-                        syncForm.SetCurrentStatus("Synchronization cancelled. 0 tracks added, 0 tracks removed.");
-                        syncForm.AddLogText("Synchronization cancelled.", Color.OrangeRed);
-                        OnSynchronizeCancelled();
-                        return;
+                        if (syncForm.GetOperationCancelled())
+                        {
+                            syncForm.SetCurrentStatus("Synchronization cancelled. 0 tracks added, 0 tracks removed.");
+                            syncForm.AddLogText("Synchronization cancelled.", Color.OrangeRed);
+                            OnSynchronizeCancelled();
+                            return;
+                        }
+
+                        syncForm.SetProgressValue(syncForm.GetProgressValue() + 1);
+
+                        //Continue if the track is not of kind "file" or the track is one of the initial tracks on the device.
+                        if (track.Kind != ITTrackKind.ITTrackKindFile || device.InitialTracks.Contains(track))
+                            continue;
+
+
+                        string pathOnDevice = "";
+
+                        IITTrack addTrack = track;
+
+                        try
+                        {
+                            pathOnDevice = SyncPatternTranslator.Translate(devicePattern, (IITFileOrCDTrack)addTrack, pl.Name);
+                        }
+                        catch (Exception ex)
+                        {
+                            syncForm.AddLogText("An error occured while working with \"" + track.Artist + " - " + track.Name
+                                + "\". This may be because the track has been deleted from disk. Look for an exclamation mark"
+                                + "next to the track in your playlist.", Color.Orange);
+                            l.Debug("An error occured while working with \"" + track.Artist + " - " + track.Name
+                                + "\". This may be because the track has been deleted from disk. Look for an exclamation mark"
+                                + "next to the track in your playlist.", ex);
+                            continue;
+                        }
+                        string fullPath = deviceMediaRoot + pathOnDevice;
+                        l.Debug(fullPath);
+
+                        // Check if the list already contains a key - this happens in cases where there are duplicate 
+                        // entries in the playlist for the same track. Although the track may have different locations on 
+                        // the user's computer, Notpod will not handle this.
+                        if (syncList.ContainsKey(fullPath))
+                        {
+                            syncForm.AddLogText("You have duplicate listings for " + track.Artist + " - " + track.Name
+                                + " in your playlist. I will continue for now, but you should remove any duplicates "
+                                + "when the synchronization is complete.", Color.Orange);
+                            continue;
+                        }
+
+                        syncList.Add(fullPath, (IITFileOrCDTrack)addTrack);
                     }
-
-                    syncForm.SetProgressValue(syncForm.GetProgressValue() + 1);
-
-                    //Continue if the track is not of kind "file" or the track is one of the initial tracks on the device.
-                    if (track.Kind != ITTrackKind.ITTrackKindFile || device.InitialTracks.Contains(track))
-                        continue;
-
-
-                    string pathOnDevice = "";
-
-                    IITTrack addTrack = track;
-
-                    try
-                    {
-                        pathOnDevice = SyncPatternTranslator.Translate(devicePattern, (IITFileOrCDTrack)addTrack);                        
-                    }
-                    catch (Exception ex)
-                    {
-                        syncForm.AddLogText("An error occured while working with \"" + track.Artist + " - " + track.Name
-                            + "\". This may be because the track has been deleted from disk. Look for an exclamation mark"
-                            + "next to the track in your playlist.", Color.Orange);
-                        continue;
-                    }
-                    string fullPath = deviceMediaRoot + pathOnDevice;
-                    l.Debug(fullPath);
-
-                    // Check if the list already contains a key - this happens in cases where there are duplicate 
-                    // entries in the playlist for the same track. Although the track may have different locations on 
-                    // the user's computer, Notpod will not handle this.
-                    if (syncList.ContainsKey(fullPath))
-                    {
-                        syncForm.AddLogText("You have duplicate listings for " + track.Artist + " - " + track.Name
-                            + " in your playlist. I will continue for now, but you should remove any duplicates "
-                            + "when the synchronization is complete.", Color.Orange);
-                        continue;
-                    }
-
-                    syncList.Add(fullPath, (IITFileOrCDTrack)addTrack);
                 }
             }
             catch (Exception ex)
@@ -283,7 +294,11 @@ namespace Notpod
             files = null;
 
             // Check free space on the device
-            double playlistSize = playlist.Size;
+            double playlistSize = 0;
+            for (int i = 0; i < playlist.Count; i++)
+            {
+                playlistSize += playlist[i].Size;
+            }
             DriveInfo driveInfo = new DriveInfo(drive.Substring(0, 1));
             long freeOnDisk = driveInfo.AvailableFreeSpace;
 

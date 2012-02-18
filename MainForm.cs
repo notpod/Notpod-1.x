@@ -310,7 +310,7 @@ namespace Notpod
                 itaTray.ShowBalloonTip(5, "Device connected!", message, ToolTipIcon.Info);
             }
 
-            IITPlaylist playlist = PlaylistExists(device);
+            List<IITPlaylist> playlist = PlaylistExists(device);
             //Delete playlist if it exists.
             //if (playlist != null)
             //    playlist.Delete();
@@ -321,10 +321,10 @@ namespace Notpod
                     if (configuration.UseListFolder)
                     {
                         CreateMyDevicesFolder();
-                        playlist = folderMyDevices.CreatePlaylist(device.Name);
+                        playlist.Add(folderMyDevices.CreatePlaylist(device.Name));
                     }
                     else
-                        playlist = itunes.CreatePlaylist(device.Name);
+                        playlist.Add(itunes.CreatePlaylist(device.Name));
 
                 }
                 catch (Exception e)
@@ -340,12 +340,15 @@ namespace Notpod
             else
             {
                 //If the option to use "My Devices" folder is set, move the playlist to that folder.
-                if (configuration.UseListFolder && (playlist.Kind == ITPlaylistKind.ITPlaylistKindUser)
-                    && (device.Playlist == null || device.Playlist.Length == 0))
+                foreach (IITPlaylist pl in playlist)
                 {
-                    CreateMyDevicesFolder();
-                    object parent = (object)folderMyDevices;
-                    ((IITUserPlaylist)playlist).set_Parent(ref parent);
+                    if (configuration.UseListFolder && (pl.Kind == ITPlaylistKind.ITPlaylistKindUser)
+                        && (device.Playlist == null || device.Playlist.Length == 0))
+                    {
+                        CreateMyDevicesFolder();
+                        object parent = (object)folderMyDevices;
+                        ((IITUserPlaylist)pl).set_Parent(ref parent);
+                    }
                 }
             }
 
@@ -356,24 +359,32 @@ namespace Notpod
         /// </summary>
         /// <param name="device">Device to check playlist for.</param>
         /// <returns>The playlist if it exists, null otherwise.</returns>
-        private IITPlaylist PlaylistExists(Device device)
+        private List<IITPlaylist> PlaylistExists(Device device)
         {
 
-            string name = (device.Playlist == null || device.Playlist.Length == 0) ? device.Name : device.Playlist;
+            string playlistDelimString = (device.Playlist == null || device.Playlist.Length == 0) ? device.Name : device.Playlist;
+
+            List<string> aplList = new List<string>(playlistDelimString.Split('|'));
+            List<IITPlaylist> aplIIT = new List<IITPlaylist>();
 
             bool retry = true;
             while (retry)
             {
                 try
                 {
-
-                    foreach (IITPlaylist playlist in itunes.LibrarySource.Playlists)
+                    for (int i = 0; i < aplList.Count; i++)
                     {
-                        if (playlist.Name == name)
-                            return playlist;
+                        foreach (IITPlaylist playlist in itunes.LibrarySource.Playlists)
+                        {
+                            if (playlist.Name == aplList[i])
+                            {
+                                aplIIT.Add(playlist);
+                                break;
+                            }
+                        }
                     }
 
-                    return null;
+                    return aplIIT;
                 }
                 catch (Exception comex)
                 {
@@ -617,7 +628,7 @@ namespace Notpod
                         return;
                     }
 
-                    IITPlaylist playlist = PlaylistExists(device);
+                    List<IITPlaylist> playlist = PlaylistExists(device);
                     if (playlist == null)
                     {
                         MessageBox.Show("I could not synchronize '" + device.Name + "' because "
@@ -631,7 +642,7 @@ namespace Notpod
                     synchronizer.SynchronizeError += new SynchronizeErrorEventHandler(OnSynchronizeError);
                     synchronizer.SynchronizeComplete += new SynchronizeCompleteEventHandler(OnSynchronizeComplete);
                     synchronizer.SynchronizeCancelled += new SynchronizeCancelledEventHandler(OnSynchronizeCancelled);
-                    synchronizer.SynchronizeDevice((IITUserPlaylist)playlist, drive, device);
+                    synchronizer.SynchronizeDevice(playlist, drive, device);
 
                 }
                                 
