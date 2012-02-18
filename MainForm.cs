@@ -747,6 +747,14 @@ namespace Notpod
             info.Verb = "open";
             Process.Start(info);
         }
+        
+        private void ctxTrayReportBug_Click(object sender, EventArgs e)
+        {
+            //Open URL in default browser
+            ProcessStartInfo info = new ProcessStartInfo("https://github.com/notpod/Notpod-1.x/issues/new");
+            info.Verb = "open";
+            Process.Start(info);
+        }
 
         /// <summary>
         /// Event handler for the tray context menu "Preferences..."
@@ -802,5 +810,6 @@ namespace Notpod
             
         }
 
+ 
     }
 }
