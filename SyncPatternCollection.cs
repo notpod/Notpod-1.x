@@ -15,8 +15,6 @@ namespace Notpod.Configuration12
     /// <summary>
     /// Description of Class1.
     /// </summary>
-    /// [
-    [XmlRoot("SyncPatterns")]
     public class SyncPatternCollection
     {
         
