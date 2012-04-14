@@ -8,7 +8,7 @@ Thanks for choosing Notpod! Please make sure you read this file carefully, as it
 Noteworthy changes in this version: 
 
 * Several new synchronize patterns have been added. These are now available when editing your device configurations.
-* Synchronize patterns have been moved away from the device-config.xml file to simplify adding of new patterns in the future. Please note that any custom patterns in the existing device-config.xml file will be lost upon upgrade.
+* Synchronize patterns have been moved away from the device-config.xml file to simplify adding of new patterns in the future. PLEASE NOTE that any custom patterns in the existing device-config.xml file will be lost upon upgrade.
 * New "Report bug" menu item for easy reporting of bugs via the Notpod issue tracker on Github.
 * Album artist is now supported in several sync patterns.
 * Fixed icon in synchronize status window.
