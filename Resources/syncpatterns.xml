@@ -15,7 +15,21 @@
 	      <Description>This pattern places the tracks the same way iTunes places tracks in a managed iTunes music folder. Files are organized by Artist\Album\DiscNumber-TrackNumber Name.</Description>
 	      <CompilationsPattern>Compilations\%ALBUM%\%DISCNUMDASH%%TRACKNUMSPACE%%NAME%</CompilationsPattern>
 	    </SyncPattern>
+		<SyncPattern>
+	      <Identifier>artist-initial-full</Identifier>
+	      <Name>Artist Initial\Artist\Album\Track</Name>
+	      <Pattern>%ARTISTINITIAL%\%ARTIST%\%ALBUM%\%TRACKNUMSPACE%%NAME%</Pattern>
+	      <Description>This pattern places the tracks the same way iTunes places tracks in a managed iTunes music folder, but also adds a top level set of folder with only artist initial. Files are organized by Initial\Artist\Album\TrackNumber Name.</Description>
+	      <CompilationsPattern>Compilations\%ALBUM%\%TRACKNUMSPACE%%NAME%</CompilationsPattern>
+	    </SyncPattern>
 	    <SyncPattern>
+	      <Identifier>artist-initial-full-discnum</Identifier>
+	      <Name>Artist Initial\Artist\Album\Track (with disc number)</Name>
+	      <Pattern>%ARTISTINITIAL%\%ARTIST%\%ALBUM%\%DISCNUMDASH%%TRACKNUMSPACE%%NAME%</Pattern>
+	      <Description>This pattern places the tracks the same way iTunes places tracks in a managed iTunes music folder, but also adds a top level set of folder with only artist initial. Files are organized by Initial\Artist\Album\DiscNumber-TrackNumber Name.</Description>
+	      <CompilationsPattern>Compilations\%ALBUM%\%DISCNUMDASH%%TRACKNUMSPACE%%NAME%</CompilationsPattern>
+	    </SyncPattern>
+		<SyncPattern>
 	      <Identifier>albumartist-itunes-style</Identifier>
 	      <Name>Album Artist\Album\Track</Name>
 	      <Pattern>%ALBUMARTIST%\%ALBUM%\%TRACKNUMSPACE%%NAME%</Pattern>

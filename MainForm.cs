@@ -165,12 +165,12 @@ namespace Notpod
         private void LoadSyncPatterns() {
             
             //Load devices that the agent recognizes
-            StringReader stream = null;
+            StreamReader stream = null;
             XmlTextReader reader = null;
             try
             {
                 XmlSerializer serializer = new XmlSerializer(typeof(SyncPatternCollection));
-                stream = new StringReader(Resources.syncpatterns);
+                stream = new StreamReader("Resources\\syncpatterns.xml");
                 reader = new XmlTextReader(stream);
 
                 syncPatterns = (SyncPatternCollection)serializer.Deserialize(reader);
