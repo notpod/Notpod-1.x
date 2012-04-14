@@ -11,6 +11,7 @@ Noteworthy changes in this version:
 * Synchronize patterns have been moved away from the device-config.xml file to simplify adding of new patterns in the future. PLEASE NOTE that any custom patterns in the existing device-config.xml file will be lost upon upgrade.
 * New "Report bug" menu item for easy reporting of bugs via the Notpod issue tracker on Github.
 * Album artist is now supported in several sync patterns.
+* Added support for %ARTISTINITIAL% macro in sync patterns.
 * Fixed icon in synchronize status window.
 
 Source code for Notpod is available from http://www.notpod.com
