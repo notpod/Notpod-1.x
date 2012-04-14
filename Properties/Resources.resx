@@ -121,7 +121,7 @@
   <data name="aboutimg" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAIMAAAEDCAYAAAAWWrcKAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADr4AAA6+AepCscAAAAAGYktHRAD/AP8A/6C9p5MAAAAHdElNRQfbCREJHCyK5h72
+        YQUAAAAJcEhZcwAADr0AAA69AUf7kK0AAAAGYktHRAD/AP8A/6C9p5MAAAAHdElNRQfbCREJHCyK5h72
         AAAAHWlUWHRDb21tZW50AAAAAABDcmVhdGVkIHdpdGggR0lNUGQuZQcAABPFSURBVHhe7Z2JdxzVscb5
         l15e2GISsmOCceBAHjlZeFl4OSzhZYUYDNgk3mPHgBeMsQ0GTLB5wQlYRhCHECMHa18sabRLo10z2iVL
         tiy5XtUdWh7Jmu6e0UhVkr85pw8cq2eq+n6/W1X39u2+1xE+aIHPWuA6tARawGsBwAAWplsAMAAGwAAG
@@ -307,7 +307,7 @@
   <data name="exit" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAACw4AAAsOAUC+4UEAAAAHdElNRQfXBhsSEhy44PiLAAADjElEQVQ4Tz2Tf0yUdRzH
+        YQUAAAAJcEhZcwAACw0AAAsNAe0HwCwAAAAHdElNRQfXBhsSEhy44PiLAAADjElEQVQ4Tz2Tf0yUdRzH
         n5gpMXTSlFiZ3uS4APFOiEgQTljXE53rQLs4o5Ocih0o5ojMbi0/Fangj9l02U7Ac6u2VpZlf7VqNYyE
         +KO1ahrC/Xruuefu4OKwWhxPvPs8x+q7vff96/P6fN6fH4LAb/r9cyTteoQkZxUFm8opaC/7X4GGEgrY
         isj/eD5LTz7LKrpRvZLGel8iLVaYfu8sxY52IHHhKOInuxB7zQXFvRPKISeUru2IdDZB7mhEuH0Lwq0W
@@ -329,7 +329,7 @@
   <data name="help" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAACw4AAAsOAUC+4UEAAAAHdElNRQfXBhsSEQ35fYu6AAADIUlEQVQ4T1WT228bVRDG
+        YQUAAAAJcEhZcwAACw0AAAsNAe0HwCwAAAAHdElNRQfXBhsSEQ35fYu6AAADIUlEQVQ4T1WT228bVRDG
         9y8qoUkvgoIs6BPiCYF4QaKkdR3aNKoKbXgKxlQBqiZCeUBKIrWliOSBKkBxqQwtKzvgJr7VsePEShzX
         t6yvWa/t9fqC6x/HjqiSkUZn95wz3/fNnBlJOmA1XTeFYqo1njVIFwyUUpNkziCu1EkpKul02tpsNk0H
         Y158l8p1Ob5bQ2906Fn3oIsfTW8TjCpsRrcol8uHQcI7qmm3aPQDS23wavBrCn6IdLkVhPtRyNfgebfL
@@ -765,107 +765,5 @@
         AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAA
         AACAAAAAAAAAAcAAAAAAAAABwAAAAAAAAAPgAAAAAAAAB/AAAAAAAAAP/AAAAAAAAB//AAAAAAAA/w==
 </value>
-  </data>
-  <data name="logging" xml:space="preserve">
-    <value>&lt;?xml version="1.0" encoding="utf-8" ?&gt;
-&lt;log4net&gt;
-  &lt;appender name="LogFile" type="log4net.Appender.FileAppender"&gt;
-    &lt;file value="notpod.log" /&gt;
-    &lt;appendToFile value="true" /&gt;
-
-    &lt;layout type="log4net.Layout.PatternLayout"&gt;
-      &lt;conversionPattern value="%5level [%thread] (%logger:%line) - %message%newline" /&gt;
-    &lt;/layout&gt;
-  &lt;/appender&gt;
-
-  &lt;root&gt;
-    &lt;level value="INFO" /&gt;
-    &lt;appender-ref ref="LogFile" /&gt;
-  &lt;/root&gt;
-&lt;/log4net&gt;</value>
-  </data>
-  <data name="syncpatterns" xml:space="preserve">
-    <value>&lt;?xml version="1.0"?&gt;
-&lt;SyncPatternCollection xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
-	&lt;SyncPatterns&gt;	
-		&lt;SyncPattern&gt;
-	      &lt;Identifier&gt;itunes-style&lt;/Identifier&gt;
-	      &lt;Name&gt;Artist\Album\Track&lt;/Name&gt;
-	      &lt;Pattern&gt;%ARTIST%\%ALBUM%\%TRACKNUMSPACE%%NAME%&lt;/Pattern&gt;
-	      &lt;Description&gt;This pattern places the tracks the same way iTunes places tracks in a managed iTunes music folder. Files are organized by Artist\Album\TrackNumber Name.&lt;/Description&gt;
-	      &lt;CompilationsPattern&gt;Compilations\%ALBUM%\%TRACKNUMSPACE%%NAME%&lt;/CompilationsPattern&gt;
-	    &lt;/SyncPattern&gt;
-	    &lt;SyncPattern&gt;
-	      &lt;Identifier&gt;itunes-style-disc&lt;/Identifier&gt;
-	      &lt;Name&gt;Artist\Album\Track (with disc number)&lt;/Name&gt;
-	      &lt;Pattern&gt;%ARTIST%\%ALBUM%\%DISCNUMDASH%%TRACKNUMSPACE%%NAME%&lt;/Pattern&gt;
-	      &lt;Description&gt;This pattern places the tracks the same way iTunes places tracks in a managed iTunes music folder. Files are organized by Artist\Album\DiscNumber-TrackNumber Name.&lt;/Description&gt;
-	      &lt;CompilationsPattern&gt;Compilations\%ALBUM%\%DISCNUMDASH%%TRACKNUMSPACE%%NAME%&lt;/CompilationsPattern&gt;
-	    &lt;/SyncPattern&gt;
-	    &lt;SyncPattern&gt;
-	      &lt;Identifier&gt;albumartist-itunes-style&lt;/Identifier&gt;
-	      &lt;Name&gt;Album Artist\Album\Track&lt;/Name&gt;
-	      &lt;Pattern&gt;%ALBUMARTIST%\%ALBUM%\%TRACKNUMSPACE%%NAME%&lt;/Pattern&gt;
-	      &lt;Description&gt;This pattern places the tracks the same way iTunes places tracks in a managed iTunes music folder. Files are organized by Album Artist\Album\TrackNumber Name.&lt;/Description&gt;
-	      &lt;CompilationsPattern&gt;Compilations\%ALBUM%\%TRACKNUMSPACE%%NAME%&lt;/CompilationsPattern&gt;
-	    &lt;/SyncPattern&gt;
-	    &lt;SyncPattern&gt;
-	      &lt;Identifier&gt;albumartist-itunes-style-disc&lt;/Identifier&gt;
-	      &lt;Name&gt;Album Artist\Album\Track (with disc number)&lt;/Name&gt;
-	      &lt;Pattern&gt;%ALBUMARTIST%\%ALBUM%\%DISCNUMDASH%%TRACKNUMSPACE%%NAME%&lt;/Pattern&gt;
-	      &lt;Description&gt;This pattern places the tracks the same way iTunes places tracks in a managed iTunes music folder. Files are organized by Album Artist\Album\DiscNumber-TrackNumber Name.&lt;/Description&gt;
-	      &lt;CompilationsPattern&gt;Compilations\%ALBUM%\%DISCNUMDASH%%TRACKNUMSPACE%%NAME%&lt;/CompilationsPattern&gt;
-	    &lt;/SyncPattern&gt;
-	    &lt;SyncPattern&gt;
-	      &lt;Identifier&gt;one-folder&lt;/Identifier&gt;
-	      &lt;Name&gt;Artist - Album\Track&lt;/Name&gt;
-	      &lt;Pattern&gt;%ARTIST% - %ALBUM%\%TRACKNUMSPACE%%NAME%&lt;/Pattern&gt;
-	      &lt;Description&gt;This pattern organizes the tracks in folders named by Artist and album. Files are organized like this: Artist - Album\TrackNumber Name.&lt;/Description&gt;
-	      &lt;CompilationsPattern&gt;%ALBUM%\%TRACKNUMSPACE%%NAME%&lt;/CompilationsPattern&gt;
-	    &lt;/SyncPattern&gt;    
-	    &lt;SyncPattern&gt;
-	      &lt;Identifier&gt;one-folder-disc&lt;/Identifier&gt;
-	      &lt;Name&gt;Artist - Album\Track (with disc number)&lt;/Name&gt;
-	      &lt;Pattern&gt;%ARTIST% - %ALBUM%\%DISCNUMDASH%%TRACKNUMSPACE%%NAME%&lt;/Pattern&gt;
-	      &lt;Description&gt;This pattern organizes the tracks in folders named by Artist and album. Files are organized like this: Artist - Album\DiscNumber-TrackNumber Name.&lt;/Description&gt;
-	      &lt;CompilationsPattern&gt;%ALBUM%\%DISCNUMDASH%%TRACKNUMSPACE%%NAME%&lt;/CompilationsPattern&gt;
-	    &lt;/SyncPattern&gt;
-	    &lt;SyncPattern&gt;
-	      &lt;Identifier&gt;one-folder-albumartist&lt;/Identifier&gt;
-	      &lt;Name&gt;Album Artist - Album\Track&lt;/Name&gt;
-	      &lt;Pattern&gt;%ALBUMARTIST% - %ALBUM%\%TRACKNUMSPACE%%NAME%&lt;/Pattern&gt;
-	      &lt;Description&gt;This pattern organizes the tracks in folders named by Album Artist and album. Files are organized like this: Album Artist - Album\TrackNumber Name.&lt;/Description&gt;
-	      &lt;CompilationsPattern&gt;%ALBUMARTIST%\%TRACKNUMSPACE%%NAME%&lt;/CompilationsPattern&gt;
-	    &lt;/SyncPattern&gt;    
-	    &lt;SyncPattern&gt;
-	      &lt;Identifier&gt;one-folder-disc-albumartist&lt;/Identifier&gt;
-	      &lt;Name&gt;Album Artist - Album\Track (with disc number)&lt;/Name&gt;
-	      &lt;Pattern&gt;%ALBUMARTIST% - %ALBUM%\%DISCNUMDASH%%TRACKNUMSPACE%%NAME%&lt;/Pattern&gt;
-	      &lt;Description&gt;This pattern organizes the tracks in folders named by Album Artist and album. Files are organized like this: Album Artist - Album\DiscNumber-TrackNumber Name.&lt;/Description&gt;
-	      &lt;CompilationsPattern&gt;%ALBUMARTIST%\%DISCNUMDASH%%TRACKNUMSPACE%%NAME%&lt;/CompilationsPattern&gt;
-	    &lt;/SyncPattern&gt;
-	    &lt;SyncPattern&gt;
-	      &lt;Identifier&gt;artistonly&lt;/Identifier&gt;
-	      &lt;Name&gt;Artist\Track&lt;/Name&gt;
-	      &lt;Pattern&gt;%ARTIST%\%TRACKNUMSPACE%%NAME%&lt;/Pattern&gt;
-	      &lt;Description&gt;This pattern organizes the tracks in folders named by Artist only. Files are organized like this: Artist\TrackNumber Name.&lt;/Description&gt;
-	      &lt;CompilationsPattern&gt;%ALBUMARTIST%\%TRACKNUMSPACE%%NAME%&lt;/CompilationsPattern&gt;
-	    &lt;/SyncPattern&gt;    
-	    &lt;SyncPattern&gt;
-	      &lt;Identifier&gt;artistonly-disc&lt;/Identifier&gt;
-	      &lt;Name&gt;Artist\Track (with disc number)&lt;/Name&gt;
-	      &lt;Pattern&gt;%ARTIST%\%DISCNUMDASH%%TRACKNUMSPACE%%NAME%&lt;/Pattern&gt;
-	      &lt;Description&gt;This pattern organizes the tracks in folders named by Artist only (including disc number). Files are organized like this: Artist\DiscNumber-TrackNumber Name.&lt;/Description&gt;
-	      &lt;CompilationsPattern&gt;%ARTIST%\%DISCNUMDASH%%TRACKNUMSPACE%%NAME%&lt;/CompilationsPattern&gt;
-	    &lt;/SyncPattern&gt;
-	    &lt;SyncPattern&gt;
-	      &lt;Identifier&gt;flat&lt;/Identifier&gt;
-	      &lt;Name&gt;Artist - Track&lt;/Name&gt;
-	      &lt;Pattern&gt;%ARTIST% - %NAME%&lt;/Pattern&gt;
-	      &lt;Description&gt;This pattern organizes all tracks in the root media folder of the device. All tracks from all artists are in one folder and names like this: Artist - Name.&lt;/Description&gt;
-	      &lt;CompilationsPattern /&gt;
-	    &lt;/SyncPattern&gt;
-	&lt;/SyncPatterns&gt;
-  &lt;/SyncPatternCollection&gt;</value>
   </data>
 </root>

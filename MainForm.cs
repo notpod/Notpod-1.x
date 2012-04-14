@@ -170,7 +170,7 @@ namespace Notpod
             try
             {
                 XmlSerializer serializer = new XmlSerializer(typeof(SyncPatternCollection));
-                stream = new StreamReader("Resources\\syncpatterns.xml");
+                stream = new StreamReader(Application.StartupPath + "\\Resources\\syncpatterns.xml");
                 reader = new XmlTextReader(stream);
 
                 syncPatterns = (SyncPatternCollection)serializer.Deserialize(reader);
@@ -180,8 +180,8 @@ namespace Notpod
             {
                 l.Error(ex);
 
-                MessageBox.Show("Unable to load available organization patterns.\n\nReason for failure: " + ex.Message,
-                    "Missing list of devices", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Unable to load available synchronize patterns.\n\nReason for failure: " + ex.Message,
+                    "Missing synchronize patterns", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Application.Exit();
             }
             finally
