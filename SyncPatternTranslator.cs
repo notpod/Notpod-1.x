@@ -19,6 +19,7 @@ namespace Notpod
         /// %ARTIST%        = The artist name
         /// %ALBUMARTIST%   = The album artist name
         /// %ALBUM%         = The album name
+        /// %ALBUMINITIAL% 	= The album initial
         /// %NAME%          = The track name
         /// %TRACKNUMSPACE% = The track number with a trailing space
         /// %TRACKNUM%      = The track number (no trailing space)
@@ -44,6 +45,7 @@ namespace Notpod
                 string patternstring = ((track.Compilation && pattern.CompilationsPattern != null && pattern.CompilationsPattern.Length > 0) ? pattern.CompilationsPattern : pattern.Pattern);
 
                 patternstring = TranslateArtist(pattern, track, patternstring);
+                patternstring = TranslateArtistInitial(pattern, track, patternstring);
                 patternstring = TranslateAlbumArtist(pattern, track, patternstring);
                 patternstring = TranslateDiscNumber(track, patternstring);
                 patternstring = TranslateAlbum(track.Album, patternstring);
@@ -69,6 +71,16 @@ namespace Notpod
             }            
             
         }
+        
+		private static string TranslateArtistInitial(SyncPattern pattern, IITFileOrCDTrack track, string patternstring)
+		{
+			string artist = (track.Artist == null ? "Unknown Artist" : track.Artist);            
+            if (track.Compilation && pattern.CompilationsPattern != null && pattern.CompilationsPattern.Length > 0)
+                artist = "Compilations";
+
+            patternstring = patternstring.Replace("%ARTISTINITIAL%", artist.Substring(0,1).ToUpper());
+            return patternstring;
+		}
 
         /// <summary>
         /// Translate file extension.
