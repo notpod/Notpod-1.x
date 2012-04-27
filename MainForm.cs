@@ -61,6 +61,8 @@ namespace Notpod
         /// <param name="e">Event arguments</param>
         private void MainForm_Load(object sender, EventArgs e)
         {
+        	
+        	l.Info("Notpod is initializing...");
 
             this.Visible = false;
 

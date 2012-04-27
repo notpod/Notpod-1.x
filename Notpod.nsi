@@ -66,7 +66,7 @@ BrandingText "${PRODUCT_NAME}"
     delete $INSTDIR\Notpod.exe
     delete $INSTDIR\log4net.dll
     delete $INSTDIR\Resources\logging.xml
-	delete $INSTDIR\Resources\syncpatters.xml
+	delete $INSTDIR\Resources\syncpatterns.xml
     delete $INSTDIR\LICENSE.txt
 	delete $INSTDIR\notpod.log
 	delete $INSTDIR\Interop.iTunesLib.dll

@@ -15,8 +15,10 @@ namespace Notpod
         [STAThread]
         static void Main(string[] args)
         {
-            if(File.Exists("Resources\\logging.xml"))
-                XmlConfigurator.Configure(new FileInfo("Resources\\logging.xml"));
+        	if(File.Exists("Resources\\logging.xml")) {
+
+        		XmlConfigurator.Configure(new FileInfo("Resources\\logging.xml"));
+        	}
 
             Application.EnableVisualStyles();
             MainForm form = new MainForm();
