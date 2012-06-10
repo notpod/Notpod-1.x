@@ -1,6 +1,6 @@
 # Installer script for Notpod
 !define PRODUCT_NAME "Notpod"
-!define PRODUCT_VERSION "1.5 BETA"
+!define PRODUCT_VERSION "1.5"
 !define MUI_ABORTWARNING
 !define MUI_ICON ".\Resources\ita-new.ico"
 !define MUI_UNICON ".\Resources\ita-new.ico"
@@ -25,7 +25,7 @@ BrandingText "${PRODUCT_NAME}"
 
 !define MUI_PAGE_HEADER_TEXT "${PRODUCT_NAME} ${PRODUCT_VERSION} installation information"
 !define MUI_PAGE_HEADER_SUBTEXT "Make sure you read this carefully before continuing."
-!insertmacro MUI_PAGE_LICENSE "Docs\INSTALL NOTES BETA.TXT"
+!insertmacro MUI_PAGE_LICENSE "Docs\INSTALL NOTES.TXT"
 
 !define MUI_PAGE_HEADER_TEXT "Installation location"
 !define MUI_PAGE_HEADER_SUBTEXT "Where do you want ${PRODUCT_NAME} installed?"
