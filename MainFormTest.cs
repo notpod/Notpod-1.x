@@ -8,6 +8,8 @@
  */
 using System;
 using NUnit.Framework;
+using Rhino.Mocks;
+using iTunesLib;
 
 namespace Notpod
 {
@@ -15,11 +17,23 @@ namespace Notpod
     public class MainFormTest
     {
         
+    	private MockRepository mockrepo = new MockRepository();
         
         [Test]
         public void CheckIfITunesLibrary_whenNetworkDrive_correctlyChecksPath()
         {
-            MainForm form = new MainForm();
+
+        	var appFactory = MockRepository.GenerateStub<ITunesAppFactory>();
+        	var mockITunes = MockRepository.GenerateStub<iTunesApp>();
+        	
+        	appFactory.Stub(x => x.GetNewInstance()).Return(mockITunes);
+        	
+        	mockITunes.Stub(x => x.Version).Return("Test");
+        	mockITunes.Stub(x => x.LibraryXMLPath).Return("\\\\networkdrive");
+        	
+        	MainForm form = new MainForm();
+        	form.ITunesAppFactory = appFactory;
+        	form.SetITunesInstance();
             Assert.IsFalse(form.CheckIfiTunesLibrary("E:\\"));
             
         }

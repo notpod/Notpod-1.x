@@ -34,6 +34,8 @@ namespace Notpod
         /// </summary>
         public static readonly string DATA_PATH = ConfigurationHelper.GetAppDataPath();
 
+        private ITunesAppFactory itunesAppFactory = new DefaultITunesAppFactory();
+        
         private iTunesApp itunes;
         private IITUserPlaylist folderMyDevices;
         private IConnectedDevicesManager connectedDevices;
@@ -61,8 +63,8 @@ namespace Notpod
         /// <param name="e">Event arguments</param>
         private void MainForm_Load(object sender, EventArgs e)
         {
-        	
-        	l.Info("Notpod is initializing...");
+            
+            l.Info("Notpod is initializing...");
 
             this.Visible = false;
 
@@ -246,7 +248,7 @@ namespace Notpod
 
                 try
                 {
-                    itunes = new iTunesAppClass();
+                    SetITunesInstance();
                     string version = itunes.Version;
                     SetStatusMessage("Notpod", "I have found iTunes (" + version
                         + ") on your computer and I am ready to synchronize your devices.",
@@ -274,6 +276,11 @@ namespace Notpod
             }
 
             return true;
+        }
+        
+        public void SetITunesInstance() {
+                        
+            itunes = itunesAppFactory.GetNewInstance();
         }
 
         /// <summary>
@@ -557,7 +564,7 @@ namespace Notpod
                     l.Warn(String.Format("Detected possible system drive for {0} ({1}).", device.Name, drive));
                     
                     DialogResult choice = MessageBox.Show("The device '" + device.Name
-                        + "' may reference a system hard drive. The drive currently associated"
+                        + "' looks like it's mapping to a system hard drive. The drive currently associated"
                         + " with this device is: " + drive + "\n\nIf you are sure this is "
                         + "correct, you may continue. If you are unsure, or have misconfigured, "
                         + "you should click 'Cancel' and make sure your device configuration is "
@@ -576,7 +583,7 @@ namespace Notpod
                                          device.Name, drive));
                     
                     DialogResult choice = MessageBox.Show("The device '" + device.Name
-                        + "' may reference your local iTunes library. The drive currently associated"
+                        + "' looks like it's mapping to your local iTunes library. The drive currently associated"
                         + " with this device is: " + drive + "\n\nIf you are sure this is "
                         + "correct, you may continue. If you are unsure, or have misconfigured, "
                         + "you should click 'Cancel' and make sure your device configuration is correct "
@@ -801,29 +808,34 @@ namespace Notpod
         public bool CheckIfiTunesLibrary(string drive) 
         {
             string libraryPath = itunes.LibraryXMLPath;
-            if(libraryPath == null) 
+            
+            l.Debug("LibraryXMLPath: " + libraryPath);
+            
+            if(libraryPath == null)
             {
                 return false;
             }
             
-            /*if(libraryPath.StartsWith("\\")) 
+            if(libraryPath.StartsWith("\\\\"))  // network drive
             {
-                libraryPath = libraryPath.Substring(2, libraryPath.LastIndexOf("\\")-2);
+                libraryPath = libraryPath.Substring(2);
             } 
             else 
-            {*/                
-                libraryPath = libraryPath.Substring(3, libraryPath.LastIndexOf("\\")-3);
-            //}
+            {                
+                libraryPath = libraryPath.Substring(3);
+            }
             
-            DirectoryInfo di = new DirectoryInfo(drive + "\\" + libraryPath);
-            return di.Exists;
+            l.Debug("After truncation: " + libraryPath);
+            FileInfo fi = new FileInfo(drive + "\\" + libraryPath);
+            return fi.Exists;
             
         }
 
-        public iTunesApp iTunesApp {
+        public ITunesAppFactory ITunesAppFactory {
             
-            set { this.itunes = value; }
-            get { return this.itunes; }
+            set { this.itunesAppFactory = value; }
+            get { return this.itunesAppFactory; } 
+            
         }
  
     }

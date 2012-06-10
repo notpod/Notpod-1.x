@@ -17,8 +17,8 @@ namespace Notpod.Test
         private string location;
         private int bookmarktime;
         private bool compilation;
-                
-        
+        private String albumArtist;
+        private int discNumber;
 
         public int BookmarkTime
         {
@@ -101,11 +101,11 @@ namespace Notpod.Test
         {
             get
             {
-                throw new NotImplementedException();
+                return albumArtist;
             }
             set
             {
-                throw new NotImplementedException();
+                this.albumArtist = value;
             }
         }
 
@@ -219,11 +219,11 @@ namespace Notpod.Test
         {
             get
             {
-                throw new NotImplementedException();
+                return this.discNumber;
             }
             set
             {
-                throw new NotImplementedException();
+                this.discNumber = value;
             }
         }
 
