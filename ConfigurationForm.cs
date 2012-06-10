@@ -29,6 +29,8 @@ namespace Notpod
 
         private bool deviceConfigurationChanged = false;
         private bool configurationChanged = false;
+        
+        private String selectedDeviceConfigLinkFile = null;
 
         /// <summary>
         /// Create a new instance of configuration form.
@@ -159,7 +161,13 @@ namespace Notpod
 
                 textDeviceName.Text = device.Name;
                 textMediaRoot.Text = device.MediaRoot;
-                textRecognizePattern.Text = device.RecognizePattern;
+
+                this.selectedDeviceConfigLinkFile = device.RecognizePattern;
+                if(!String.IsNullOrWhiteSpace(selectedDeviceConfigLinkFile)) {
+                    
+                    labelLinked.Text = "Linked.";
+                    buttonCreateUniqueFile.Text = "Update link...";
+                }
 
                 foreach (SyncPattern pattern in deviceConfiguration.SyncPattern)
                 {
@@ -211,13 +219,15 @@ namespace Notpod
                 textDeviceName.Enabled = true;
             comboSyncPatterns.Enabled = true;
             textMediaRoot.Enabled = true;
-            textRecognizePattern.Enabled = true;
+            labelLinked.Text = "Not linked. Click button to link ->";
+            labelLinked.Enabled = false;
             comboAssociatePlaylist.Enabled = true;
 
             if (!forNewDevice)
                 buttonDelete.Enabled = true;
             buttonSave.Enabled = true;
             buttonBrowseMediaRoot.Enabled = true;
+            buttonCreateUniqueFile.Text= "Link to drive...";
             buttonCreateUniqueFile.Enabled = true;
             comboAssociatePlaylist.Enabled = true;
 
@@ -231,10 +241,12 @@ namespace Notpod
             textDeviceName.Enabled = false;
             comboSyncPatterns.Enabled = false;
             textMediaRoot.Enabled = false;
-            textRecognizePattern.Enabled = false;
+            labelLinked.Text = "Not linked. Click button to link ->";
+            labelLinked.Enabled = false;
             comboAssociatePlaylist.Enabled = false;
 
             buttonBrowseMediaRoot.Enabled = false;
+            buttonCreateUniqueFile.Text= "Link to drive...";
             buttonCreateUniqueFile.Enabled = false;
             buttonDelete.Enabled = false;
             buttonSave.Enabled = false;
@@ -280,7 +292,6 @@ namespace Notpod
 
             textDeviceName.Text = "";
             textMediaRoot.Text = "";
-            textRecognizePattern.Text = "";
             comboSyncPatterns.SelectedIndex = 0;
             comboAssociatePlaylist.SelectedIndex = 0;
         }
@@ -329,7 +340,7 @@ namespace Notpod
             string deviceName = textDeviceName.Text;
             string syncPattern = (string)comboSyncPatterns.SelectedItem;
             string mediaroot = textMediaRoot.Text;
-            string recognizePattern = textRecognizePattern.Text;
+            string recognizePattern = selectedDeviceConfigLinkFile;
             string associatedPlaylist = (string)comboAssociatePlaylist.SelectedItem;
                         
             if (deviceName.Length == 0)
@@ -549,7 +560,9 @@ namespace Notpod
             if (String.IsNullOrEmpty(textDeviceName.Text))
             {
                 MessageBox.Show(this, "You need to give your device a name " +
-                    "before I can auto-generate the file to recognize it by.",
+                    "before I can link it to a drive.\n\nWhy? I use the device name "+ 
+                    "to create a unique file on your device that I will use to recognize "+
+                    "your device the next time you connect it to your computer. Clever, right?",
                     "Please enter device name", MessageBoxButtons.OK,
                     MessageBoxIcon.Information);
                 return;
@@ -557,7 +570,8 @@ namespace Notpod
 
 
             FolderBrowserDialog dlg = new FolderBrowserDialog();
-            dlg.Description = "Select a folder in which you want the file to be created.";
+            dlg.RootFolder = Environment.SpecialFolder.MyComputer;
+            dlg.Description = "Select the removable drive and folder you want to link with.";
             if (dlg.ShowDialog() == DialogResult.Cancel)
                 return;
 
@@ -573,7 +587,7 @@ namespace Notpod
             try
             {
                 File.Create(folder + "\\" + fileName);
-                textRecognizePattern.Text = folder.Substring(3) + "\\" + fileName;
+                selectedDeviceConfigLinkFile = folder.Substring(3) + "\\" + fileName;
             }
             catch (Exception ex)
             {
