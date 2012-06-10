@@ -798,7 +798,7 @@ namespace Notpod
         /// </summary>
         /// <param name="drive"></param>
         /// <returns></returns>
-        private bool CheckIfiTunesLibrary(string drive) 
+        public bool CheckIfiTunesLibrary(string drive) 
         {
             string libraryPath = itunes.LibraryXMLPath;
             if(libraryPath == null) 
@@ -806,12 +806,25 @@ namespace Notpod
                 return false;
             }
             
-            libraryPath = libraryPath.Substring(3, libraryPath.LastIndexOf("\\")-3);
+            /*if(libraryPath.StartsWith("\\")) 
+            {
+                libraryPath = libraryPath.Substring(2, libraryPath.LastIndexOf("\\")-2);
+            } 
+            else 
+            {*/                
+                libraryPath = libraryPath.Substring(3, libraryPath.LastIndexOf("\\")-3);
+            //}
+            
             DirectoryInfo di = new DirectoryInfo(drive + "\\" + libraryPath);
             return di.Exists;
             
         }
 
+        public iTunesApp iTunesApp {
+            
+            set { this.itunes = value; }
+            get { return this.itunes; }
+        }
  
     }
 }
