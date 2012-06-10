@@ -825,7 +825,6 @@ namespace Notpod
                 libraryPath = libraryPath.Substring(3);
             }
             
-            l.Debug("After truncation: " + libraryPath);
             FileInfo fi = new FileInfo(drive + "\\" + libraryPath);
             return fi.Exists;
             
