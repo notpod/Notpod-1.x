@@ -352,7 +352,7 @@ namespace Notpod
                 foreach (IITPlaylist pl in playlist)
                 {
                     if (configuration.UseListFolder && (pl.Kind == ITPlaylistKind.ITPlaylistKindUser)
-                        && (device.Playlist == null || device.Playlist.Length == 0))
+                        && (device.Playlists == null || device.Playlists.Length == 0))
                     {
                         CreateMyDevicesFolder();
                         object parent = (object)folderMyDevices;
@@ -371,7 +371,7 @@ namespace Notpod
         private List<IITPlaylist> PlaylistExists(Device device)
         {
 
-            string playlistDelimString = (device.Playlist == null || device.Playlist.Length == 0) ? device.Name : device.Playlist;
+            string playlistDelimString = (device.Playlists == null || device.Playlists.Length == 0) ? device.Name : device.Playlists;
 
             List<string> aplList = new List<string>(playlistDelimString.Split('|'));
             List<IITPlaylist> aplIIT = new List<IITPlaylist>();

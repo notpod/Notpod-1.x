@@ -43,6 +43,7 @@ namespace Notpod
             this.textMediaRoot = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupDeviceInformation = new System.Windows.Forms.GroupBox();
+            this.cbCreateDevicePlaylist = new System.Windows.Forms.CheckBox();
             this.clbAssociatedWith = new System.Windows.Forms.CheckedListBox();
             this.labelLinked = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -201,6 +202,7 @@ namespace Notpod
             // 
             // groupDeviceInformation
             // 
+            this.groupDeviceInformation.Controls.Add(this.cbCreateDevicePlaylist);
             this.groupDeviceInformation.Controls.Add(this.clbAssociatedWith);
             this.groupDeviceInformation.Controls.Add(this.labelLinked);
             this.groupDeviceInformation.Controls.Add(this.buttonCreateUniqueFile);
@@ -222,12 +224,24 @@ namespace Notpod
             this.groupDeviceInformation.TabStop = false;
             this.groupDeviceInformation.Text = "Device information";
             // 
+            // cbCreateDevicePlaylist
+            // 
+            this.cbCreateDevicePlaylist.CheckAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.cbCreateDevicePlaylist.Location = new System.Drawing.Point(144, 263);
+            this.cbCreateDevicePlaylist.Name = "cbCreateDevicePlaylist";
+            this.cbCreateDevicePlaylist.Size = new System.Drawing.Size(347, 35);
+            this.cbCreateDevicePlaylist.TabIndex = 17;
+            this.cbCreateDevicePlaylist.Text = "... also create a playlist with the same name as this device and associate with i" +
+            "t.";
+            this.cbCreateDevicePlaylist.TextAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.cbCreateDevicePlaylist.UseVisualStyleBackColor = true;
+            // 
             // clbAssociatedWith
             // 
             this.clbAssociatedWith.FormattingEnabled = true;
             this.clbAssociatedWith.Location = new System.Drawing.Point(140, 119);
             this.clbAssociatedWith.Name = "clbAssociatedWith";
-            this.clbAssociatedWith.Size = new System.Drawing.Size(353, 169);
+            this.clbAssociatedWith.Size = new System.Drawing.Size(353, 139);
             this.clbAssociatedWith.TabIndex = 16;
             // 
             // labelLinked
@@ -245,9 +259,9 @@ namespace Notpod
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(6, 119);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(112, 13);
+            this.label5.Size = new System.Drawing.Size(117, 13);
             this.label5.TabIndex = 12;
-            this.label5.Text = "Associate with playlist:";
+            this.label5.Text = "Associate with playlists:";
             // 
             // buttonDelete
             // 
@@ -331,6 +345,7 @@ namespace Notpod
             this.listDevices.UseCompatibleStateImageBehavior = false;
             this.listDevices.View = System.Windows.Forms.View.Details;
             this.listDevices.ItemActivate += new System.EventHandler(this.listDevices_ItemActivate);
+            this.listDevices.SelectedIndexChanged += new System.EventHandler(this.ListDevicesSelectedIndexChanged);
             // 
             // columnName
             // 
@@ -381,6 +396,7 @@ namespace Notpod
             this.groupDeviceInformation.PerformLayout();
             this.ResumeLayout(false);
         }
+        private System.Windows.Forms.CheckBox cbCreateDevicePlaylist;
         private System.Windows.Forms.CheckedListBox clbAssociatedWith;
         private System.Windows.Forms.Label labelLinked;
 

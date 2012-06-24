@@ -178,21 +178,14 @@ namespace Notpod
                 }
 
                 //Set selected associated playlist.
-                clbAssociatedWith.SelectedIndex = 0;
-                if (device.Playlist != null && device.Playlist.Length > 0)
-                {
-
-                    foreach (string playlist in clbAssociatedWith.Items)
-                    {
-                        if (playlist == device.Playlist)
-                        {
-                            clbAssociatedWith.SelectedItem = playlist;
-                        }
-                    }
-
-
+                clbAssociatedWith.SelectedItems.Clear();
+                
+                string[] associatedPlaylistNames = device.Playlists.Split(',');
+                foreach(string playlistName in associatedPlaylistNames) {
+                    
+                    // TODO add checking of associated playlists and marking them selected.
                 }
-
+                
                 break;
             }
 
@@ -330,7 +323,7 @@ namespace Notpod
             string syncPattern = (string)comboSyncPatterns.SelectedItem;
             string mediaroot = textMediaRoot.Text;
             string recognizePattern = selectedDeviceConfigLinkFile;
-            string associatedPlaylist = (string)clbAssociatedWith.SelectedItem;
+            bool hasAssociatedPlaylist = (cbCreateDevicePlaylist.Checked || clbAssociatedWith.SelectedItems.Count > 0);
                         
             if (deviceName.Length == 0)
             {
@@ -350,13 +343,25 @@ namespace Notpod
                 return;
             }
             
-            
+            if (hasAssociatedPlaylist)
+            {
+                MessageBox.Show(this, "Please select at least one playist to associate your device with, or check the box for creating a playlist with the same name as your device.", 
+                                "Missing information", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
                         
             Device newDevice = new Device();
             newDevice.Name = deviceName;
             newDevice.MediaRoot = mediaroot;
             newDevice.RecognizePattern = recognizePattern;
-            newDevice.Playlist = (associatedPlaylist == "Use device name..." ? "" : associatedPlaylist);
+            
+            string playlistsString = "";
+            foreach(string playlist in clbAssociatedWith.SelectedItems) {
+                
+                playlistsString += playlist.Replace(",", "%COMMA%") + ",";
+            }
+            
+            newDevice.Playlists = playlistsString;
             foreach (SyncPattern sp in deviceConfiguration.SyncPattern)
             {
                 if (sp.Name != syncPattern)
@@ -392,7 +397,7 @@ namespace Notpod
                     device.MediaRoot = newDevice.MediaRoot;
                     device.RecognizePattern = newDevice.RecognizePattern;
                     device.SyncPattern = newDevice.SyncPattern;
-                    device.Playlist = newDevice.Playlist;
+                    device.Playlists = newDevice.Playlists;
 
                     break;
                 }
@@ -595,5 +600,10 @@ namespace Notpod
             SaveConfiguration();
         }
 
+        
+        void ListDevicesSelectedIndexChanged(object sender, EventArgs e)
+        {
+            
+        }
     }
 }

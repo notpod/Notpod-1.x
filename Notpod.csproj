@@ -144,6 +144,7 @@
     <Compile Include="AboutBox.Designer.cs">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="ConfigurationUtils.cs" />
     <Compile Include="DefaultITunesAppFactory.cs" />
     <Compile Include="ITunesAppFactory.cs" />
     <Compile Include="MainFormTest.cs" />
