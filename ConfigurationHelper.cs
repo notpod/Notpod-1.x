@@ -184,6 +184,11 @@ namespace Notpod
             l.Info("Determining likely pre Notpod data path from \"" + dataPath + "\".");
             
             int corpIndex = dataPath.IndexOf("Jaran Nilsen");
+            if(corpIndex == -1) {
+            	
+            	return dataPath;
+            } 
+            
             string pathBeforeCorp = dataPath.Substring(0, corpIndex);
             pathBeforeCorp += "Jaran Nilsen\\iTunes Agent";
             
@@ -221,7 +226,11 @@ namespace Notpod
         /// <returns></returns>
         public static String GetAppDataPath()
         {
+        	#if DEBUG
+        	string original = Application.StartupPath + "\\";
+        	#else
             string original = Application.UserAppDataPath;
+            #endif
             return original.Substring(0, original.LastIndexOf("\\"));
         }
     }

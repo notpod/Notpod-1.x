@@ -144,6 +144,9 @@
     <Compile Include="AboutBox.Designer.cs">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="DefaultITunesAppFactory.cs" />
+    <Compile Include="ITunesAppFactory.cs" />
+    <Compile Include="MainFormTest.cs" />
     <Compile Include="SyncPatternCollection.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="CDMEventArgs.cs" />
@@ -223,13 +226,13 @@
     <Compile Include="SyncPattern.cs" />
     <Compile Include="SyncPatternTranslator.cs" />
     <Compile Include="SyncPatternTranslatorTest.cs" />
-    <None Include="Resources\syncpatterns.xml" />
+    <None Include="Resources\syncpatterns.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="DeviceConfiguration.xsd" />
     <None Include="ItaConfiguration.xsd" />
-    <None Include="Resources\ita48x48.png" />
-    <None Include="Resources\about-img.png" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -267,7 +270,9 @@
     <None Include="Resources\help.png" />
     <Content Include="Resources\ita-config.xml" />
     <None Include="Resources\ita-new.ico" />
-    <None Include="Resources\logging.xml" />
+    <None Include="Resources\logging.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

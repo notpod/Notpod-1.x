@@ -1,6 +1,6 @@
 # Installer script for Notpod
 !define PRODUCT_NAME "Notpod"
-!define PRODUCT_VERSION "1.4.1"
+!define PRODUCT_VERSION "1.5"
 !define MUI_ABORTWARNING
 !define MUI_ICON ".\Resources\ita-new.ico"
 !define MUI_UNICON ".\Resources\ita-new.ico"
@@ -43,10 +43,13 @@ BrandingText "${PRODUCT_NAME}"
         SetOutPath "$INSTDIR"
         File "bin\Release\Notpod.exe"
         File "bin\Release\log4net.dll"
-        File "bin\Release\logging.xml"
         File "bin\Release\Interop.iTunesLib.dll"
         File "LICENSE.TXT"
-        createShortCut "$SMPROGRAMS\${PRODUCT_NAME}\${PRODUCT_NAME}.lnk" "$INSTDIR\${PRODUCT_NAME}.exe"
+        SetOutPath "$INSTDIR\Resources"
+		File "bin\Release\Resources\logging.xml"
+		File "bin\Release\Resources\syncpatterns.xml"
+		
+		createShortCut "$SMPROGRAMS\${PRODUCT_NAME}\${PRODUCT_NAME}.lnk" "$INSTDIR\${PRODUCT_NAME}.exe"
         createShortCut "$SMPROGRAMS\${PRODUCT_NAME}\Uninstall.lnk" "$INSTDIR\uninstaller.exe"
         
         # define uninstaller name
@@ -62,9 +65,10 @@ BrandingText "${PRODUCT_NAME}"
     # now delete installed file
     delete $INSTDIR\Notpod.exe
     delete $INSTDIR\log4net.dll
-    delete $INSTDIR\logging.xml
+    delete $INSTDIR\Resources\logging.xml
+	delete $INSTDIR\Resources\syncpatterns.xml
     delete $INSTDIR\LICENSE.txt
-	delete $INSTDIR\icherrymm.log
+	delete $INSTDIR\notpod.log
 	delete $INSTDIR\Interop.iTunesLib.dll
 	delete $INSTDIR
 

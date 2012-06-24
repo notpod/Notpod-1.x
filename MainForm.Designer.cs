@@ -39,6 +39,7 @@ namespace Notpod
         	this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
         	this.ctxTraySynchronize = new System.Windows.Forms.ToolStripMenuItem();
         	this.timerDriveListUpdate = new System.Windows.Forms.Timer(this.components);
+        	this.ctxTrayReportBug = new System.Windows.Forms.ToolStripMenuItem();
         	this.contextTray.SuspendLayout();
         	this.SuspendLayout();
         	// 
@@ -58,18 +59,19 @@ namespace Notpod
         	this.contextTray.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
         	        	        	this.ctxTrayPreferences,
         	        	        	this.ctxTrayHelp,
+        	        	        	this.ctxTrayReportBug,
         	        	        	this.ctxTrayAbout,
         	        	        	this.toolStripSeparator4,
         	        	        	this.ctxTrayExit,
         	        	        	this.toolStripSeparator2,
         	        	        	this.ctxTraySynchronize});
         	this.contextTray.Name = "contextTray";
-        	this.contextTray.Size = new System.Drawing.Size(210, 126);
+        	this.contextTray.Size = new System.Drawing.Size(199, 148);
         	// 
         	// ctxTrayPreferences
         	// 
         	this.ctxTrayPreferences.Name = "ctxTrayPreferences";
-        	this.ctxTrayPreferences.Size = new System.Drawing.Size(209, 22);
+        	this.ctxTrayPreferences.Size = new System.Drawing.Size(198, 22);
         	this.ctxTrayPreferences.Text = "&Preferences...";
         	this.ctxTrayPreferences.Click += new System.EventHandler(this.ctxTrayPreferences_Click);
         	// 
@@ -77,40 +79,40 @@ namespace Notpod
         	// 
         	this.ctxTrayHelp.Image = global::Notpod.Properties.Resources.help;
         	this.ctxTrayHelp.Name = "ctxTrayHelp";
-        	this.ctxTrayHelp.Size = new System.Drawing.Size(209, 22);
+        	this.ctxTrayHelp.Size = new System.Drawing.Size(198, 22);
         	this.ctxTrayHelp.Text = "&Online help...";
         	this.ctxTrayHelp.Click += new System.EventHandler(this.ctxTrayHelp_Click);
         	// 
         	// ctxTrayAbout
         	// 
         	this.ctxTrayAbout.Name = "ctxTrayAbout";
-        	this.ctxTrayAbout.Size = new System.Drawing.Size(209, 22);
+        	this.ctxTrayAbout.Size = new System.Drawing.Size(198, 22);
         	this.ctxTrayAbout.Text = "&About Notpod";
         	this.ctxTrayAbout.Click += new System.EventHandler(this.ctxTrayAbout_Click);
         	// 
         	// toolStripSeparator4
         	// 
         	this.toolStripSeparator4.Name = "toolStripSeparator4";
-        	this.toolStripSeparator4.Size = new System.Drawing.Size(206, 6);
+        	this.toolStripSeparator4.Size = new System.Drawing.Size(195, 6);
         	// 
         	// ctxTrayExit
         	// 
         	this.ctxTrayExit.Image = global::Notpod.Properties.Resources.exit;
         	this.ctxTrayExit.Name = "ctxTrayExit";
-        	this.ctxTrayExit.Size = new System.Drawing.Size(209, 22);
+        	this.ctxTrayExit.Size = new System.Drawing.Size(198, 22);
         	this.ctxTrayExit.Text = "E&xit";
         	this.ctxTrayExit.Click += new System.EventHandler(this.ctxTrayExit_Click);
         	// 
         	// toolStripSeparator2
         	// 
         	this.toolStripSeparator2.Name = "toolStripSeparator2";
-        	this.toolStripSeparator2.Size = new System.Drawing.Size(206, 6);
+        	this.toolStripSeparator2.Size = new System.Drawing.Size(195, 6);
         	// 
         	// ctxTraySynchronize
         	// 
         	this.ctxTraySynchronize.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
         	this.ctxTraySynchronize.Name = "ctxTraySynchronize";
-        	this.ctxTraySynchronize.Size = new System.Drawing.Size(209, 22);
+        	this.ctxTraySynchronize.Size = new System.Drawing.Size(198, 22);
         	this.ctxTraySynchronize.Text = "&Synchronize devices...";
         	this.ctxTraySynchronize.Click += new System.EventHandler(this.ctxTraySynchronize_Click);
         	// 
@@ -118,6 +120,13 @@ namespace Notpod
         	// 
         	this.timerDriveListUpdate.Interval = 3000;
         	this.timerDriveListUpdate.Tick += new System.EventHandler(this.timerDriveListUpdate_Tick);
+        	// 
+        	// ctxTrayReportBug
+        	// 
+        	this.ctxTrayReportBug.Name = "ctxTrayReportBug";
+        	this.ctxTrayReportBug.Size = new System.Drawing.Size(198, 22);
+        	this.ctxTrayReportBug.Text = "Report bug...";
+        	this.ctxTrayReportBug.Click += new System.EventHandler(this.ctxTrayReportBug_Click);
         	// 
         	// MainForm
         	// 
@@ -135,6 +144,7 @@ namespace Notpod
         	this.contextTray.ResumeLayout(false);
         	this.ResumeLayout(false);
         }
+        private System.Windows.Forms.ToolStripMenuItem ctxTrayReportBug;
 
         #endregion
 

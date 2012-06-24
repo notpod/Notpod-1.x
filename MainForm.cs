@@ -34,6 +34,8 @@ namespace Notpod
         /// </summary>
         public static readonly string DATA_PATH = ConfigurationHelper.GetAppDataPath();
 
+        private ITunesAppFactory itunesAppFactory = new DefaultITunesAppFactory();
+        
         private iTunesApp itunes;
         private IITUserPlaylist folderMyDevices;
         private IConnectedDevicesManager connectedDevices;
@@ -61,6 +63,8 @@ namespace Notpod
         /// <param name="e">Event arguments</param>
         private void MainForm_Load(object sender, EventArgs e)
         {
+            
+            l.Info("Notpod is initializing...");
 
             this.Visible = false;
 
@@ -165,12 +169,12 @@ namespace Notpod
         private void LoadSyncPatterns() {
             
             //Load devices that the agent recognizes
-            StringReader stream = null;
+            StreamReader stream = null;
             XmlTextReader reader = null;
             try
             {
                 XmlSerializer serializer = new XmlSerializer(typeof(SyncPatternCollection));
-                stream = new StringReader(Resources.syncpatterns);
+                stream = new StreamReader(Application.StartupPath + "\\Resources\\syncpatterns.xml");
                 reader = new XmlTextReader(stream);
 
                 syncPatterns = (SyncPatternCollection)serializer.Deserialize(reader);
@@ -180,8 +184,8 @@ namespace Notpod
             {
                 l.Error(ex);
 
-                MessageBox.Show("Unable to load available organization patterns.\n\nReason for failure: " + ex.Message,
-                    "Missing list of devices", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Unable to load available synchronize patterns.\n\nReason for failure: " + ex.Message,
+                    "Missing synchronize patterns", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Application.Exit();
             }
             finally
@@ -244,7 +248,7 @@ namespace Notpod
 
                 try
                 {
-                    itunes = new iTunesAppClass();
+                    SetITunesInstance();
                     string version = itunes.Version;
                     SetStatusMessage("Notpod", "I have found iTunes (" + version
                         + ") on your computer and I am ready to synchronize your devices.",
@@ -272,6 +276,11 @@ namespace Notpod
             }
 
             return true;
+        }
+        
+        public void SetITunesInstance() {
+                        
+            itunes = itunesAppFactory.GetNewInstance();
         }
 
         /// <summary>
@@ -561,13 +570,31 @@ namespace Notpod
                 string drive = (string)keys.Current;
                 Device device = (Device)deviceinfo[keys.Current];
                 
+                DriveInfo driveInfo = new DriveInfo(drive);
+                if(driveInfo.DriveType == DriveType.Fixed) {
+                    
+                    l.Warn(String.Format("Detected fixed drive for {0} ({1}).", device.Name, drive));
+                    
+                    DialogResult choice = MessageBox.Show("The device '" + device.Name
+                        + "' is mapping to a fixed hard drive in your computer, not a removable storage. The drive currently associated"
+                        + " with this device is:\n\n\t" + drive + "\n\nIf you are sure this is "
+                        + "correct, you may continue. If you are unsure, or have misconfigured, "
+                        + "you should click 'Cancel' and make sure your device configuration is "
+                        + "correct before attempting a new synchronization.\n\nAre you sure you "
+                        + "want to continue?",
+                    "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+
+                    if (choice == DialogResult.Cancel)
+                        return false;
+                }
+                
                 if (CheckIfSystemDrive(drive))
                 {
                     l.Warn(String.Format("Detected possible system drive for {0} ({1}).", device.Name, drive));
                     
                     DialogResult choice = MessageBox.Show("The device '" + device.Name
-                        + "' may reference a system hard drive. The drive currently associated"
-                        + " with this device is: " + drive + "\n\nIf you are sure this is "
+                        + "' looks like it's mapping to a system hard drive. The drive currently associated"
+                        + " with this device is:\n\n\t" + drive + "\n\nIf you are sure this is "
                         + "correct, you may continue. If you are unsure, or have misconfigured, "
                         + "you should click 'Cancel' and make sure your device configuration is "
                         + "correct before attempting a new synchronization.\n\nAre you sure you "
@@ -585,8 +612,8 @@ namespace Notpod
                                          device.Name, drive));
                     
                     DialogResult choice = MessageBox.Show("The device '" + device.Name
-                        + "' may reference your local iTunes library. The drive currently associated"
-                        + " with this device is: " + drive + "\n\nIf you are sure this is "
+                        + "' looks like it's mapping to your local iTunes library. The drive currently associated"
+                        + " with this device is:\n\n\t" + drive + "\n\nIf you are sure this is "
                         + "correct, you may continue. If you are unsure, or have misconfigured, "
                         + "you should click 'Cancel' and make sure your device configuration is correct "
                         + "before attempting a new synchronization.\n\nAre you sure you want to continue?",
@@ -758,6 +785,14 @@ namespace Notpod
             info.Verb = "open";
             Process.Start(info);
         }
+        
+        private void ctxTrayReportBug_Click(object sender, EventArgs e)
+        {
+            //Open URL in default browser
+            ProcessStartInfo info = new ProcessStartInfo("https://github.com/notpod/Notpod-1.x/issues/new");
+            info.Verb = "open";
+            Process.Start(info);
+        }
 
         /// <summary>
         /// Event handler for the tray context menu "Preferences..."
@@ -799,19 +834,37 @@ namespace Notpod
         /// </summary>
         /// <param name="drive"></param>
         /// <returns></returns>
-        private bool CheckIfiTunesLibrary(string drive) 
+        public bool CheckIfiTunesLibrary(string drive) 
         {
             string libraryPath = itunes.LibraryXMLPath;
-            if(libraryPath == null) 
+            
+            l.Debug("LibraryXMLPath: " + libraryPath);
+            
+            if(libraryPath == null)
             {
                 return false;
             }
             
-            libraryPath = libraryPath.Substring(3, libraryPath.LastIndexOf("\\")-3);
-            DirectoryInfo di = new DirectoryInfo(drive + "\\" + libraryPath);
-            return di.Exists;
+            if(libraryPath.StartsWith("\\\\"))  // network drive
+            {
+                libraryPath = libraryPath.Substring(2);
+            } 
+            else 
+            {                
+                libraryPath = libraryPath.Substring(3);
+            }
+            
+            FileInfo fi = new FileInfo(drive + "\\" + libraryPath);
+            return fi.Exists;
             
         }
 
+        public ITunesAppFactory ITunesAppFactory {
+            
+            set { this.itunesAppFactory = value; }
+            get { return this.itunesAppFactory; } 
+            
+        }
+ 
     }
 }

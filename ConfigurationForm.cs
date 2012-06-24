@@ -29,6 +29,8 @@ namespace Notpod
 
         private bool deviceConfigurationChanged = false;
         private bool configurationChanged = false;
+        
+        private String selectedDeviceConfigLinkFile = null;
 
         /// <summary>
         /// Create a new instance of configuration form.
@@ -88,9 +90,10 @@ namespace Notpod
                             && pl.Kind != ITPlaylistKind.ITPlaylistKindDevice
                             && pl.Kind != ITPlaylistKind.ITPlaylistKindCD
                             && pl.Visible)
-                            clbAssocPlaylist.Items.Add(pl.Name);
+                            comboAssociatePlaylist.Items.Add(pl.Name);
                     }
 
+                    comboAssociatePlaylist.SelectedIndex = 0;
                     retry = false;
                 }
                 catch (COMException comex)
@@ -100,7 +103,7 @@ namespace Notpod
                     if (MessageBox.Show(this, "An error occured while getting the list of playlists from iTunes. This may be because iTunes is busy. Do you want to retry?\n\n(" + comex.Message + ")", "Communication error", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
                     {
                         retry = true;
-                        clbAssocPlaylist.Items.Clear();
+                        comboAssociatePlaylist.Items.Clear();
                     }
                     else
                     {
@@ -158,7 +161,13 @@ namespace Notpod
 
                 textDeviceName.Text = device.Name;
                 textMediaRoot.Text = device.MediaRoot;
-                textRecognizePattern.Text = device.RecognizePattern;
+
+                this.selectedDeviceConfigLinkFile = device.RecognizePattern;
+                if(!String.IsNullOrWhiteSpace(selectedDeviceConfigLinkFile)) {
+                    
+                    labelLinked.Text = "Linked.";
+                    buttonCreateUniqueFile.Text = "Update link...";
+                }
 
                 foreach (SyncPattern pattern in deviceConfiguration.SyncPattern)
                 {
@@ -179,25 +188,20 @@ namespace Notpod
                     break;
                 }
 
-                uncheckAllAssocPlaylists();
-
                 //Set selected associated playlist.
+                comboAssociatePlaylist.SelectedIndex = 0;
                 if (device.Playlist != null && device.Playlist.Length > 0)
                 {
-                    List<string> aplList = new List<string>(device.Playlist.Split('|'));
 
-
-                    for (int i = 0; i < aplList.Count; i++)
+                    foreach (string playlist in comboAssociatePlaylist.Items)
                     {
-                        for (int j = 0; j < clbAssocPlaylist.Items.Count; j++)
+                        if (playlist == device.Playlist)
                         {
-                            if (aplList[i] == clbAssocPlaylist.Items[j].ToString())
-                            {
-                                clbAssocPlaylist.SetItemChecked(j, true);
-                                break;
-                            }
+                            comboAssociatePlaylist.SelectedItem = playlist;
                         }
                     }
+
+
                 }
 
                 break;
@@ -215,15 +219,17 @@ namespace Notpod
                 textDeviceName.Enabled = true;
             comboSyncPatterns.Enabled = true;
             textMediaRoot.Enabled = true;
-            textRecognizePattern.Enabled = true;
-            clbAssocPlaylist.Enabled = true;
+            labelLinked.Text = "Not linked. Click button to link ->";
+            labelLinked.Enabled = false;
+            comboAssociatePlaylist.Enabled = true;
 
             if (!forNewDevice)
                 buttonDelete.Enabled = true;
             buttonSave.Enabled = true;
             buttonBrowseMediaRoot.Enabled = true;
+            buttonCreateUniqueFile.Text= "Link to drive...";
             buttonCreateUniqueFile.Enabled = true;
-            clbAssocPlaylist.Enabled = true;
+            comboAssociatePlaylist.Enabled = true;
 
         }
 
@@ -235,14 +241,16 @@ namespace Notpod
             textDeviceName.Enabled = false;
             comboSyncPatterns.Enabled = false;
             textMediaRoot.Enabled = false;
-            textRecognizePattern.Enabled = false;
-            clbAssocPlaylist.Enabled = false;
+            labelLinked.Text = "Not linked. Click button to link ->";
+            labelLinked.Enabled = false;
+            comboAssociatePlaylist.Enabled = false;
 
             buttonBrowseMediaRoot.Enabled = false;
+            buttonCreateUniqueFile.Text= "Link to drive...";
             buttonCreateUniqueFile.Enabled = false;
             buttonDelete.Enabled = false;
             buttonSave.Enabled = false;
-            clbAssocPlaylist.Enabled = false;
+            comboAssociatePlaylist.Enabled = false;
         }
 
         private void comboSyncPatterns_SelectedIndexChanged(object sender, EventArgs e)
@@ -284,10 +292,8 @@ namespace Notpod
 
             textDeviceName.Text = "";
             textMediaRoot.Text = "";
-            textRecognizePattern.Text = "";
             comboSyncPatterns.SelectedIndex = 0;
-            uncheckAllAssocPlaylists();
-            listDevices.SelectedItems.Clear();
+            comboAssociatePlaylist.SelectedIndex = 0;
         }
 
         /// <summary>
@@ -334,16 +340,9 @@ namespace Notpod
             string deviceName = textDeviceName.Text;
             string syncPattern = (string)comboSyncPatterns.SelectedItem;
             string mediaroot = textMediaRoot.Text;
-            string recognizePattern = textRecognizePattern.Text;
-            List<string> aplList = new List<string>();
-            string associatedPlaylist;
-
-            foreach (string pl in clbAssocPlaylist.CheckedItems)
-            {
-                aplList.Add(pl);
-            }
-            associatedPlaylist = string.Join("|", aplList.ToArray());
-            
+            string recognizePattern = selectedDeviceConfigLinkFile;
+            string associatedPlaylist = (string)comboAssociatePlaylist.SelectedItem;
+                        
             if (deviceName.Length == 0)
             {
                 MessageBox.Show(this, "Please enter a name for the device.", "Missing information", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
@@ -362,7 +361,8 @@ namespace Notpod
                 return;
             }
             
-
+            
+                        
             Device newDevice = new Device();
             newDevice.Name = deviceName;
             newDevice.MediaRoot = mediaroot;
@@ -560,7 +560,9 @@ namespace Notpod
             if (String.IsNullOrEmpty(textDeviceName.Text))
             {
                 MessageBox.Show(this, "You need to give your device a name " +
-                    "before I can auto-generate the file to recognize it by.",
+                    "before I can link it to a drive.\n\nWhy? I use the device name "+ 
+                    "to create a unique file on your device that I will use to recognize "+
+                    "your device the next time you connect it to your computer. Clever, right?",
                     "Please enter device name", MessageBoxButtons.OK,
                     MessageBoxIcon.Information);
                 return;
@@ -568,7 +570,8 @@ namespace Notpod
 
 
             FolderBrowserDialog dlg = new FolderBrowserDialog();
-            dlg.Description = "Select a folder in which you want the file to be created.";
+            dlg.RootFolder = Environment.SpecialFolder.MyComputer;
+            dlg.Description = "Select the removable drive and folder you want to link with.";
             if (dlg.ShowDialog() == DialogResult.Cancel)
                 return;
 
@@ -584,7 +587,7 @@ namespace Notpod
             try
             {
                 File.Create(folder + "\\" + fileName);
-                textRecognizePattern.Text = folder.Substring(3) + "\\" + fileName;
+                selectedDeviceConfigLinkFile = folder.Substring(3) + "\\" + fileName;
             }
             catch (Exception ex)
             {
@@ -607,12 +610,5 @@ namespace Notpod
             buttonOK.Enabled = true;
         }
 
-        private void uncheckAllAssocPlaylists()
-        {
-            for (int i = 0; i < clbAssocPlaylist.Items.Count; i++)
-            {
-                clbAssocPlaylist.SetItemChecked(i, false);
-            }
-        }
     }
 }

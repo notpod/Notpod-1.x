@@ -1,22 +1,30 @@
-Notpod Installation Notes
+Installation Notes
 ===============================
 
-PLEASE NOTE: THIS IS A BETA VERSION OF Notpod! Please back up your configuration before continuing.
+PLEASE NOTE: THIS IS A BETA VERSION OF NOTPOD AND SHOULD BE USED FOR TESTING PURPOSES ONLY. Remember to always back up your important files and data. Thanks for helping out with the testing!
 
-Thank you for test driving Notpod. Please read these few lines carefully before continuing.
+Thanks for choosing Notpod! Please make sure you read this file carefully, as it does in fact contain important information.
 
-IMPORTANT: Before starting to use Notpod with your device, it should NOT contain any music files. This will ensure that the device is properly synchronized. Any music files on the device, in the configured music folder, will be deleted at first synchronization unless their name match one of the tracks you put in the playlist for the device.
+Noteworthy changes in this version: 
 
-Notpod installations downloaded from http://www.notpod.com are guaranteed virus, spyware and adware free. 
+* Several new synchronize patterns have been added. These are now available when editing your device configurations.
+* Synchronize patterns have been moved away from the device-config.xml file to simplify adding of new patterns in the future. PLEASE NOTE that any custom patterns in the existing device-config.xml file will be lost upon upgrade.
+* New "Report bug" menu item for easy reporting of bugs via the Notpod issue tracker on Github.
+* Album artist is now supported in several sync patterns.
+* Added support for %ARTISTINITIAL% macro in sync patterns.
+* Fixed icon in synchronize status window.
 
-Please make sure to visit http://www.notpod.com frequently to check for updates and stay tuned with the development status.
+Source code for Notpod is available from http://www.notpod.com
 
-Have problems with the application? Have you found a bug? Please report these issues on the Notpod Help Forums. We would also like to hear from you if you have a device which is compatible with Notpod, but is not listed in the default device configuration.
+Please ensure you always back up your music library and other important files on your computer. Before continuing with this installation, please make sure you save any open files to prevent loss of data in case a computer reboot is necessary. It's always important to back up both your computer and portable devices.
 
-IMPORTANT! Before you start using Notpod, make sure you have done the following:
-* Always backup important data on your portable devices. The Notpod development team is not responsible for any data loss due to use of Notpod. 
+Notpod (the Application) is distributed "as is", and the Application's developer or the Producer and Distributor of any media player used with the Application takes no responsiblity for damages or lost files due to the use of the Application. If uncertain about proper use of the Application, please refer to the Application website at http://www.notpod.com.
 
-PLEASE NOTE: This is a TEST VERSION of Notpod. It may contain errors and unwanted behaviour - make sure your data is properly backed up. This version of Notpod should only be used for testing purposes. Feedback and bug reports can be reported on the Notpod project pages at http://www.notpod.com.
+Before starting to use the the Application with your device, it should not contain any music files. This will ensure that the device is properly synchronized. Any music files on the device, in the configured music folder, will be deleted at first synchronization unless their name match one of the tracks you put in the playlist for the device.
 
-- The Notpod development team.
+Please make sure to visit http://www.notpod.com frequently to check for updates.
+
+The Application, the website http://www.notpod.com and the Application developers are not in any way supported by, or associated with, Apple Computer Inc. (http://www.apple.com) - or any other device or media software manufacturer that Notpod may be distributed by or used with.
+
+Thank you for choosing to use Notpod. We hope you will enjoy synchronizing your music library to your portable media device.
 
