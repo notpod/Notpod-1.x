@@ -62,7 +62,6 @@ namespace Notpod
                         MessageBoxIcon.Exclamation);
 
                     deviceConfigurationChanged = true;
-                    buttonOK.Enabled = true;
                     deviceConfiguration.RemoveDevice(device);
                     continue;
                 }
@@ -90,10 +89,10 @@ namespace Notpod
                             && pl.Kind != ITPlaylistKind.ITPlaylistKindDevice
                             && pl.Kind != ITPlaylistKind.ITPlaylistKindCD
                             && pl.Visible)
-                            comboAssociatePlaylist.Items.Add(pl.Name);
+                            clbAssociatedWith.Items.Add(pl.Name);
                     }
 
-                    comboAssociatePlaylist.SelectedIndex = 0;
+                    clbAssociatedWith.SelectedIndex = 0;
                     retry = false;
                 }
                 catch (COMException comex)
@@ -103,7 +102,7 @@ namespace Notpod
                     if (MessageBox.Show(this, "An error occured while getting the list of playlists from iTunes. This may be because iTunes is busy. Do you want to retry?\n\n(" + comex.Message + ")", "Communication error", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
                     {
                         retry = true;
-                        comboAssociatePlaylist.Items.Clear();
+                        clbAssociatedWith.Items.Clear();
                     }
                     else
                     {
@@ -115,16 +114,6 @@ namespace Notpod
 
         }
 
-        /// <summary>
-        /// Event handler for OK button.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void buttonOK_Click(object sender, EventArgs e)
-        {
-            SaveConfiguration();
-            buttonOK.Enabled = false;
-        }
 
         /// <summary>
         /// Event handler for when changes are made to the Device file structure combo. 
@@ -189,15 +178,15 @@ namespace Notpod
                 }
 
                 //Set selected associated playlist.
-                comboAssociatePlaylist.SelectedIndex = 0;
+                clbAssociatedWith.SelectedIndex = 0;
                 if (device.Playlist != null && device.Playlist.Length > 0)
                 {
 
-                    foreach (string playlist in comboAssociatePlaylist.Items)
+                    foreach (string playlist in clbAssociatedWith.Items)
                     {
                         if (playlist == device.Playlist)
                         {
-                            comboAssociatePlaylist.SelectedItem = playlist;
+                            clbAssociatedWith.SelectedItem = playlist;
                         }
                     }
 
@@ -221,7 +210,7 @@ namespace Notpod
             textMediaRoot.Enabled = true;
             labelLinked.Text = "Not linked. Click button to link ->";
             labelLinked.Enabled = false;
-            comboAssociatePlaylist.Enabled = true;
+            clbAssociatedWith.Enabled = true;
 
             if (!forNewDevice)
                 buttonDelete.Enabled = true;
@@ -229,7 +218,7 @@ namespace Notpod
             buttonBrowseMediaRoot.Enabled = true;
             buttonCreateUniqueFile.Text= "Link to drive...";
             buttonCreateUniqueFile.Enabled = true;
-            comboAssociatePlaylist.Enabled = true;
+            clbAssociatedWith.Enabled = true;
 
         }
 
@@ -243,14 +232,14 @@ namespace Notpod
             textMediaRoot.Enabled = false;
             labelLinked.Text = "Not linked. Click button to link ->";
             labelLinked.Enabled = false;
-            comboAssociatePlaylist.Enabled = false;
+            clbAssociatedWith.Enabled = false;
 
             buttonBrowseMediaRoot.Enabled = false;
             buttonCreateUniqueFile.Text= "Link to drive...";
             buttonCreateUniqueFile.Enabled = false;
             buttonDelete.Enabled = false;
             buttonSave.Enabled = false;
-            comboAssociatePlaylist.Enabled = false;
+            clbAssociatedWith.Enabled = false;
         }
 
         private void comboSyncPatterns_SelectedIndexChanged(object sender, EventArgs e)
@@ -293,7 +282,7 @@ namespace Notpod
             textDeviceName.Text = "";
             textMediaRoot.Text = "";
             comboSyncPatterns.SelectedIndex = 0;
-            comboAssociatePlaylist.SelectedIndex = 0;
+            clbAssociatedWith.SelectedIndex = 0;
         }
 
         /// <summary>
@@ -341,7 +330,7 @@ namespace Notpod
             string syncPattern = (string)comboSyncPatterns.SelectedItem;
             string mediaroot = textMediaRoot.Text;
             string recognizePattern = selectedDeviceConfigLinkFile;
-            string associatedPlaylist = (string)comboAssociatePlaylist.SelectedItem;
+            string associatedPlaylist = (string)clbAssociatedWith.SelectedItem;
                         
             if (deviceName.Length == 0)
             {
@@ -520,8 +509,8 @@ namespace Notpod
         /// <param name="e"></param>
         private void checkNotifications_Click(object sender, EventArgs e)
         {
-            configurationChanged = true;
-            buttonOK.Enabled = true;
+
+            SaveConfiguration();
         }
 
         /// <summary>
@@ -531,8 +520,7 @@ namespace Notpod
         /// <param name="e"></param>
         private void checkUseListFolder_Click(object sender, EventArgs e)
         {
-            configurationChanged = true;
-            buttonOK.Enabled = true;
+            SaveConfiguration();
         }
 
         /// <summary>
@@ -542,8 +530,7 @@ namespace Notpod
         /// <param name="e"></param>
         private void checkAutocloseSyncWindow_Click(object sender, EventArgs e)
         {
-            configurationChanged = true;
-            buttonOK.Enabled = true;
+            SaveConfiguration();
         }
 
         /// <summary>
@@ -600,14 +587,12 @@ namespace Notpod
 
         private void checkWarnOnSystemDrives_Click(object sender, EventArgs e)
         {
-            configurationChanged = true;
-            buttonOK.Enabled = true;
+            SaveConfiguration();
         }
 
         private void checkConfirmMusicLocation_Click(object sender, EventArgs e)
         {
-            configurationChanged = true;
-            buttonOK.Enabled = true;
+            SaveConfiguration();
         }
 
     }

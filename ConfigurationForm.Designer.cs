@@ -43,12 +43,11 @@ namespace Notpod
             this.textMediaRoot = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupDeviceInformation = new System.Windows.Forms.GroupBox();
+            this.clbAssociatedWith = new System.Windows.Forms.CheckedListBox();
             this.labelLinked = new System.Windows.Forms.Label();
-            this.comboAssociatePlaylist = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
             this.buttonDelete = new System.Windows.Forms.Button();
             this.buttonSave = new System.Windows.Forms.Button();
-            this.buttonNew = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -56,8 +55,8 @@ namespace Notpod
             this.label1 = new System.Windows.Forms.Label();
             this.listDevices = new System.Windows.Forms.ListView();
             this.columnName = new System.Windows.Forms.ColumnHeader();
+            this.buttonNew = new System.Windows.Forms.Button();
             this.buttonCancel = new System.Windows.Forms.Button();
-            this.buttonOK = new System.Windows.Forms.Button();
             this.helpProvider = new System.Windows.Forms.HelpProvider();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -192,22 +191,22 @@ namespace Notpod
             // 
             this.groupBox2.Controls.Add(this.groupDeviceInformation);
             this.groupBox2.Controls.Add(this.listDevices);
+            this.groupBox2.Controls.Add(this.buttonNew);
             this.groupBox2.Location = new System.Drawing.Point(2, 104);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(512, 357);
+            this.groupBox2.Size = new System.Drawing.Size(712, 357);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Devices";
+            this.groupBox2.Text = "My devices";
             // 
             // groupDeviceInformation
             // 
+            this.groupDeviceInformation.Controls.Add(this.clbAssociatedWith);
             this.groupDeviceInformation.Controls.Add(this.labelLinked);
             this.groupDeviceInformation.Controls.Add(this.buttonCreateUniqueFile);
-            this.groupDeviceInformation.Controls.Add(this.comboAssociatePlaylist);
             this.groupDeviceInformation.Controls.Add(this.label5);
             this.groupDeviceInformation.Controls.Add(this.buttonDelete);
             this.groupDeviceInformation.Controls.Add(this.buttonSave);
-            this.groupDeviceInformation.Controls.Add(this.buttonNew);
             this.groupDeviceInformation.Controls.Add(this.label4);
             this.groupDeviceInformation.Controls.Add(this.buttonBrowseMediaRoot);
             this.groupDeviceInformation.Controls.Add(this.textMediaRoot);
@@ -216,12 +215,20 @@ namespace Notpod
             this.groupDeviceInformation.Controls.Add(this.label2);
             this.groupDeviceInformation.Controls.Add(this.textDeviceName);
             this.groupDeviceInformation.Controls.Add(this.label1);
-            this.groupDeviceInformation.Location = new System.Drawing.Point(6, 182);
+            this.groupDeviceInformation.Location = new System.Drawing.Point(206, 9);
             this.groupDeviceInformation.Name = "groupDeviceInformation";
-            this.groupDeviceInformation.Size = new System.Drawing.Size(500, 167);
+            this.groupDeviceInformation.Size = new System.Drawing.Size(500, 342);
             this.groupDeviceInformation.TabIndex = 1;
             this.groupDeviceInformation.TabStop = false;
             this.groupDeviceInformation.Text = "Device information";
+            // 
+            // clbAssociatedWith
+            // 
+            this.clbAssociatedWith.FormattingEnabled = true;
+            this.clbAssociatedWith.Location = new System.Drawing.Point(140, 119);
+            this.clbAssociatedWith.Name = "clbAssociatedWith";
+            this.clbAssociatedWith.Size = new System.Drawing.Size(353, 169);
+            this.clbAssociatedWith.TabIndex = 16;
             // 
             // labelLinked
             // 
@@ -232,18 +239,6 @@ namespace Notpod
             this.labelLinked.TabIndex = 15;
             this.labelLinked.Text = "Not linked. Click button to link ->";
             this.labelLinked.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // comboAssociatePlaylist
-            // 
-            this.comboAssociatePlaylist.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboAssociatePlaylist.Enabled = false;
-            this.comboAssociatePlaylist.FormattingEnabled = true;
-            this.comboAssociatePlaylist.Items.AddRange(new object[] {
-                                    "Use device name..."});
-            this.comboAssociatePlaylist.Location = new System.Drawing.Point(140, 115);
-            this.comboAssociatePlaylist.Name = "comboAssociatePlaylist";
-            this.comboAssociatePlaylist.Size = new System.Drawing.Size(354, 21);
-            this.comboAssociatePlaylist.TabIndex = 13;
             // 
             // label5
             // 
@@ -257,34 +252,24 @@ namespace Notpod
             // buttonDelete
             // 
             this.buttonDelete.Enabled = false;
-            this.buttonDelete.Location = new System.Drawing.Point(290, 138);
+            this.buttonDelete.Location = new System.Drawing.Point(369, 303);
             this.buttonDelete.Name = "buttonDelete";
-            this.buttonDelete.Size = new System.Drawing.Size(84, 23);
+            this.buttonDelete.Size = new System.Drawing.Size(125, 33);
             this.buttonDelete.TabIndex = 11;
-            this.buttonDelete.Text = "&Delete device";
+            this.buttonDelete.Text = "&Delete this device";
             this.buttonDelete.UseVisualStyleBackColor = true;
             this.buttonDelete.Click += new System.EventHandler(this.buttonDelete_Click);
             // 
             // buttonSave
             // 
             this.buttonSave.Enabled = false;
-            this.buttonSave.Location = new System.Drawing.Point(215, 138);
+            this.buttonSave.Location = new System.Drawing.Point(6, 303);
             this.buttonSave.Name = "buttonSave";
-            this.buttonSave.Size = new System.Drawing.Size(75, 23);
+            this.buttonSave.Size = new System.Drawing.Size(135, 33);
             this.buttonSave.TabIndex = 10;
-            this.buttonSave.Text = "&Save device";
+            this.buttonSave.Text = "&Save device settings";
             this.buttonSave.UseVisualStyleBackColor = true;
             this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
-            // 
-            // buttonNew
-            // 
-            this.buttonNew.Location = new System.Drawing.Point(140, 138);
-            this.buttonNew.Name = "buttonNew";
-            this.buttonNew.Size = new System.Drawing.Size(75, 23);
-            this.buttonNew.TabIndex = 9;
-            this.buttonNew.Text = "&New device";
-            this.buttonNew.UseVisualStyleBackColor = true;
-            this.buttonNew.Click += new System.EventHandler(this.buttonNew_Click);
             // 
             // label4
             // 
@@ -340,7 +325,7 @@ namespace Notpod
             this.listDevices.Location = new System.Drawing.Point(9, 16);
             this.listDevices.MultiSelect = false;
             this.listDevices.Name = "listDevices";
-            this.listDevices.Size = new System.Drawing.Size(497, 160);
+            this.listDevices.Size = new System.Drawing.Size(191, 289);
             this.listDevices.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.listDevices.TabIndex = 0;
             this.listDevices.UseCompatibleStateImageBehavior = false;
@@ -352,32 +337,31 @@ namespace Notpod
             this.columnName.Text = "Name";
             this.columnName.Width = 410;
             // 
+            // buttonNew
+            // 
+            this.buttonNew.Location = new System.Drawing.Point(6, 311);
+            this.buttonNew.Name = "buttonNew";
+            this.buttonNew.Size = new System.Drawing.Size(194, 33);
+            this.buttonNew.TabIndex = 9;
+            this.buttonNew.Text = "Add new device";
+            this.buttonNew.UseVisualStyleBackColor = true;
+            this.buttonNew.Click += new System.EventHandler(this.buttonNew_Click);
+            // 
             // buttonCancel
             // 
             this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.buttonCancel.Location = new System.Drawing.Point(439, 465);
+            this.buttonCancel.Location = new System.Drawing.Point(2, 467);
             this.buttonCancel.Name = "buttonCancel";
-            this.buttonCancel.Size = new System.Drawing.Size(75, 23);
+            this.buttonCancel.Size = new System.Drawing.Size(712, 31);
             this.buttonCancel.TabIndex = 2;
-            this.buttonCancel.Text = "&Close";
-            // 
-            // buttonOK
-            // 
-            this.buttonOK.Enabled = false;
-            this.buttonOK.Location = new System.Drawing.Point(2, 465);
-            this.buttonOK.Name = "buttonOK";
-            this.buttonOK.Size = new System.Drawing.Size(75, 23);
-            this.buttonOK.TabIndex = 3;
-            this.buttonOK.Text = "&Save";
-            this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
+            this.buttonCancel.Text = "&Close preferences";
             // 
             // ConfigurationForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.buttonCancel;
-            this.ClientSize = new System.Drawing.Size(518, 492);
-            this.Controls.Add(this.buttonOK);
+            this.ClientSize = new System.Drawing.Size(717, 502);
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -397,6 +381,7 @@ namespace Notpod
             this.groupDeviceInformation.PerformLayout();
             this.ResumeLayout(false);
         }
+        private System.Windows.Forms.CheckedListBox clbAssociatedWith;
         private System.Windows.Forms.Label labelLinked;
 
         #endregion
@@ -406,7 +391,6 @@ namespace Notpod
         private System.Windows.Forms.ToolTip toolTip;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button buttonCancel;
-        private System.Windows.Forms.Button buttonOK;
         private System.Windows.Forms.ListView listDevices;
         private System.Windows.Forms.ColumnHeader columnName;
         private System.Windows.Forms.GroupBox groupDeviceInformation;
@@ -423,7 +407,6 @@ namespace Notpod
         private System.Windows.Forms.Button buttonSave;
         private System.Windows.Forms.HelpProvider helpProvider;
         private System.Windows.Forms.CheckBox checkUseListFolder;
-        private System.Windows.Forms.ComboBox comboAssociatePlaylist;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.CheckBox checkAutocloseSyncWindow;
         private System.Windows.Forms.Button buttonCreateUniqueFile;
