@@ -5,23 +5,7 @@ Thanks for choosing Notpod! Please make sure you read this file carefully, as it
 
 == Changes in this version ==
 
- * Changed "Recognize by folder/file" to "Link to removable drive" and removed the possibility for the user to input any path they want. This should greatly reduce the risk of misconfiguration.
-
- * Added additional check for fixed disk drives before synchronizing to warn user in case they have linked a device configuration to a local hard drive instead of their removable drive.
-
- * Several new synchronize patterns have been added. These are now available when editing your device configurations.
-
- * Synchronize patterns have been moved away from the device-config.xml file to simplify adding of new patterns in the future. PLEASE NOTE that any custom patterns in the existing device-config.xml file will be lost upon upgrade.
-
- * New "Report bug" menu item for easy reporting of bugs via the Notpod issue tracker on Github.
-
- * Album artist is now supported in several sync patterns.
-
- * Added support for %ARTISTINITIAL% macro in sync patterns.
-
- * Fixed icon in synchronize status window.
-
- * Fixed exception when iTunes library path was a network drive (Issue #12)
+ * Fixed issue when linking a new device, the preferences dialog would not update to indicate that the device had been linked. 
 
 
 Source code for Notpod is available from http://www.notpod.com

@@ -1,6 +1,6 @@
 # Installer script for Notpod
 !define PRODUCT_NAME "Notpod"
-!define PRODUCT_VERSION "1.5"
+!define PRODUCT_VERSION "1.5.1"
 !define MUI_ABORTWARNING
 !define MUI_ICON ".\Resources\ita-new.ico"
 !define MUI_UNICON ".\Resources\ita-new.ico"
