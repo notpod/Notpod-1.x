@@ -590,6 +590,8 @@ namespace Notpod
             {
                 File.Create(folder + "\\" + fileName);
                 selectedDeviceConfigLinkFile = folder.Substring(3) + "\\" + fileName;
+                labelLinked.Text = "Linked.";
+                buttonCreateUniqueFile.Text = "Update link...";
             }
             catch (Exception ex)
             {
