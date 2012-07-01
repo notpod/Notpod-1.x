@@ -238,6 +238,7 @@ namespace Notpod
             // 
             // clbAssociatedWith
             // 
+            this.clbAssociatedWith.CheckOnClick = true;
             this.clbAssociatedWith.FormattingEnabled = true;
             this.clbAssociatedWith.Location = new System.Drawing.Point(140, 119);
             this.clbAssociatedWith.Name = "clbAssociatedWith";

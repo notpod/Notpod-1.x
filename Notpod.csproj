@@ -148,6 +148,7 @@
     <Compile Include="DefaultITunesAppFactory.cs" />
     <Compile Include="ITunesAppFactory.cs" />
     <Compile Include="MainFormTest.cs" />
+    <Compile Include="PlaylistAssociation.cs" />
     <Compile Include="SyncPatternCollection.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="CDMEventArgs.cs" />

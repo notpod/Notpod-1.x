@@ -16,7 +16,7 @@ namespace Notpod.Configuration12
 
         private string recognizePattern;
 
-        private string playlists;
+        private string playlist;
 
         private ArrayList initialTracks = new ArrayList();
 
@@ -59,10 +59,10 @@ namespace Notpod.Configuration12
         /// <summary>
         /// Accessor for playlist |-delimited string.
         /// </summary>
-        public string Playlists
+        public string Playlist
         {
-            get { return playlists; }
-            set { playlists = value; }
+            get { return playlist; }
+            set { playlist = value; }
         }
 
         /// <summary>
