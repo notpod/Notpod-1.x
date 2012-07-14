@@ -1,6 +1,14 @@
-﻿<?xml version="1.0"?>
+<?xml version="1.0"?>
 <SyncPatternCollection xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
 	<SyncPatterns>	
+		<SyncPattern>
+	      <Identifier>playorder-flat</Identifier>
+	      <Name># Title - Artist</Name>
+	      <Pattern>%TRACKNUMINPLAYLIST% - %NAME% - %ARTIST%</Pattern>
+	      <Description>This pattern appends the track position according to playlist and then places the tracks in a flat folder.</Description>
+	      <!-- <CompilationsPattern>%TRACKNUMINPLAYLIST% - %NAME% - %ARTIST%</CompilationsPattern> -->
+	      <CompilationsPattern />
+	    </SyncPattern>
 		<SyncPattern>
 	      <Identifier>itunes-style</Identifier>
 	      <Name>Artist\Album\Track</Name>
