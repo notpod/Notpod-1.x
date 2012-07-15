@@ -94,8 +94,8 @@ namespace Notpod
         {
             //%TRACKNUMINPLAYLIST%
             patternstring = patternstring.Replace("%TRACKNUMINPLAYLIST%",
-                (track.PlayOrderIndex.ToString().Length >= 1 ?
-                    "00" + track.TrackNumber.ToString() : track.PlayOrderIndex.ToString())
+                (track.PlayOrderIndex.ToString().Length == 1 ? "00" + track.PlayOrderIndex.ToString()
+                    : "0" + track.PlayOrderIndex.ToString())
             );
             return patternstring;
         }
