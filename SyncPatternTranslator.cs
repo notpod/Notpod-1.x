@@ -21,7 +21,7 @@ namespace Notpod
         /// %ALBUM%         = The album name
         /// %ALBUMINITIAL% 	= The album initial
         /// %NAME%          = The track name
-        /// %TRACKNUMINPLAYLIST% = Play order in playlist
+        /// %TRACKNUMINPLAYLIST% = Play order index from playlist with leading zero
         /// %TRACKNUMSPACE% = The track number with a trailing space
         /// %TRACKNUM%      = The track number (no trailing space)
         /// %DISCNUMDASH%   = The disc number with a trailing minus and space
@@ -85,7 +85,7 @@ namespace Notpod
 		}
 
         /// <summary>
-        /// Translate track playorder in playlist.
+        /// Translate track playorder index from playlist.
         /// </summary>
         /// <param name="track"></param>
         /// <param name="patternstring"></param>
