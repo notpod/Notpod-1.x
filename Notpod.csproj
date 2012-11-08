@@ -136,6 +136,9 @@
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="wpd-lib">
+      <HintPath>..\wpd-lib\wpd-lib\bin\Debug\wpd-lib.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AboutBox.cs">
@@ -145,6 +148,10 @@
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
     <Compile Include="DefaultITunesAppFactory.cs" />
+    <Compile Include="DeviceSelectionDialog.cs" />
+    <Compile Include="DeviceSelectionDialog.Designer.cs">
+      <DependentUpon>DeviceSelectionDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="ITunesAppFactory.cs" />
     <Compile Include="MainFormTest.cs" />
     <Compile Include="SyncPatternCollection.cs" />
@@ -185,6 +192,9 @@
     <EmbeddedResource Include="ConfigurationForm.resx">
       <DependentUpon>ConfigurationForm.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DeviceSelectionDialog.resx">
+      <DependentUpon>DeviceSelectionDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>

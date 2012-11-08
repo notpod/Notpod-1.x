@@ -57,9 +57,9 @@ namespace Notpod
                 if (listDevices.Items.Contains(item))
                 {
                     MessageBox.Show(this, "Duplicate devices with name '" + device.Name
-                        + "' was found. The duplicated items will be removed from the "
-                        + "configuration.", "Invalid configuration", MessageBoxButtons.OK,
-                        MessageBoxIcon.Exclamation);
+                                    + "' was found. The duplicated items will be removed from the "
+                                    + "configuration.", "Invalid configuration", MessageBoxButtons.OK,
+                                    MessageBoxIcon.Exclamation);
 
                     deviceConfigurationChanged = true;
                     buttonOK.Enabled = true;
@@ -127,21 +127,21 @@ namespace Notpod
         }
 
         /// <summary>
-        /// Event handler for when changes are made to the Device file structure combo. 
+        /// Event handler for when changes are made to the Device file structure combo.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void comboStructure_SelectionChangeCommitted(object sender, EventArgs e)
         {
-            //Display a warning message about how the change of file structure works and how it 
+            //Display a warning message about how the change of file structure works and how it
             //inflicts any changes on the already managed devices.
             MessageBox.Show("Note that this setting only applies to devices not already managed "
-                + "by Notpod. If you want to change the file structure of a device already "
-                + "synchronized with Notpod you will have to clear the music folder of your "
-                + "device, including the '.itastruct' file, in order for Notpod to manage "
-                + "the device with the new structure.\n\nFor new devices the new structure setting "
-                + "will be applied upon first iTunes-to-device synchronization.", "Please note",
-                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            + "by Notpod. If you want to change the file structure of a device already "
+                            + "synchronized with Notpod you will have to clear the music folder of your "
+                            + "device, including the '.itastruct' file, in order for Notpod to manage "
+                            + "the device with the new structure.\n\nFor new devices the new structure setting "
+                            + "will be applied upon first iTunes-to-device synchronization.", "Please note",
+                            MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 
         /// <summary>
@@ -215,18 +215,23 @@ namespace Notpod
         /// <param name="forNewDevice"></param>
         private void EnableEditFields(bool forNewDevice)
         {
-            if (forNewDevice)
+            if (forNewDevice) {
                 textDeviceName.Enabled = true;
+                textMediaRoot.Enabled = false;
+                buttonBrowseMediaRoot.Enabled = false;
+            }
             comboSyncPatterns.Enabled = true;
-            textMediaRoot.Enabled = true;
+            
             labelLinked.Text = "Not linked. Click button to link ->";
             labelLinked.Enabled = false;
             comboAssociatePlaylist.Enabled = true;
 
-            if (!forNewDevice)
+            if (!forNewDevice) {
                 buttonDelete.Enabled = true;
+                textMediaRoot.Enabled = true;
+                buttonBrowseMediaRoot.Enabled = true;
+            }
             buttonSave.Enabled = true;
-            buttonBrowseMediaRoot.Enabled = true;
             buttonCreateUniqueFile.Text= "Link to drive...";
             buttonCreateUniqueFile.Enabled = true;
             comboAssociatePlaylist.Enabled = true;
@@ -273,12 +278,12 @@ namespace Notpod
         private void buttonNew_Click(object sender, EventArgs e)
         {
             MessageBox.Show(this, "Please note that any media present in the folder specified as 'Music location on device' "
-                + "will be deleted upon the first synchronization by Notpod, unless "
-                + "this media matches any track added to the device's playlist in iTunes.\n\nIf "
-                + "the media already present on your device is of critical importance, please make sure you take a proper "
-                + "backup, or make sure it is located outside the folder you configure as the "
-                + "'Music location on device'.", "Before you continue...",
-                MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            + "will be deleted upon the first synchronization by Notpod, unless "
+                            + "this media matches any track added to the device's playlist in iTunes.\n\nIf "
+                            + "the media already present on your device is of critical importance, please make sure you take a proper "
+                            + "backup, or make sure it is located outside the folder you configure as the "
+                            + "'Music location on device'.", "Before you continue...",
+                            MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             PrepareForNewDeviceConfiguration();
 
@@ -342,7 +347,7 @@ namespace Notpod
             string mediaroot = textMediaRoot.Text;
             string recognizePattern = selectedDeviceConfigLinkFile;
             string associatedPlaylist = (string)comboAssociatePlaylist.SelectedItem;
-                        
+            
             if (deviceName.Length == 0)
             {
                 MessageBox.Show(this, "Please enter a name for the device.", "Missing information", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
@@ -362,7 +367,7 @@ namespace Notpod
             }
             
             
-                        
+            
             Device newDevice = new Device();
             newDevice.Name = deviceName;
             newDevice.MediaRoot = mediaroot;
@@ -429,8 +434,8 @@ namespace Notpod
             if (dlg.ShowDialog() == DialogResult.Cancel)
                 return;
             
-            //This check is to make sure that the application do not throw an exception if a path 
-            //of length less than 3 is selected. Normally this do not occur, but there has been 
+            //This check is to make sure that the application do not throw an exception if a path
+            //of length less than 3 is selected. Normally this do not occur, but there has been
             //reportet incidents where unsupported, special devices have given an empty path in return...
             //See bug report 1443246.
             // https://sourceforge.net/tracker/index.php?func=detail&aid=1443246&group_id=149133&atid=773786
@@ -547,57 +552,20 @@ namespace Notpod
         }
 
         /// <summary>
-        /// Event handler for buttonCreateUniqueFile clicks. Lets the 
-        /// user select a folder and creates a unique file in this folder 
+        /// Event handler for buttonCreateUniqueFile clicks. Lets the
+        /// user select a folder and creates a unique file in this folder
         /// which is used to identify the device.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void buttonCreateUniqueFile_Click(object sender, EventArgs e)
         {
-            // Check that a name for the device has been entered as this is 
-            // used when generating the file.
-            if (String.IsNullOrEmpty(textDeviceName.Text))
-            {
-                MessageBox.Show(this, "You need to give your device a name " +
-                    "before I can link it to a drive.\n\nWhy? I use the device name "+ 
-                    "to create a unique file on your device that I will use to recognize "+
-                    "your device the next time you connect it to your computer. Clever, right?",
-                    "Please enter device name", MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
+            DeviceSelectionDialog dialog = new DeviceSelectionDialog();
+            if(dialog.ShowDialog(this) == DialogResult.Cancel) {
+                
                 return;
             }
-
-
-            FolderBrowserDialog dlg = new FolderBrowserDialog();
-            dlg.RootFolder = Environment.SpecialFolder.MyComputer;
-            dlg.Description = "Select the removable drive and folder you want to link with.";
-            if (dlg.ShowDialog() == DialogResult.Cancel)
-                return;
-
-
-            string folder = dlg.SelectedPath;
-
-
-            string nameBase = textDeviceName.Text + "-" + DateTime.Now.Ticks.ToString();
-
-            // Build the filename which is the MD5 checksum of the nameBase + the .notpodextension.
-            string fileName = CryptoUtils.Md5Hex(nameBase) + ".notpod";
-
-            try
-            {
-                File.Create(folder + "\\" + fileName);
-                selectedDeviceConfigLinkFile = folder.Substring(3) + "\\" + fileName;
-                labelLinked.Text = "Linked.";
-                buttonCreateUniqueFile.Text = "Update link...";
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(this, "I was unable to create a file for identifying the device in the folder "
-                    + folder + ". The name of the file I tried to create was \"" + fileName
-                    + "\".\n\nError reported: " + ex.Message, "Unable to create file", MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-            }
+            
         }
 
         private void checkWarnOnSystemDrives_Click(object sender, EventArgs e)

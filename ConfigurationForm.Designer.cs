@@ -144,7 +144,7 @@ namespace Notpod
             // buttonBrowseMediaRoot
             // 
             this.buttonBrowseMediaRoot.Enabled = false;
-            this.buttonBrowseMediaRoot.Location = new System.Drawing.Point(428, 65);
+            this.buttonBrowseMediaRoot.Location = new System.Drawing.Point(428, 89);
             this.buttonBrowseMediaRoot.Name = "buttonBrowseMediaRoot";
             this.buttonBrowseMediaRoot.Size = new System.Drawing.Size(65, 23);
             this.buttonBrowseMediaRoot.TabIndex = 6;
@@ -168,7 +168,7 @@ namespace Notpod
             // buttonCreateUniqueFile
             // 
             this.buttonCreateUniqueFile.Enabled = false;
-            this.buttonCreateUniqueFile.Location = new System.Drawing.Point(330, 89);
+            this.buttonCreateUniqueFile.Location = new System.Drawing.Point(330, 63);
             this.buttonCreateUniqueFile.Name = "buttonCreateUniqueFile";
             this.buttonCreateUniqueFile.Size = new System.Drawing.Size(163, 23);
             this.buttonCreateUniqueFile.TabIndex = 14;
@@ -180,7 +180,7 @@ namespace Notpod
             // textMediaRoot
             // 
             this.textMediaRoot.Enabled = false;
-            this.textMediaRoot.Location = new System.Drawing.Point(140, 67);
+            this.textMediaRoot.Location = new System.Drawing.Point(140, 91);
             this.textMediaRoot.Name = "textMediaRoot";
             this.textMediaRoot.Size = new System.Drawing.Size(283, 20);
             this.textMediaRoot.TabIndex = 5;
@@ -226,7 +226,7 @@ namespace Notpod
             // labelLinked
             // 
             this.labelLinked.Enabled = false;
-            this.labelLinked.Location = new System.Drawing.Point(140, 90);
+            this.labelLinked.Location = new System.Drawing.Point(140, 64);
             this.labelLinked.Name = "labelLinked";
             this.labelLinked.Size = new System.Drawing.Size(184, 22);
             this.labelLinked.TabIndex = 15;
@@ -289,7 +289,7 @@ namespace Notpod
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(6, 95);
+            this.label4.Location = new System.Drawing.Point(6, 69);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(120, 13);
             this.label4.TabIndex = 7;
@@ -298,7 +298,7 @@ namespace Notpod
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 71);
+            this.label3.Location = new System.Drawing.Point(6, 95);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(128, 13);
             this.label3.TabIndex = 4;
