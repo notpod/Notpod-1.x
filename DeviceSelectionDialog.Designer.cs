@@ -71,6 +71,7 @@ namespace Notpod
             this.lbDevices.Name = "lbDevices";
             this.lbDevices.Size = new System.Drawing.Size(439, 212);
             this.lbDevices.TabIndex = 0;
+            this.lbDevices.SelectedIndexChanged += new System.EventHandler(this.LbDevicesSelectedIndexChanged);
             // 
             // buttonOk
             // 
