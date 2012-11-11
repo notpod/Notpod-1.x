@@ -14,6 +14,7 @@ using iTunesLib;
 using Notpod.Configuration12;
 using log4net;
 using System.Security.Cryptography;
+using WindowsPortableDevicesLib.Domain;
 
 namespace Notpod
 {
@@ -166,7 +167,7 @@ namespace Notpod
                 if(!String.IsNullOrWhiteSpace(selectedDeviceConfigLinkFile)) {
                     
                     labelLinked.Text = "Linked.";
-                    buttonCreateUniqueFile.Text = "Update link...";
+                    buttonCreateUniqueFile.Text = "Link to another device...";
                 }
 
                 foreach (SyncPattern pattern in deviceConfiguration.SyncPattern)
@@ -565,6 +566,17 @@ namespace Notpod
                 
                 return;
             }
+
+            WindowsPortableDevice device = dialog.SelectedDevice;
+            l.DebugFormat("Selected device: {0}", device.DeviceID);
+
+            this.selectedDeviceConfigLinkFile = device.DeviceID;
+
+            labelLinked.Text = "Linked.";
+            buttonCreateUniqueFile.Text = "Link to another device...";
+
+            textMediaRoot.Enabled = true;
+            buttonBrowseMediaRoot.Enabled = true;
             
         }
 

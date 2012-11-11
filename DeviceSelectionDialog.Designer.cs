@@ -70,11 +70,13 @@ namespace Notpod
             this.lbDevices.Location = new System.Drawing.Point(9, 20);
             this.lbDevices.Name = "lbDevices";
             this.lbDevices.Size = new System.Drawing.Size(439, 212);
+            this.lbDevices.Sorted = true;
             this.lbDevices.TabIndex = 0;
-            this.lbDevices.SelectedIndexChanged += new System.EventHandler(this.LbDevicesSelectedIndexChanged);
+            this.lbDevices.SelectedValueChanged += new System.EventHandler(this.lbDevices_SelectedValueChanged);
             // 
             // buttonOk
             // 
+            this.buttonOk.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.buttonOk.Enabled = false;
             this.buttonOk.Location = new System.Drawing.Point(13, 285);
             this.buttonOk.Name = "buttonOk";
@@ -82,6 +84,7 @@ namespace Notpod
             this.buttonOk.TabIndex = 1;
             this.buttonOk.Text = "OK";
             this.buttonOk.UseVisualStyleBackColor = true;
+            this.buttonOk.Click += new System.EventHandler(this.buttonOk_Click);
             // 
             // buttonCancel
             // 
@@ -110,6 +113,7 @@ namespace Notpod
             this.Load += new System.EventHandler(this.DeviceSelectionDialogLoad);
             this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
+
         }
         private System.Windows.Forms.Button buttonCancel;
         private System.Windows.Forms.Button buttonOk;

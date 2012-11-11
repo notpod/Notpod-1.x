@@ -51,9 +51,14 @@ namespace Notpod
             get { return (WindowsPortableDevice)lbDevices.SelectedItem; }
         }
         
-        void LbDevicesSelectedIndexChanged(object sender, EventArgs e)
+        private void lbDevices_SelectedValueChanged(object sender, EventArgs e)
         {
             buttonOk.Enabled = true;
+        }
+
+        private void buttonOk_Click(object sender, EventArgs e)
+        {
+            Close();
         }
     }
 }

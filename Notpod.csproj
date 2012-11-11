@@ -148,7 +148,9 @@
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
     <Compile Include="DefaultITunesAppFactory.cs" />
-    <Compile Include="DeviceSelectionDialog.cs" />
+    <Compile Include="DeviceSelectionDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="DeviceSelectionDialog.Designer.cs">
       <DependentUpon>DeviceSelectionDialog.cs</DependentUpon>
     </Compile>
