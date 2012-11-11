@@ -73,6 +73,7 @@ namespace Notpod
             this.lbDevices.Sorted = true;
             this.lbDevices.TabIndex = 0;
             this.lbDevices.SelectedValueChanged += new System.EventHandler(this.lbDevices_SelectedValueChanged);
+            this.lbDevices.DoubleClick += new System.EventHandler(this.lbDevices_DoubleClick);
             // 
             // buttonOk
             // 

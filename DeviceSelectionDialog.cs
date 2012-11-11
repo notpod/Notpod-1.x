@@ -60,5 +60,14 @@ namespace Notpod
         {
             Close();
         }
+
+        private void lbDevices_DoubleClick(object sender, EventArgs e)
+        {
+            if (lbDevices.SelectedItem != null)
+            {
+                this.DialogResult = DialogResult.OK;
+                buttonOk_Click(sender, e);
+            }
+        }
     }
 }
