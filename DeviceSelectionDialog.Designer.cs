@@ -63,6 +63,7 @@ namespace Notpod
             this.buttonRefresh.TabIndex = 1;
             this.buttonRefresh.Text = "Refresh list";
             this.buttonRefresh.UseVisualStyleBackColor = true;
+            this.buttonRefresh.Click += new System.EventHandler(this.buttonRefresh_Click);
             // 
             // lbDevices
             // 

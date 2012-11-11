@@ -21,36 +21,43 @@ namespace Notpod
     public partial class DeviceSelectionDialog : Form
     {
         private WindowsPortableDeviceService portableDeviceService = new StandardWindowsPortableDeviceService();
-        
+
         public DeviceSelectionDialog()
         {
             //
             // The InitializeComponent() call is required for Windows Forms designer support.
             //
             InitializeComponent();
-            
+
         }
-        
+
         void ButtonCancelClick(object sender, EventArgs e)
         {
             this.Close();
         }
-        
+
         void DeviceSelectionDialogLoad(object sender, EventArgs e)
         {
+            UpdateDeviceList();
+        }
+
+        private void UpdateDeviceList()
+        {
             IList<WindowsPortableDevice> devices = portableDeviceService.Devices;
-            
-            foreach(WindowsPortableDevice device in devices) {
-                
+
+            lbDevices.Items.Clear();
+            foreach (WindowsPortableDevice device in devices)
+            {
+
                 lbDevices.Items.Add(device);
             }
         }
-        
-        public WindowsPortableDevice SelectedDevice 
+
+        public WindowsPortableDevice SelectedDevice
         {
             get { return (WindowsPortableDevice)lbDevices.SelectedItem; }
         }
-        
+
         private void lbDevices_SelectedValueChanged(object sender, EventArgs e)
         {
             buttonOk.Enabled = true;
@@ -68,6 +75,11 @@ namespace Notpod
                 this.DialogResult = DialogResult.OK;
                 buttonOk_Click(sender, e);
             }
+        }
+
+        private void buttonRefresh_Click(object sender, EventArgs e)
+        {
+            UpdateDeviceList();
         }
     }
 }
