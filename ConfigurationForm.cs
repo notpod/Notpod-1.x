@@ -30,7 +30,7 @@ namespace Notpod
 
         private bool deviceConfigurationChanged = false;
         private bool configurationChanged = false;
-        
+
         private String selectedDeviceConfigLinkFile = null;
 
         /// <summary>
@@ -164,8 +164,9 @@ namespace Notpod
                 textMediaRoot.Text = device.MediaRoot;
 
                 this.selectedDeviceConfigLinkFile = device.RecognizePattern;
-                if(!String.IsNullOrWhiteSpace(selectedDeviceConfigLinkFile)) {
-                    
+                if (!String.IsNullOrWhiteSpace(selectedDeviceConfigLinkFile))
+                {
+
                     labelLinked.Text = "Linked.";
                     buttonCreateUniqueFile.Text = "Link to another device...";
                 }
@@ -216,24 +217,26 @@ namespace Notpod
         /// <param name="forNewDevice"></param>
         private void EnableEditFields(bool forNewDevice)
         {
-            if (forNewDevice) {
+            if (forNewDevice)
+            {
                 textDeviceName.Enabled = true;
                 textMediaRoot.Enabled = false;
                 buttonBrowseMediaRoot.Enabled = false;
             }
             comboSyncPatterns.Enabled = true;
-            
+
             labelLinked.Text = "Not linked. Click button to link ->";
             labelLinked.Enabled = false;
             comboAssociatePlaylist.Enabled = true;
 
-            if (!forNewDevice) {
+            if (!forNewDevice)
+            {
                 buttonDelete.Enabled = true;
                 textMediaRoot.Enabled = true;
                 buttonBrowseMediaRoot.Enabled = true;
             }
             buttonSave.Enabled = true;
-            buttonCreateUniqueFile.Text= "Link to drive...";
+            buttonCreateUniqueFile.Text = "Link to drive...";
             buttonCreateUniqueFile.Enabled = true;
             comboAssociatePlaylist.Enabled = true;
 
@@ -252,7 +255,7 @@ namespace Notpod
             comboAssociatePlaylist.Enabled = false;
 
             buttonBrowseMediaRoot.Enabled = false;
-            buttonCreateUniqueFile.Text= "Link to drive...";
+            buttonCreateUniqueFile.Text = "Link to drive...";
             buttonCreateUniqueFile.Enabled = false;
             buttonDelete.Enabled = false;
             buttonSave.Enabled = false;
@@ -348,7 +351,7 @@ namespace Notpod
             string mediaroot = textMediaRoot.Text;
             string recognizePattern = selectedDeviceConfigLinkFile;
             string associatedPlaylist = (string)comboAssociatePlaylist.SelectedItem;
-            
+
             if (deviceName.Length == 0)
             {
                 MessageBox.Show(this, "Please enter a name for the device.", "Missing information", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
@@ -366,9 +369,9 @@ namespace Notpod
                 MessageBox.Show(this, "Please enter a recognize pattern for the device.", "Missing information", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
             }
-            
-            
-            
+
+
+
             Device newDevice = new Device();
             newDevice.Name = deviceName;
             newDevice.MediaRoot = mediaroot;
@@ -434,7 +437,7 @@ namespace Notpod
             FolderBrowserDialog dlg = new FolderBrowserDialog();
             if (dlg.ShowDialog() == DialogResult.Cancel)
                 return;
-            
+
             //This check is to make sure that the application do not throw an exception if a path
             //of length less than 3 is selected. Normally this do not occur, but there has been
             //reportet incidents where unsupported, special devices have given an empty path in return...
@@ -562,13 +565,25 @@ namespace Notpod
         private void buttonCreateUniqueFile_Click(object sender, EventArgs e)
         {
             DeviceSelectionDialog dialog = new DeviceSelectionDialog();
-            if(dialog.ShowDialog(this) == DialogResult.Cancel) {
-                
+            if (dialog.ShowDialog(this) == DialogResult.Cancel)
+            {
+
                 return;
             }
 
             WindowsPortableDevice device = dialog.SelectedDevice;
             l.DebugFormat("Selected device: {0}", device.DeviceID);
+
+            var existingDevices = from d in deviceConfiguration.Devices where d.RecognizePattern.Equals(device.DeviceID) select d;
+            if (existingDevices.Count() > 0)
+            {
+                Device existingDevice = existingDevices.First();
+                MessageBox.Show(this, "The selected device is already linked to '" + existingDevice.Name + "'. Please choose a different device to link to.",
+                    "Device already linked", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+
 
             this.selectedDeviceConfigLinkFile = device.DeviceID;
 
@@ -577,7 +592,7 @@ namespace Notpod
 
             textMediaRoot.Enabled = true;
             buttonBrowseMediaRoot.Enabled = true;
-            
+
         }
 
         private void checkWarnOnSystemDrives_Click(object sender, EventArgs e)
