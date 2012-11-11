@@ -586,6 +586,10 @@ namespace Notpod
 
 
             this.selectedDeviceConfigLinkFile = device.DeviceID;
+            if (String.IsNullOrWhiteSpace(textDeviceName.Text))
+            {
+                textDeviceName.Text = device.FriendlyName;
+            }
 
             labelLinked.Text = "Linked.";
             buttonCreateUniqueFile.Text = "Link to another device...";
