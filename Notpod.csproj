@@ -106,6 +106,10 @@
     <OutputPath>bin\x64\Release x64\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Common.Logging, Version=2.1.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>packages\Common.Logging.2.1.1\lib\net40\Common.Logging.dll</HintPath>
+    </Reference>
     <Reference Include="Interop.iTunesLib, Version=1.13.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>lib\Interop.iTunesLib.dll</HintPath>
@@ -148,6 +152,12 @@
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
     <Compile Include="DefaultITunesAppFactory.cs" />
+    <Compile Include="DeviceBrowserDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DeviceBrowserDialog.Designer.cs">
+      <DependentUpon>DeviceBrowserDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="DeviceSelectionDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -195,6 +205,9 @@
       <DependentUpon>ConfigurationForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="DeviceBrowserDialog.resx">
+      <DependentUpon>DeviceBrowserDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="DeviceSelectionDialog.resx">
       <DependentUpon>DeviceSelectionDialog.cs</DependentUpon>
     </EmbeddedResource>
@@ -217,6 +230,7 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="app.config" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

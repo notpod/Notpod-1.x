@@ -15,6 +15,7 @@ using Notpod.Configuration12;
 using log4net;
 using System.Security.Cryptography;
 using WindowsPortableDevicesLib.Domain;
+using System.Text.RegularExpressions;
 
 namespace Notpod
 {
@@ -32,6 +33,7 @@ namespace Notpod
         private bool configurationChanged = false;
 
         private String selectedDeviceConfigLinkFile = null;
+        private WindowsPortableDevice selectedDevice = null;
 
         /// <summary>
         /// Create a new instance of configuration form.
@@ -434,18 +436,18 @@ namespace Notpod
         /// <param name="e"></param>
         private void buttonBrowseMediaRoot_Click(object sender, EventArgs e)
         {
-            FolderBrowserDialog dlg = new FolderBrowserDialog();
-            if (dlg.ShowDialog() == DialogResult.Cancel)
-                return;
-
-            //This check is to make sure that the application do not throw an exception if a path
-            //of length less than 3 is selected. Normally this do not occur, but there has been
-            //reportet incidents where unsupported, special devices have given an empty path in return...
-            //See bug report 1443246.
-            // https://sourceforge.net/tracker/index.php?func=detail&aid=1443246&group_id=149133&atid=773786
-            if (dlg.SelectedPath.Length >= 3)
+            DeviceBrowserDialog dialog = new DeviceBrowserDialog();
+            dialog.Device = this.selectedDevice;
+            if (dialog.ShowDialog(this) == DialogResult.OK)
             {
-                textMediaRoot.Text = dlg.SelectedPath.Substring(3, dlg.SelectedPath.Length - 3);
+                string selectedPath = dialog.SelectedFolder.Id;
+                if (Regex.IsMatch(selectedPath.Substring(0, 3), @"([A-Z]+)\:\\", System.Text.RegularExpressions.RegexOptions.IgnoreCase))
+                {
+
+                    selectedPath = selectedPath.Remove(0, 3);
+                }
+
+                textMediaRoot.Text = selectedPath;
             }
         }
 
@@ -584,8 +586,9 @@ namespace Notpod
             }
 
 
-
+            this.selectedDevice = device;
             this.selectedDeviceConfigLinkFile = device.DeviceID;
+            
             if (String.IsNullOrWhiteSpace(textDeviceName.Text))
             {
                 textDeviceName.Text = device.FriendlyName;
