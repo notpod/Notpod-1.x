@@ -43,7 +43,6 @@
             // 
             // btnSelect
             // 
-            this.btnSelect.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.btnSelect.Location = new System.Drawing.Point(7, 349);
             this.btnSelect.Name = "btnSelect";
             this.btnSelect.Size = new System.Drawing.Size(123, 30);

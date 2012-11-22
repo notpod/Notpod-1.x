@@ -72,13 +72,14 @@ namespace Notpod
 
         private void btnSelect_Click(object sender, EventArgs e)
         {
-            if (tvFolders.SelectedNode == null)
+            if (tvFolders.SelectedNode == null || tvFolders.SelectedNode.Tag == null)
             {
                 MessageBox.Show(this, "Please select a folder on your device before continuing.", "Select a folder", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
             selectedFolder = (PortableDeviceFolder)tvFolders.SelectedNode.Tag;
+            this.DialogResult = DialogResult.OK;
             Close();
         }
 
