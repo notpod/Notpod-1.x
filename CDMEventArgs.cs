@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using Notpod.Configuration12;
+using WindowsPortableDevicesLib.Domain;
 
 namespace Notpod
 {
@@ -11,7 +12,7 @@ namespace Notpod
     /// </summary>
     public class CDMEventArgs : EventArgs
     {
-        private DriveInfo drive;
+        private WindowsPortableDevice portableDevice;
         private Device device;
 
         /// <summary>
@@ -27,21 +28,21 @@ namespace Notpod
         /// </summary>
         /// <param name="drive">Information on the drive for this event.</param>
         /// <param name="device">Informatioon on the device for this event.</param>
-        public CDMEventArgs(DriveInfo drive, Device device)
+        public CDMEventArgs(WindowsPortableDevice drive, Device device)
             : base()
         {
             this.device = device;
-            this.drive = drive;
+            this.portableDevice = drive;
         }
 
 
         /// <summary>
         /// Accessor for the DriveInfo describing the drive involved in the event.
         /// </summary>
-        public DriveInfo Drive
+        public WindowsPortableDevice PortableDevice
         {
-            get { return drive; }
-            set { drive = value; }
+            get { return portableDevice; }
+            set { portableDevice = value; }
         }
 
         /// <summary>

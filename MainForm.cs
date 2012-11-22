@@ -305,60 +305,60 @@ namespace Notpod
         private void OnDeviceConnected(object sender, CDMEventArgs args)
         {
 
-            Device device = args.Device;
+            //Device device = args.Device;
 
-            if (configuration.ShowNotificationPopups)
-            {
-                string message = "'" + device.Name + "' has been connected. "
-                    + "You may now synchronize the device "
-                    + "with the playlist for this device.\n\nDevices currently connected:";
-
-
-                foreach (Device d in connectedDevices.GetConnectedDevices())
-                    message += "\n - " + d.Name;
+            //if (configuration.ShowNotificationPopups)
+            //{
+            //    string message = "'" + device.Name + "' has been connected. "
+            //        + "You may now synchronize the device "
+            //        + "with the playlist for this device.\n\nDevices currently connected:";
 
 
-                itaTray.ShowBalloonTip(5, "Device connected!", message, ToolTipIcon.Info);
-            }
+            //    foreach (Device d in connectedDevices.GetConnectedDevices())
+            //        message += "\n - " + d.Name;
 
-            IITPlaylist playlist = PlaylistExists(device);
-            //Delete playlist if it exists.
-            //if (playlist != null)
-            //    playlist.Delete();
-            if (playlist == null)
-            {
-                try
-                {
-                    if (configuration.UseListFolder)
-                    {
-                        CreateMyDevicesFolder();
-                        playlist = folderMyDevices.CreatePlaylist(device.Name);
-                    }
-                    else
-                        playlist = itunes.CreatePlaylist(device.Name);
 
-                }
-                catch (Exception e)
-                {
-                    l.Error(e);
+            //    itaTray.ShowBalloonTip(5, "Device connected!", message, ToolTipIcon.Info);
+            //}
 
-                    MessageBox.Show("Failed to create list for device '" + device.Name
-                        + "'. You will not be able to synchronize this device with iTunes.",
-                        "Playlist error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+            //IITPlaylist playlist = PlaylistExists(device);
+            ////Delete playlist if it exists.
+            ////if (playlist != null)
+            ////    playlist.Delete();
+            //if (playlist == null)
+            //{
+            //    try
+            //    {
+            //        if (configuration.UseListFolder)
+            //        {
+            //            CreateMyDevicesFolder();
+            //            playlist = folderMyDevices.CreatePlaylist(device.Name);
+            //        }
+            //        else
+            //            playlist = itunes.CreatePlaylist(device.Name);
 
-            }
-            else
-            {
-                //If the option to use "My Devices" folder is set, move the playlist to that folder.
-                if (configuration.UseListFolder && (playlist.Kind == ITPlaylistKind.ITPlaylistKindUser)
-                    && (device.Playlist == null || device.Playlist.Length == 0))
-                {
-                    CreateMyDevicesFolder();
-                    object parent = (object)folderMyDevices;
-                    ((IITUserPlaylist)playlist).set_Parent(ref parent);
-                }
-            }
+            //    }
+            //    catch (Exception e)
+            //    {
+            //        l.Error(e);
+
+            //        MessageBox.Show("Failed to create list for device '" + device.Name
+            //            + "'. You will not be able to synchronize this device with iTunes.",
+            //            "Playlist error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //    }
+
+            //}
+            //else
+            //{
+            //    //If the option to use "My Devices" folder is set, move the playlist to that folder.
+            //    if (configuration.UseListFolder && (playlist.Kind == ITPlaylistKind.ITPlaylistKindUser)
+            //        && (device.Playlist == null || device.Playlist.Length == 0))
+            //    {
+            //        CreateMyDevicesFolder();
+            //        object parent = (object)folderMyDevices;
+            //        ((IITUserPlaylist)playlist).set_Parent(ref parent);
+            //    }
+            //}
 
         }
 
@@ -427,13 +427,13 @@ namespace Notpod
         /// <param name="e"></param>
         protected override void OnClosing(CancelEventArgs e)
         {
-            Hashtable cd = connectedDevices.GetConnectedDevicesWithDrives();
-            IDictionaryEnumerator cdenum = cd.GetEnumerator();
-            while (cdenum.MoveNext())
-            {
-                CDMEventArgs args = new CDMEventArgs(null, (Device)cdenum.Value);
-                OnDeviceDisconnect(this, (string)cdenum.Key, args);
-            }
+            //Hashtable cd = connectedDevices.GetConnectedDevicesWithDrives();
+            //IDictionaryEnumerator cdenum = cd.GetEnumerator();
+            //while (cdenum.MoveNext())
+            //{
+            //    CDMEventArgs args = new CDMEventArgs(null, (Device)cdenum.Value);
+            //    OnDeviceDisconnect(this, (string)cdenum.Key, args);
+            //}
 
             itunes = null;
 
@@ -492,6 +492,7 @@ namespace Notpod
                             case DBT_DEVICEARRIVAL:
                                 {
                                     l.Debug("A new device was connected to the system. Triggering device check...");
+                                    
                                     break;
                                 }
                             case DBT_DEVICEREMOVECOMPLETE:
@@ -560,70 +561,70 @@ namespace Notpod
         /// <returns>False if the user chooses to abort, true if all is good.</returns>
         private bool PerformDeviceCheck()
         {
-            Hashtable deviceinfo = connectedDevices.GetConnectedDevicesWithDrives();
-            IEnumerator keys = deviceinfo.Keys.GetEnumerator();
+            //Hashtable deviceinfo = connectedDevices.GetConnectedDevicesWithDrives();
+            //IEnumerator keys = deviceinfo.Keys.GetEnumerator();
 
-            while (keys.MoveNext())
-            {
-                string drive = (string)keys.Current;
-                Device device = (Device)deviceinfo[keys.Current];
+            //while (keys.MoveNext())
+            //{
+            //    string drive = (string)keys.Current;
+            //    Device device = (Device)deviceinfo[keys.Current];
 
-                DriveInfo driveInfo = new DriveInfo(drive);
-                if (driveInfo.DriveType == DriveType.Fixed)
-                {
+            //    DriveInfo driveInfo = new DriveInfo(drive);
+            //    if (driveInfo.DriveType == DriveType.Fixed)
+            //    {
 
-                    l.Warn(String.Format("Detected fixed drive for {0} ({1}).", device.Name, drive));
+            //        l.Warn(String.Format("Detected fixed drive for {0} ({1}).", device.Name, drive));
 
-                    DialogResult choice = MessageBox.Show("The device '" + device.Name
-                        + "' is mapping to a fixed hard drive in your computer, not a removable storage. The drive currently associated"
-                        + " with this device is:\n\n\t" + drive + "\n\nIf you are sure this is "
-                        + "correct, you may continue. If you are unsure, or have misconfigured, "
-                        + "you should click 'Cancel' and make sure your device configuration is "
-                        + "correct before attempting a new synchronization.\n\nAre you sure you "
-                        + "want to continue?",
-                    "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+            //        DialogResult choice = MessageBox.Show("The device '" + device.Name
+            //            + "' is mapping to a fixed hard drive in your computer, not a removable storage. The drive currently associated"
+            //            + " with this device is:\n\n\t" + drive + "\n\nIf you are sure this is "
+            //            + "correct, you may continue. If you are unsure, or have misconfigured, "
+            //            + "you should click 'Cancel' and make sure your device configuration is "
+            //            + "correct before attempting a new synchronization.\n\nAre you sure you "
+            //            + "want to continue?",
+            //        "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
 
-                    if (choice == DialogResult.Cancel)
-                        return false;
-                }
+            //        if (choice == DialogResult.Cancel)
+            //            return false;
+            //    }
 
-                if (CheckIfSystemDrive(drive))
-                {
-                    l.Warn(String.Format("Detected possible system drive for {0} ({1}).", device.Name, drive));
+            //    if (CheckIfSystemDrive(drive))
+            //    {
+            //        l.Warn(String.Format("Detected possible system drive for {0} ({1}).", device.Name, drive));
 
-                    DialogResult choice = MessageBox.Show("The device '" + device.Name
-                        + "' looks like it's mapping to a system hard drive. The drive currently associated"
-                        + " with this device is:\n\n\t" + drive + "\n\nIf you are sure this is "
-                        + "correct, you may continue. If you are unsure, or have misconfigured, "
-                        + "you should click 'Cancel' and make sure your device configuration is "
-                        + "correct before attempting a new synchronization.\n\nAre you sure you "
-                        + "want to continue?",
-                    "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+            //        DialogResult choice = MessageBox.Show("The device '" + device.Name
+            //            + "' looks like it's mapping to a system hard drive. The drive currently associated"
+            //            + " with this device is:\n\n\t" + drive + "\n\nIf you are sure this is "
+            //            + "correct, you may continue. If you are unsure, or have misconfigured, "
+            //            + "you should click 'Cancel' and make sure your device configuration is "
+            //            + "correct before attempting a new synchronization.\n\nAre you sure you "
+            //            + "want to continue?",
+            //        "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
 
-                    if (choice == DialogResult.Cancel)
-                        return false;
+            //        if (choice == DialogResult.Cancel)
+            //            return false;
 
-                }
+            //    }
 
-                if (CheckIfiTunesLibrary(drive))
-                {
-                    l.Warn(String.Format("Detected possible iTunes library location for {0} ({1}).",
-                                         device.Name, drive));
+            //    if (CheckIfiTunesLibrary(drive))
+            //    {
+            //        l.Warn(String.Format("Detected possible iTunes library location for {0} ({1}).",
+            //                             device.Name, drive));
 
-                    DialogResult choice = MessageBox.Show("The device '" + device.Name
-                        + "' looks like it's mapping to your local iTunes library. The drive currently associated"
-                        + " with this device is:\n\n\t" + drive + "\n\nIf you are sure this is "
-                        + "correct, you may continue. If you are unsure, or have misconfigured, "
-                        + "you should click 'Cancel' and make sure your device configuration is correct "
-                        + "before attempting a new synchronization.\n\nAre you sure you want to continue?",
-                    "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+            //        DialogResult choice = MessageBox.Show("The device '" + device.Name
+            //            + "' looks like it's mapping to your local iTunes library. The drive currently associated"
+            //            + " with this device is:\n\n\t" + drive + "\n\nIf you are sure this is "
+            //            + "correct, you may continue. If you are unsure, or have misconfigured, "
+            //            + "you should click 'Cancel' and make sure your device configuration is correct "
+            //            + "before attempting a new synchronization.\n\nAre you sure you want to continue?",
+            //        "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
 
-                    if (choice == DialogResult.Cancel)
-                        return false;
+            //        if (choice == DialogResult.Cancel)
+            //            return false;
 
-                }
+            //    }
 
-            }
+            //}
 
             return true;
         }
@@ -632,60 +633,60 @@ namespace Notpod
         {
 
 
-            Hashtable deviceinfo = connectedDevices.GetConnectedDevicesWithDrives();
-            IEnumerator keys = deviceinfo.Keys.GetEnumerator();
-            try
-            {
-                // Create synchronizer and form.
-                ISynchronizer synchronizer = new StandardSynchronizer();
-                synchronizer.Form = syncForm;
+            //Hashtable deviceinfo = connectedDevices.GetConnectedDevicesWithDrives();
+            //IEnumerator keys = deviceinfo.Keys.GetEnumerator();
+            //try
+            //{
+            //    // Create synchronizer and form.
+            //    ISynchronizer synchronizer = new StandardSynchronizer();
+            //    synchronizer.Form = syncForm;
 
-                while (keys.MoveNext())
-                {
+            //    while (keys.MoveNext())
+            //    {
 
-                    string drive = (string)keys.Current;
-                    Device device = (Device)deviceinfo[keys.Current];
+            //        string drive = (string)keys.Current;
+            //        Device device = (Device)deviceinfo[keys.Current];
 
-                    if (configuration.ConfirmMusicLocation && !GetMusicLocationConfirmation(drive + device.MediaRoot))
-                    {
-                        syncForm.CloseSafe();
-                        syncForm = null;
-                        synchronizer = null;
-                        return;
-                    }
+            //        if (configuration.ConfirmMusicLocation && !GetMusicLocationConfirmation(drive + device.MediaRoot))
+            //        {
+            //            syncForm.CloseSafe();
+            //            syncForm = null;
+            //            synchronizer = null;
+            //            return;
+            //        }
 
-                    IITPlaylist playlist = PlaylistExists(device);
-                    if (playlist == null)
-                    {
-                        MessageBox.Show("I could not synchronize '" + device.Name + "' because "
-                            + "the playlist does not exist! Try reconnecting the device. If the problem continues"
-                            + " please report the problem to the Notpod developers at http://www.sourceforge.net/projects/ita.",
-                            "Internal synchronization error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        continue;
-                    }
+            //        IITPlaylist playlist = PlaylistExists(device);
+            //        if (playlist == null)
+            //        {
+            //            MessageBox.Show("I could not synchronize '" + device.Name + "' because "
+            //                + "the playlist does not exist! Try reconnecting the device. If the problem continues"
+            //                + " please report the problem to the Notpod developers at http://www.sourceforge.net/projects/ita.",
+            //                "Internal synchronization error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //            continue;
+            //        }
 
-                    synchronizer.Configuration = deviceConfiguration;
-                    synchronizer.SynchronizeError += new SynchronizeErrorEventHandler(OnSynchronizeError);
-                    synchronizer.SynchronizeComplete += new SynchronizeCompleteEventHandler(OnSynchronizeComplete);
-                    synchronizer.SynchronizeCancelled += new SynchronizeCancelledEventHandler(OnSynchronizeCancelled);
-                    synchronizer.SynchronizeDevice((IITUserPlaylist)playlist, drive, device);
+            //        synchronizer.Configuration = deviceConfiguration;
+            //        synchronizer.SynchronizeError += new SynchronizeErrorEventHandler(OnSynchronizeError);
+            //        synchronizer.SynchronizeComplete += new SynchronizeCompleteEventHandler(OnSynchronizeComplete);
+            //        synchronizer.SynchronizeCancelled += new SynchronizeCancelledEventHandler(OnSynchronizeCancelled);
+            //        synchronizer.SynchronizeDevice((IITUserPlaylist)playlist, drive, device);
 
-                }
+            //    }
 
-            }
-            catch (Exception ex)
-            {
-                l.Error(ex);
+            //}
+            //catch (Exception ex)
+            //{
+            //    l.Error(ex);
 
-                string message = "I encountered an unexpected error while synchronizing your device(s). "
-                    + "\n\nPlease make sure your devices are properly "
-                    + "connected and try again.";
+            //    string message = "I encountered an unexpected error while synchronizing your device(s). "
+            //        + "\n\nPlease make sure your devices are properly "
+            //        + "connected and try again.";
 
-                itaTray.ShowBalloonTip(7, "Synchronize error", message, ToolTipIcon.Error);
-            }
+            //    itaTray.ShowBalloonTip(7, "Synchronize error", message, ToolTipIcon.Error);
+            //}
 
-            if (syncForm != null && configuration.CloseSyncWindowOnSuccess)
-                syncForm.CloseSafe();
+            //if (syncForm != null && configuration.CloseSyncWindowOnSuccess)
+            //    syncForm.CloseSafe();
         }
 
         private void OnSynchronizeError(object sender, SyncErrorArgs args)

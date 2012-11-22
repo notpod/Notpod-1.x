@@ -1,8 +1,9 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using Notpod.Configuration12;
+using WindowsPortableDevicesLib.Domain;
 
 namespace Notpod
 {
@@ -36,19 +37,13 @@ namespace Notpod
         /// list of REMOVABLE drives currently connected to the system.
         /// </summary>
         /// <param name="drives"></param>
-        void Synchronize(ArrayList drives);
+        void Synchronize(IList<WindowsPortableDevice> drives);
 
         /// <summary>
         /// Get a collection of connected devices.
         /// </summary>
         /// <returns>A collection containing Device objects representing the 
         /// connected devices.</returns>
-        ICollection GetConnectedDevices();
-
-        /// <summary>
-        /// Get the Hashtable containing all connected devices and what drives they are connected at.
-        /// </summary>
-        /// <returns>Hashtable containing all connected Devices.</returns>
-        Hashtable GetConnectedDevicesWithDrives();
+        ICollection<WindowsPortableDevice> GetConnectedDevices();
     }
 }
