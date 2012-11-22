@@ -16,7 +16,7 @@ using System.Diagnostics;
 using Notpod.Configuration12;
 using Notpod.Properties;
 using System.Security.AccessControl;
-using log4net;
+using Common.Logging;
 
 namespace Notpod
 {
@@ -27,7 +27,10 @@ namespace Notpod
 
         //Constants used when intercepting system messages
         public const int WM_SYSCOMMAND = 0x112;
+        public const int WM_DEVICECHANGE = 0x0219;
         public const int SC_MINIMIZE = 0xF020;
+        public const int DBT_DEVICEARRIVAL = 0x8000;
+        public const int DBT_DEVICEREMOVECOMPLETE = 0x8004;
 
         /// <summary>
         /// The path where the configuration is stored.
@@ -35,7 +38,7 @@ namespace Notpod
         public static readonly string DATA_PATH = ConfigurationHelper.GetAppDataPath();
 
         private ITunesAppFactory itunesAppFactory = new DefaultITunesAppFactory();
-        
+
         private iTunesApp itunes;
         private IITUserPlaylist folderMyDevices;
         private IConnectedDevicesManager connectedDevices;
@@ -63,7 +66,7 @@ namespace Notpod
         /// <param name="e">Event arguments</param>
         private void MainForm_Load(object sender, EventArgs e)
         {
-            
+
             l.Info("Notpod is initializing...");
 
             this.Visible = false;
@@ -141,10 +144,10 @@ namespace Notpod
                 if (dcReader != null)
                     dcReader.Close();
             }
-            
+
             LoadSyncPatterns();
             deviceConfiguration.SyncPattern = syncPatterns.SyncPatterns;
-                        
+
 
             if (!CreateITunesInstance())
             {
@@ -160,14 +163,12 @@ namespace Notpod
             connectedDevices.DeviceConfig = deviceConfiguration;
             connectedDevices.DeviceConnected += new DeviceConnectedEventHandler(OnDeviceConnected);
             connectedDevices.DeviceDisconnected += new DeviceDisconnectedEventHandler(OnDeviceDisconnect);
-
-            timerDriveListUpdate.Start();
-
-
+            
         }
 
-        private void LoadSyncPatterns() {
-            
+        private void LoadSyncPatterns()
+        {
+
             //Load devices that the agent recognizes
             StreamReader stream = null;
             XmlTextReader reader = null;
@@ -277,9 +278,10 @@ namespace Notpod
 
             return true;
         }
-        
-        public void SetITunesInstance() {
-                        
+
+        public void SetITunesInstance()
+        {
+
             itunes = itunesAppFactory.GetNewInstance();
         }
 
@@ -460,50 +462,57 @@ namespace Notpod
         }
 
         /// <summary>
-        /// Event handler for ticks on the DriveListUpdate timer.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void timerDriveListUpdate_Tick(object sender, EventArgs e)
-        {
-            DriveInfo[] driveInfos = DriveInfo.GetDrives();
-
-            //Create a list of all removable drives, which are the only ones 
-            //of interest to Notpod.
-            ArrayList interestingDrives = new ArrayList();
-            foreach (DriveInfo di in driveInfos)
-            {
-                if (di.Name == "A:\\" || di.Name == "B:\\" || !di.IsReady)
-                    continue;
-
-                if (di.DriveType != DriveType.CDRom && di.DriveType != DriveType.Network)
-                    interestingDrives.Add(di);
-
-            }
-
-            connectedDevices.Synchronize(interestingDrives);
-        }
-
-        /// <summary>
         /// WndProc override to enable minimize to tray.
         /// </summary>
         /// <param name="m"></param>
         protected override void WndProc(ref Message m)
         {
-            if (m.Msg == WM_SYSCOMMAND)
-            {
-                switch (m.WParam.ToInt32())
-                {
-                    case SC_MINIMIZE:
+            switch(m.Msg) {
+                case WM_SYSCOMMAND: 
+                    {
+            
+                        switch (m.WParam.ToInt32())
                         {
-                            Hide();
-                            return;
+                            case SC_MINIMIZE:
+                                {
+                                    Hide();
+                                    return;
+                                }
+                            default:
+                                {
+                                    break;
+                                }
                         }
-                    default:
+                        break;
+                    }
+                case WM_DEVICECHANGE:
+                    {
+                        switch (m.WParam.ToInt32())
                         {
-                            break;
+                            case DBT_DEVICEARRIVAL:
+                                {
+                                    l.Debug("A new device was connected to the system. Triggering device check...");
+                                    break;
+                                }
+                            case DBT_DEVICEREMOVECOMPLETE:
+                                {
+                                    l.Debug("A device was removed. Triggering device check...");
+                                    break;
+                                }
+
+                            default:
+                                {
+                                    break;
+                                }
                         }
-                }
+                        break;
+                    }
+
+                default:
+                    {
+                        break;
+                    }
+
             }
 
             //Let the base class handle the rest.
@@ -558,12 +567,13 @@ namespace Notpod
             {
                 string drive = (string)keys.Current;
                 Device device = (Device)deviceinfo[keys.Current];
-                
+
                 DriveInfo driveInfo = new DriveInfo(drive);
-                if(driveInfo.DriveType == DriveType.Fixed) {
-                    
+                if (driveInfo.DriveType == DriveType.Fixed)
+                {
+
                     l.Warn(String.Format("Detected fixed drive for {0} ({1}).", device.Name, drive));
-                    
+
                     DialogResult choice = MessageBox.Show("The device '" + device.Name
                         + "' is mapping to a fixed hard drive in your computer, not a removable storage. The drive currently associated"
                         + " with this device is:\n\n\t" + drive + "\n\nIf you are sure this is "
@@ -576,11 +586,11 @@ namespace Notpod
                     if (choice == DialogResult.Cancel)
                         return false;
                 }
-                
+
                 if (CheckIfSystemDrive(drive))
                 {
                     l.Warn(String.Format("Detected possible system drive for {0} ({1}).", device.Name, drive));
-                    
+
                     DialogResult choice = MessageBox.Show("The device '" + device.Name
                         + "' looks like it's mapping to a system hard drive. The drive currently associated"
                         + " with this device is:\n\n\t" + drive + "\n\nIf you are sure this is "
@@ -592,14 +602,14 @@ namespace Notpod
 
                     if (choice == DialogResult.Cancel)
                         return false;
-                
+
                 }
-                
-                if(CheckIfiTunesLibrary(drive))
+
+                if (CheckIfiTunesLibrary(drive))
                 {
-                    l.Warn(String.Format("Detected possible iTunes library location for {0} ({1}).", 
+                    l.Warn(String.Format("Detected possible iTunes library location for {0} ({1}).",
                                          device.Name, drive));
-                    
+
                     DialogResult choice = MessageBox.Show("The device '" + device.Name
                         + "' looks like it's mapping to your local iTunes library. The drive currently associated"
                         + " with this device is:\n\n\t" + drive + "\n\nIf you are sure this is "
@@ -610,9 +620,9 @@ namespace Notpod
 
                     if (choice == DialogResult.Cancel)
                         return false;
-                    
+
                 }
-                
+
             }
 
             return true;
@@ -627,12 +637,12 @@ namespace Notpod
             try
             {
                 // Create synchronizer and form.
-                ISynchronizer synchronizer = new StandardSynchronizer();                
-                synchronizer.Form = syncForm;                
+                ISynchronizer synchronizer = new StandardSynchronizer();
+                synchronizer.Form = syncForm;
 
                 while (keys.MoveNext())
                 {
-                    
+
                     string drive = (string)keys.Current;
                     Device device = (Device)deviceinfo[keys.Current];
 
@@ -661,7 +671,7 @@ namespace Notpod
                     synchronizer.SynchronizeDevice((IITUserPlaylist)playlist, drive, device);
 
                 }
-                                
+
             }
             catch (Exception ex)
             {
@@ -684,7 +694,7 @@ namespace Notpod
         }
 
         private void OnSynchronizeComplete(object sender)
-        {            
+        {
             if (configuration.ShowNotificationPopups)
                 itaTray.ShowBalloonTip(5, "Synchronize complete", "Your device was successfully synchronized with iTunes.", ToolTipIcon.Info);
         }
@@ -774,7 +784,7 @@ namespace Notpod
             info.Verb = "open";
             Process.Start(info);
         }
-        
+
         private void ctxTrayReportBug_Click(object sender, EventArgs e)
         {
             //Open URL in default browser
@@ -801,10 +811,10 @@ namespace Notpod
         /// <param name="path">Path to check.</param>
         /// <returns>False if all is good, true if the provided path might be a system drive.</returns>
         private bool CheckIfSystemDrive(string drive)
-        {                                   
+        {
             string[] warnOnPatterns = new string[] { "WINDOWS\\system32", "WINNT\\system32", "Users", 
                 "Documents and Settings"};
-            
+
             foreach (string pattern in warnOnPatterns)
             {
                 DirectoryInfo di = new DirectoryInfo(drive + "\\" + pattern);
@@ -816,44 +826,45 @@ namespace Notpod
 
             return false;
         }
-        
+
         /// <summary>
         /// Check if device drive may be iTunes library folder. This could happen in case 
         /// the user misconfigure the device and this check should help prevent loss of data.
         /// </summary>
         /// <param name="drive"></param>
         /// <returns></returns>
-        public bool CheckIfiTunesLibrary(string drive) 
+        public bool CheckIfiTunesLibrary(string drive)
         {
             string libraryPath = itunes.LibraryXMLPath;
-            
+
             l.Debug("LibraryXMLPath: " + libraryPath);
-            
-            if(libraryPath == null)
+
+            if (libraryPath == null)
             {
                 return false;
             }
-            
-            if(libraryPath.StartsWith("\\\\"))  // network drive
+
+            if (libraryPath.StartsWith("\\\\"))  // network drive
             {
                 libraryPath = libraryPath.Substring(2);
-            } 
-            else 
-            {                
+            }
+            else
+            {
                 libraryPath = libraryPath.Substring(3);
             }
-            
+
             FileInfo fi = new FileInfo(drive + "\\" + libraryPath);
             return fi.Exists;
-            
+
         }
 
-        public ITunesAppFactory ITunesAppFactory {
-            
+        public ITunesAppFactory ITunesAppFactory
+        {
+
             set { this.itunesAppFactory = value; }
-            get { return this.itunesAppFactory; } 
-            
+            get { return this.itunesAppFactory; }
+
         }
- 
+
     }
 }
