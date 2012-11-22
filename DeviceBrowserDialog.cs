@@ -43,13 +43,17 @@ namespace Notpod
         private void AddChildFolders(PortableDeviceFolder parentFolder, TreeNode parentTreeNode)
         {
 
-
             PortableDeviceFolder folderContent = device.GetContents(parentFolder);
             var folders = from f in folderContent.Files where f.GetType() == typeof(PortableDeviceFolder) select f;
 
             foreach (PortableDeviceFolder folder in folders)
             {
-                
+                if (String.IsNullOrEmpty(folder.Name))
+                {
+                    l.DebugFormat("Not adding {0} because it's hidden.", folder.Id);
+                    continue;
+                }
+
                 l.DebugFormat("Adding folder {0} ({1}) to {1}", folder.Id, folder.Name, parentTreeNode.Text);
                 TreeNode node = parentTreeNode.Nodes.Add("/" + folder.Id, folder.Name);
                 node.Nodes.Add("Expand to load more...");
