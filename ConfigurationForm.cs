@@ -34,7 +34,7 @@ namespace Notpod
 
         private String selectedDeviceConfigLinkFile = null;
         private WindowsPortableDevice selectedDevice = null;
-
+        
         /// <summary>
         /// Create a new instance of configuration form.
         /// </summary>
@@ -441,7 +441,7 @@ namespace Notpod
             if (dialog.ShowDialog(this) == DialogResult.OK)
             {
                 string selectedPath = dialog.SelectedFolder.Id;
-                if (Regex.IsMatch(selectedPath.Substring(0, 3), @"([A-Z]+)\:\\", System.Text.RegularExpressions.RegexOptions.IgnoreCase))
+                if (Regex.IsMatch(selectedPath, @"([A-Z]+)\:\\", System.Text.RegularExpressions.RegexOptions.IgnoreCase))
                 {
 
                     selectedPath = selectedPath.Remove(0, 3);

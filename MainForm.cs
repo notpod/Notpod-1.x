@@ -17,6 +17,7 @@ using Notpod.Configuration12;
 using Notpod.Properties;
 using System.Security.AccessControl;
 using Common.Logging;
+using WindowsPortableDevicesLib;
 
 namespace Notpod
 {
@@ -49,6 +50,8 @@ namespace Notpod
 
         private ISynchronizeForm syncForm;
 
+        private WindowsPortableDeviceService portableDevicesService;
+
         private Hashtable deviceInitialPlaylists = new Hashtable();
 
         /// <summary>
@@ -57,6 +60,7 @@ namespace Notpod
         public MainForm()
         {
             InitializeComponent();
+            portableDevicesService = new StandardWindowsPortableDeviceService();
         }
 
         /// <summary>
@@ -412,7 +416,7 @@ namespace Notpod
         /// <param name="sender">Sender of the event.</param>
         /// <param name="driveName">Name of drive where the device was connected.</param>
         /// <param name="args">Event arguments.</param>
-        private void OnDeviceDisconnect(object sender, string driveName, CDMEventArgs args)
+        private void OnDeviceDisconnect(object sender, CDMEventArgs args)
         {
             Device device = args.Device;
 
@@ -492,12 +496,17 @@ namespace Notpod
                             case DBT_DEVICEARRIVAL:
                                 {
                                     l.Debug("A new device was connected to the system. Triggering device check...");
-                                    
+                                    while (portableDevicesService.Devices.Count == 0)
+                                    {
+                                        Thread.Sleep(100);
+                                    }
+                                    connectedDevices.Synchronize(portableDevicesService.Devices);
                                     break;
                                 }
                             case DBT_DEVICEREMOVECOMPLETE:
                                 {
                                     l.Debug("A device was removed. Triggering device check...");
+                                    connectedDevices.Synchronize(portableDevicesService.Devices);
                                     break;
                                 }
 
