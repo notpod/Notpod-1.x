@@ -8,7 +8,6 @@ using System.Text;
 using System.Windows.Forms;
 using WindowsPortableDevicesLib.Domain;
 using Common.Logging;
-using System.Collections.Generic;
 
 namespace Notpod
 {
