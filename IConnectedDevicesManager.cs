@@ -10,7 +10,7 @@ namespace Notpod
 
     public delegate void DeviceConnectedEventHandler(object sender, CDMEventArgs args);
 
-    public delegate void DeviceDisconnectedEventHandler(object sender, string driveName, CDMEventArgs args);
+    public delegate void DeviceDisconnectedEventHandler(object sender, CDMEventArgs args);
 
     /// <summary>
     /// Interface for classes managing connected devices.
