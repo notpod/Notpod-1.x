@@ -547,73 +547,72 @@ namespace Notpod
 
         private bool GetMusicLocationConfirmation(string path)
         {
-            DialogResult confirmedMediaRoot = MessageBox.Show("Please confirm that the path below represents a folder on your portable media player, NOT on your local hard drive:\n\n" + path + "\n\nIf you agree that the path above is the location on your portable device where you want the music to be copied TO, click OK to continue. Otherwise click Cancel and reconfigure your device under Preferences.", "Confirm music location", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation);
-            if (confirmedMediaRoot == DialogResult.Cancel)
-            {
-                return false;
-            }
-
-            return true;
+            DialogResult confirmedMediaRoot = MessageBox.Show("Please confirm that the path below represents the folder on your portable "
+                + "media player where you want Notpod to copy your music to:\n\n" + path + "\n\nConfirm the path above by clicking OK, "
+                + "otherwise click Cancel and reconfigure your device under Preferences.", "Confirm music location", 
+                MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation);
+            return confirmedMediaRoot == DialogResult.OK;
+          
         }
                 
         public void PerformSynchronize()
         {
 
 
-            //Hashtable deviceinfo = connectedDevices.GetConnectedDevicesWithDrives();
-            //IEnumerator keys = deviceinfo.Keys.GetEnumerator();
-            //try
-            //{
-            //    // Create synchronizer and form.
-            //    ISynchronizer synchronizer = new StandardSynchronizer();
-            //    synchronizer.Form = syncForm;
+            IDictionary<WindowsPortableDevice, Device> deviceinfo = connectedDevices.GetConnectedDevices();
+            IEnumerator<WindowsPortableDevice> keys = deviceinfo.Keys.GetEnumerator();
+            try
+            {
+                // Create synchronizer and form.
+                ISynchronizer synchronizer = new StandardSynchronizer();
+                synchronizer.Form = syncForm;
 
-            //    while (keys.MoveNext())
-            //    {
+                while (keys.MoveNext())
+                {
 
-            //        string drive = (string)keys.Current;
-            //        Device device = (Device)deviceinfo[keys.Current];
+                    WindowsPortableDevice drive = keys.Current;
+                    Device device = (Device)deviceinfo[keys.Current];
 
-            //        if (configuration.ConfirmMusicLocation && !GetMusicLocationConfirmation(drive + device.MediaRoot))
-            //        {
-            //            syncForm.CloseSafe();
-            //            syncForm = null;
-            //            synchronizer = null;
-            //            return;
-            //        }
+                    if (configuration.ConfirmMusicLocation && !GetMusicLocationConfirmation(drive + device.MediaRoot))
+                    {
+                        syncForm.CloseSafe();
+                        syncForm = null;
+                        synchronizer = null;
+                        return;
+                    }
 
-            //        IITPlaylist playlist = PlaylistExists(device);
-            //        if (playlist == null)
-            //        {
-            //            MessageBox.Show("I could not synchronize '" + device.Name + "' because "
-            //                + "the playlist does not exist! Try reconnecting the device. If the problem continues"
-            //                + " please report the problem to the Notpod developers at http://www.sourceforge.net/projects/ita.",
-            //                "Internal synchronization error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //            continue;
-            //        }
+                    IITPlaylist playlist = PlaylistExists(device);
+                    if (playlist == null)
+                    {
+                        MessageBox.Show("I could not synchronize '" + device.Name + "' because "
+                            + "the playlist does not exist! Try reconnecting the device. If the problem continues"
+                            + " please report the problem to the Notpod developers at http://notpod.com/support.html.",
+                            "Internal synchronization error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        continue;
+                    }
 
-            //        synchronizer.Configuration = deviceConfiguration;
-            //        synchronizer.SynchronizeError += new SynchronizeErrorEventHandler(OnSynchronizeError);
-            //        synchronizer.SynchronizeComplete += new SynchronizeCompleteEventHandler(OnSynchronizeComplete);
-            //        synchronizer.SynchronizeCancelled += new SynchronizeCancelledEventHandler(OnSynchronizeCancelled);
-            //        synchronizer.SynchronizeDevice((IITUserPlaylist)playlist, drive, device);
+                    synchronizer.Configuration = deviceConfiguration;
+                    synchronizer.SynchronizeError += new SynchronizeErrorEventHandler(OnSynchronizeError);
+                    synchronizer.SynchronizeComplete += new SynchronizeCompleteEventHandler(OnSynchronizeComplete);
+                    synchronizer.SynchronizeCancelled += new SynchronizeCancelledEventHandler(OnSynchronizeCancelled);
+                    synchronizer.SynchronizeDevice((IITUserPlaylist)playlist, drive, device);
 
-            //    }
+                }
 
-            //}
-            //catch (Exception ex)
-            //{
-            //    l.Error(ex);
+            }
+            catch (Exception ex)
+            {
+                l.Error(ex);
 
-            //    string message = "I encountered an unexpected error while synchronizing your device(s). "
-            //        + "\n\nPlease make sure your devices are properly "
-            //        + "connected and try again.";
+                string message = "I encountered an unexpected error while synchronizing your device(s). "
+                    + "\n\nPlease make sure your devices are properly "
+                    + "connected and try again.";
 
-            //    itaTray.ShowBalloonTip(7, "Synchronize error", message, ToolTipIcon.Error);
-            //}
+                itaTray.ShowBalloonTip(7, "Synchronize error", message, ToolTipIcon.Error);
+            }
 
-            //if (syncForm != null && configuration.CloseSyncWindowOnSuccess)
-            //    syncForm.CloseSafe();
+            if (syncForm != null && configuration.CloseSyncWindowOnSuccess)
+                syncForm.CloseSafe();
         }
 
         private void OnSynchronizeError(object sender, SyncErrorArgs args)
