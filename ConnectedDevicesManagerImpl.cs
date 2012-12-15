@@ -121,7 +121,8 @@ namespace Notpod
         private Device RecognizeDevice(WindowsPortableDevice portableDevice)
         {
             var recognizedDevices = from d in deviceConfig.Devices where d.RecognizePattern.Equals(portableDevice.DeviceID) select d;
-            return recognizedDevices.First();
+
+            return recognizedDevices.Count() == 0 ? null : recognizedDevices.First();
         }
 
         /// <summary>
