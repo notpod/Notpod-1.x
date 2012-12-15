@@ -389,7 +389,7 @@ namespace Notpod
 
                     foreach (IITPlaylist playlist in itunes.LibrarySource.Playlists)
                     {
-                        if (playlist.Name == name)
+                        if (playlist.Name.Equals(name))
                             return playlist;
                     }
 
@@ -399,15 +399,8 @@ namespace Notpod
                 {
                     l.Warn(comex);
 
-                    if (MessageBox.Show("Failed to get playlists from iTunes. This is most likely due to iTunes being busy or an open dialog. Do you want to try again?\n\n(" + comex.Message + ")", "Communication error", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
-                    {
-                        retry = true;
-                    }
-                    else
-                    {
-                        retry = false;
-                    }
-
+                    retry = MessageBox.Show("Failed to get playlists from iTunes. This is most likely due to iTunes being busy or an open dialog. Do you want to try again?\n\n(" + comex.Message + ")", "Communication error", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes;
+                   
                     continue;
                 }
             }
