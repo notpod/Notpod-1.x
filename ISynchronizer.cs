@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using iTunesLib;
 using Notpod.Configuration12;
+using WindowsPortableDevicesLib.Domain;
 
 namespace Notpod
 {
@@ -23,9 +24,9 @@ namespace Notpod
         /// Synchronize a device with the tracks in an iTunes playlist.
         /// </summary>
         /// <param name="playlist">iTunes playlist representing the device.</param>
-        /// <param name="drive">The drive where the device is located, e.g. K:\</param>
-        /// <param name="device">Device object describing the device to synchronize.</param>
-        void SynchronizeDevice(IITUserPlaylist playlist, string drive, Device device);
+        /// <param name="portableDevice">The WindowsPortableDevice object to use for performing the synchronization.</param>
+        /// <param name="deviceConfig">Device object describing the device to synchronize.</param>
+        void SynchronizeDevice(IITUserPlaylist playlist, WindowsPortableDevice portableDevice, Device deviceConfig);
 
         /// <summary>
         /// Property for setting whether the GUI for the synchronizer (if available) should be 
