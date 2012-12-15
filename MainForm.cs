@@ -341,17 +341,17 @@ namespace Notpod
                     if (configuration.UseListFolder)
                     {
                         CreateMyDevicesFolder();
-                        playlist = folderMyDevices.CreatePlaylist(device.FriendlyName);
+                        playlist = folderMyDevices.CreatePlaylist(deviceConfig.Name);
                     }
                     else
-                        playlist = itunes.CreatePlaylist(device.FriendlyName);
+                        playlist = itunes.CreatePlaylist(deviceConfig.Name);
 
                 }
                 catch (Exception e)
                 {
                     l.Error(e);
 
-                    MessageBox.Show("Failed to create list for device '" + device.FriendlyName
+                    MessageBox.Show("Failed to create list for device '" + deviceConfig.Name
                         + "'. You will not be able to synchronize this device with iTunes.",
                         "Playlist error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
@@ -810,6 +810,8 @@ namespace Notpod
         {
             ConfigurationForm conf = new ConfigurationForm(ref configuration, ref deviceConfiguration, ref itunes);
             conf.ShowDialog();
+
+            connectedDevices.Synchronize(portableDevicesService.Devices);
 
         }
 
