@@ -539,11 +539,6 @@ namespace Notpod
                 return;
             }
 
-            if (configuration.WarnOnSystemDrives && !PerformDeviceCheck())
-            {
-                return;
-            }
-
             syncForm = new StandardSynchronizerForm();
             syncForm.Show();
             Thread thread = new Thread(new ThreadStart(PerformSynchronize));
@@ -560,82 +555,7 @@ namespace Notpod
 
             return true;
         }
-
-        /// <summary>
-        /// Perform a simple check of the devices. Warn the user if a device 
-        /// is associated with a drive which may be a system drive.
-        /// </summary>
-        /// <returns>False if the user chooses to abort, true if all is good.</returns>
-        private bool PerformDeviceCheck()
-        {
-            //Hashtable deviceinfo = connectedDevices.GetConnectedDevicesWithDrives();
-            //IEnumerator keys = deviceinfo.Keys.GetEnumerator();
-
-            //while (keys.MoveNext())
-            //{
-            //    string drive = (string)keys.Current;
-            //    Device device = (Device)deviceinfo[keys.Current];
-
-            //    DriveInfo driveInfo = new DriveInfo(drive);
-            //    if (driveInfo.DriveType == DriveType.Fixed)
-            //    {
-
-            //        l.Warn(String.Format("Detected fixed drive for {0} ({1}).", device.Name, drive));
-
-            //        DialogResult choice = MessageBox.Show("The device '" + device.Name
-            //            + "' is mapping to a fixed hard drive in your computer, not a removable storage. The drive currently associated"
-            //            + " with this device is:\n\n\t" + drive + "\n\nIf you are sure this is "
-            //            + "correct, you may continue. If you are unsure, or have misconfigured, "
-            //            + "you should click 'Cancel' and make sure your device configuration is "
-            //            + "correct before attempting a new synchronization.\n\nAre you sure you "
-            //            + "want to continue?",
-            //        "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
-
-            //        if (choice == DialogResult.Cancel)
-            //            return false;
-            //    }
-
-            //    if (CheckIfSystemDrive(drive))
-            //    {
-            //        l.Warn(String.Format("Detected possible system drive for {0} ({1}).", device.Name, drive));
-
-            //        DialogResult choice = MessageBox.Show("The device '" + device.Name
-            //            + "' looks like it's mapping to a system hard drive. The drive currently associated"
-            //            + " with this device is:\n\n\t" + drive + "\n\nIf you are sure this is "
-            //            + "correct, you may continue. If you are unsure, or have misconfigured, "
-            //            + "you should click 'Cancel' and make sure your device configuration is "
-            //            + "correct before attempting a new synchronization.\n\nAre you sure you "
-            //            + "want to continue?",
-            //        "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
-
-            //        if (choice == DialogResult.Cancel)
-            //            return false;
-
-            //    }
-
-            //    if (CheckIfiTunesLibrary(drive))
-            //    {
-            //        l.Warn(String.Format("Detected possible iTunes library location for {0} ({1}).",
-            //                             device.Name, drive));
-
-            //        DialogResult choice = MessageBox.Show("The device '" + device.Name
-            //            + "' looks like it's mapping to your local iTunes library. The drive currently associated"
-            //            + " with this device is:\n\n\t" + drive + "\n\nIf you are sure this is "
-            //            + "correct, you may continue. If you are unsure, or have misconfigured, "
-            //            + "you should click 'Cancel' and make sure your device configuration is correct "
-            //            + "before attempting a new synchronization.\n\nAre you sure you want to continue?",
-            //        "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
-
-            //        if (choice == DialogResult.Cancel)
-            //            return false;
-
-            //    }
-
-            //}
-
-            return true;
-        }
-
+                
         public void PerformSynchronize()
         {
 
