@@ -18,6 +18,7 @@ using Notpod.Properties;
 using System.Security.AccessControl;
 using Common.Logging;
 using WindowsPortableDevicesLib;
+using WindowsPortableDevicesLib.Domain;
 
 namespace Notpod
 {
@@ -167,7 +168,9 @@ namespace Notpod
             connectedDevices.DeviceConfig = deviceConfiguration;
             connectedDevices.DeviceConnected += new DeviceConnectedEventHandler(OnDeviceConnected);
             connectedDevices.DeviceDisconnected += new DeviceDisconnectedEventHandler(OnDeviceDisconnect);
-            
+
+
+            connectedDevices.Synchronize(portableDevicesService.Devices);           
         }
 
         private void LoadSyncPatterns()
@@ -309,72 +312,74 @@ namespace Notpod
         private void OnDeviceConnected(object sender, CDMEventArgs args)
         {
 
-            //Device device = args.Device;
+            WindowsPortableDevice device = args.PortableDevice;
+            Device deviceConfig = args.Device;
+            
 
-            //if (configuration.ShowNotificationPopups)
-            //{
-            //    string message = "'" + device.Name + "' has been connected. "
-            //        + "You may now synchronize the device "
-            //        + "with the playlist for this device.\n\nDevices currently connected:";
-
-
-            //    foreach (Device d in connectedDevices.GetConnectedDevices())
-            //        message += "\n - " + d.Name;
+            if (configuration.ShowNotificationPopups)
+            {
+                string message = "'" + deviceConfig.Name + "' has been connected. "
+                    + "You may now synchronize the device "
+                    + "with the playlist for this device.\n\nDevices currently connected:";
 
 
-            //    itaTray.ShowBalloonTip(5, "Device connected!", message, ToolTipIcon.Info);
-            //}
+                foreach (Device d in connectedDevices.GetConnectedDevices().Values)
+                    message += "\n - " + d.Name;
 
-            //IITPlaylist playlist = PlaylistExists(device);
-            ////Delete playlist if it exists.
-            ////if (playlist != null)
-            ////    playlist.Delete();
-            //if (playlist == null)
-            //{
-            //    try
-            //    {
-            //        if (configuration.UseListFolder)
-            //        {
-            //            CreateMyDevicesFolder();
-            //            playlist = folderMyDevices.CreatePlaylist(device.Name);
-            //        }
-            //        else
-            //            playlist = itunes.CreatePlaylist(device.Name);
 
-            //    }
-            //    catch (Exception e)
-            //    {
-            //        l.Error(e);
+                itaTray.ShowBalloonTip(5, "Device connected!", message, ToolTipIcon.Info);
+            }
 
-            //        MessageBox.Show("Failed to create list for device '" + device.Name
-            //            + "'. You will not be able to synchronize this device with iTunes.",
-            //            "Playlist error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //    }
+            IITPlaylist playlist = PlaylistExists(deviceConfig);
+            //Delete playlist if it exists.
+            //if (playlist != null)
+            //    playlist.Delete();
+            if (playlist == null)
+            {
+                try
+                {
+                    if (configuration.UseListFolder)
+                    {
+                        CreateMyDevicesFolder();
+                        playlist = folderMyDevices.CreatePlaylist(device.FriendlyName);
+                    }
+                    else
+                        playlist = itunes.CreatePlaylist(device.FriendlyName);
 
-            //}
-            //else
-            //{
-            //    //If the option to use "My Devices" folder is set, move the playlist to that folder.
-            //    if (configuration.UseListFolder && (playlist.Kind == ITPlaylistKind.ITPlaylistKindUser)
-            //        && (device.Playlist == null || device.Playlist.Length == 0))
-            //    {
-            //        CreateMyDevicesFolder();
-            //        object parent = (object)folderMyDevices;
-            //        ((IITUserPlaylist)playlist).set_Parent(ref parent);
-            //    }
-            //}
+                }
+                catch (Exception e)
+                {
+                    l.Error(e);
+
+                    MessageBox.Show("Failed to create list for device '" + device.FriendlyName
+                        + "'. You will not be able to synchronize this device with iTunes.",
+                        "Playlist error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+            }
+            else
+            {
+                //If the option to use "My Devices" folder is set, move the playlist to that folder.
+                if (configuration.UseListFolder && (playlist.Kind == ITPlaylistKind.ITPlaylistKindUser)
+                    && (deviceConfig.Playlist == null || deviceConfig.Playlist.Length == 0))
+                {
+                    CreateMyDevicesFolder();
+                    object parent = (object)folderMyDevices;
+                    ((IITUserPlaylist)playlist).set_Parent(ref parent);
+                }
+            }
 
         }
 
         /// <summary>
         /// Checks if an iTunes playlist exists.
         /// </summary>
-        /// <param name="device">Device to check playlist for.</param>
+        /// <param name="deviceConfig">Device to check playlist for.</param>
         /// <returns>The playlist if it exists, null otherwise.</returns>
-        private IITPlaylist PlaylistExists(Device device)
+        private IITPlaylist PlaylistExists(Device deviceConfig)
         {
 
-            string name = (device.Playlist == null || device.Playlist.Length == 0) ? device.Name : device.Playlist;
+            string name = (deviceConfig.Playlist == null || deviceConfig.Playlist.Length == 0) ? deviceConfig.Name : deviceConfig.Playlist;
 
             bool retry = true;
             while (retry)

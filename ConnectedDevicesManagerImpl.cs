@@ -16,7 +16,7 @@ namespace Notpod
     {
         private DeviceConfiguration deviceConfig;
 
-        private ISet<WindowsPortableDevice> connectedDevices = new HashSet<WindowsPortableDevice>();
+        private IDictionary<WindowsPortableDevice, Device> connectedDevices = new Dictionary<WindowsPortableDevice, Device>();
 
         #region IConnectedDevicesManager Members
 
@@ -58,7 +58,7 @@ namespace Notpod
         /// <param name="drives">List of currently available removable drives.</param>
         private void CheckForDisconnectedDevices(IList<WindowsPortableDevice> systemDevices)
         {
-            IEnumerator<WindowsPortableDevice> alreadyConnected= connectedDevices.GetEnumerator();
+            IEnumerator<WindowsPortableDevice> alreadyConnected= connectedDevices.Keys.GetEnumerator();
             while (alreadyConnected.MoveNext())
             {
                 WindowsPortableDevice device = alreadyConnected.Current;
@@ -81,9 +81,9 @@ namespace Notpod
 
 
                     var dc = from d in deviceConfig.Devices where d.RecognizePattern == device.DeviceID select d;
-
+                    device.Disconnect();
                     OnDeviceDisconnected(device, dc.First());
-                    alreadyConnected = connectedDevices.GetEnumerator();
+                    alreadyConnected = connectedDevices.Keys.GetEnumerator();
                 }
             }
         }
@@ -103,10 +103,11 @@ namespace Notpod
                 if (recognized == null)
                     continue;
 
-                if (connectedDevices.Contains(device))
+                if (connectedDevices.ContainsKey(device))
                     continue;
 
-                connectedDevices.Add(device);
+                device.Connect();
+                connectedDevices.Add(device, recognized);
                 OnDeviceConnected(device, recognized);
 
             }
@@ -164,7 +165,7 @@ namespace Notpod
         /// <see cref="Notpod.IConnectedDevicesManager#GetConnectedDevices()"/>
         /// </summary>
         /// <returns>A Hashtable with Device objects representing the connected devices.</returns>
-        public ICollection<WindowsPortableDevice> GetConnectedDevices()
+        public IDictionary<WindowsPortableDevice, Device> GetConnectedDevices()
         {
             return connectedDevices;
         }

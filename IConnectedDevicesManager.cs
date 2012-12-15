@@ -44,6 +44,6 @@ namespace Notpod
         /// </summary>
         /// <returns>A collection containing Device objects representing the 
         /// connected devices.</returns>
-        ICollection<WindowsPortableDevice> GetConnectedDevices();
+        IDictionary<WindowsPortableDevice, Device> GetConnectedDevices();
     }
 }
