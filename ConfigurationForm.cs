@@ -34,7 +34,8 @@ namespace Notpod
 
         private String selectedDeviceConfigLinkFile = null;
         private WindowsPortableDevice selectedDevice = null;
-        
+
+
         /// <summary>
         /// Create a new instance of configuration form.
         /// </summary>
@@ -117,7 +118,7 @@ namespace Notpod
             }
 
         }
-
+            
         /// <summary>
         /// Event handler for OK button.
         /// </summary>
@@ -427,6 +428,7 @@ namespace Notpod
             DisableEditFields();
 
             MessageBox.Show(this, "New device configuration registered successfully.", "New device configuration", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
         }
 
         /// <summary>
