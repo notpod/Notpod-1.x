@@ -160,12 +160,12 @@ namespace Notpod
             ListViewItem seletedItem = listDevices.SelectedItems[0];
             foreach (Device device in deviceConfiguration.Devices)
             {
-                if (device.Name != seletedItem.Text)
+                if (!device.Name.Equals(seletedItem.Text))
                     continue;
 
                 textDeviceName.Text = device.Name;
                 textMediaRoot.Text = device.MediaRoot;
-
+                                
                 this.selectedDeviceConfigLinkFile = device.RecognizePattern;
                 if (!String.IsNullOrWhiteSpace(selectedDeviceConfigLinkFile))
                 {
@@ -176,12 +176,12 @@ namespace Notpod
 
                 foreach (SyncPattern pattern in deviceConfiguration.SyncPattern)
                 {
-                    if (pattern.Identifier != device.SyncPattern)
+                    if (!pattern.Identifier.Equals(device.SyncPattern))
                         continue;
 
                     for (int i = 0; i < comboSyncPatterns.Items.Count; i++)
                     {
-                        if ((string)comboSyncPatterns.Items[i] != pattern.Name)
+                        if (!((string)comboSyncPatterns.Items[i]).Equals(pattern.Name))
                             continue;
 
                         comboSyncPatterns.SelectedIndex = i;
@@ -200,7 +200,7 @@ namespace Notpod
 
                     foreach (string playlist in comboAssociatePlaylist.Items)
                     {
-                        if (playlist == device.Playlist)
+                        if (playlist.Equals(device.Playlist))
                         {
                             comboAssociatePlaylist.SelectedItem = playlist;
                         }
