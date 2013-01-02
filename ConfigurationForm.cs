@@ -33,8 +33,8 @@ namespace Notpod
         private bool configurationChanged = false;
 
         private String selectedDeviceConfigLinkFile = null;
-        private Device selectedDevice = null;
-
+        private WindowsPortableDevice selectedDeviceForEdit = null;
+        
         private IConnectedDevicesManager connectedDevicesManager;
 
 
@@ -165,10 +165,18 @@ namespace Notpod
                 if (!device.Name.Equals(seletedItem.Text))
                     continue;
 
+                var portableDevices = from d in connectedDevicesManager.GetConnectedDevices() where d.Value.Name.Equals(device.Name) select d.Key;
+                if (portableDevices.Count() == 0)
+                {
+                    MessageBox.Show(this, String.Format("The device {0} is not connected to the system, please connect the device before you edit it.", device.Name), "Device not connected.", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
+
                 textDeviceName.Text = device.Name;
                 textMediaRoot.Text = device.MediaRoot;
 
-                this.selectedDevice = device;
+                this.selectedDeviceForEdit = portableDevices.First();
                 this.selectedDeviceConfigLinkFile = device.RecognizePattern;
                 if (!String.IsNullOrWhiteSpace(selectedDeviceConfigLinkFile))
                 {
@@ -449,26 +457,11 @@ namespace Notpod
         private void buttonBrowseMediaRoot_Click(object sender, EventArgs e)
         {
             DeviceBrowserDialog dialog = new DeviceBrowserDialog();
-                        
-            var device = from d in connectedDevicesManager.GetConnectedDevices() where d.Value.Name.Equals(selectedDevice.Name) select d.Key;
             
-            if (device.Count() == 0)
-            {
-                MessageBox.Show(this, String.Format("The device {0} seems to not be connected to your computer. You need to connect the device before you can browse for the media root folder.", selectedDevice.Name), "Device not connected", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-
-            }
-            
-            dialog.Device = device.First();
+            dialog.Device = selectedDeviceForEdit;
             if (dialog.ShowDialog(this) == DialogResult.OK)
             {
-                string selectedPath = dialog.SelectedFolder.Id;
-                if (Regex.IsMatch(selectedPath, @"([A-Z]+)\:", System.Text.RegularExpressions.RegexOptions.IgnoreCase))
-                {
-
-                    selectedPath = selectedPath.Remove(0, 3);
-                }
-
+                string selectedPath = dialog.SelectedFolder.PersistentId;
                 textMediaRoot.Text = selectedPath;
             }
         }
@@ -607,7 +600,8 @@ namespace Notpod
                     "Device already linked", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
-                                    
+
+            this.selectedDeviceForEdit= device;
             this.selectedDeviceConfigLinkFile = device.DeviceID;
             
             if (String.IsNullOrWhiteSpace(textDeviceName.Text))
