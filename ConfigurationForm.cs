@@ -33,7 +33,9 @@ namespace Notpod
         private bool configurationChanged = false;
 
         private String selectedDeviceConfigLinkFile = null;
-        private WindowsPortableDevice selectedDevice = null;
+        private Device selectedDevice = null;
+
+        private IConnectedDevicesManager connectedDevicesManager;
 
 
         /// <summary>
@@ -165,7 +167,8 @@ namespace Notpod
 
                 textDeviceName.Text = device.Name;
                 textMediaRoot.Text = device.MediaRoot;
-                                
+
+                this.selectedDevice = device;
                 this.selectedDeviceConfigLinkFile = device.RecognizePattern;
                 if (!String.IsNullOrWhiteSpace(selectedDeviceConfigLinkFile))
                 {
@@ -275,6 +278,13 @@ namespace Notpod
 
                 helpProvider.SetHelpString(comboSyncPatterns, pattern.Description);
             }
+        }
+
+        public IConnectedDevicesManager ConnectedDevicesManager
+        {
+
+            get { return this.connectedDevicesManager; }
+            set { this.connectedDevicesManager = value; }
         }
 
         /// <summary>
@@ -439,11 +449,21 @@ namespace Notpod
         private void buttonBrowseMediaRoot_Click(object sender, EventArgs e)
         {
             DeviceBrowserDialog dialog = new DeviceBrowserDialog();
-            dialog.Device = this.selectedDevice;
+                        
+            var device = from d in connectedDevicesManager.GetConnectedDevices() where d.Value.Name.Equals(selectedDevice.Name) select d.Key;
+            
+            if (device.Count() == 0)
+            {
+                MessageBox.Show(this, String.Format("The device {0} seems to not be connected to your computer. You need to connect the device before you can browse for the media root folder.", selectedDevice.Name), "Device not connected", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+
+            }
+            
+            dialog.Device = device.First();
             if (dialog.ShowDialog(this) == DialogResult.OK)
             {
                 string selectedPath = dialog.SelectedFolder.Id;
-                if (Regex.IsMatch(selectedPath, @"([A-Z]+)\:\\", System.Text.RegularExpressions.RegexOptions.IgnoreCase))
+                if (Regex.IsMatch(selectedPath, @"([A-Z]+)\:", System.Text.RegularExpressions.RegexOptions.IgnoreCase))
                 {
 
                     selectedPath = selectedPath.Remove(0, 3);
@@ -575,6 +595,7 @@ namespace Notpod
                 return;
             }
 
+            
             WindowsPortableDevice device = dialog.SelectedDevice;
             l.DebugFormat("Selected device: {0}", device.DeviceID);
 
@@ -586,9 +607,7 @@ namespace Notpod
                     "Device already linked", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
-
-
-            this.selectedDevice = device;
+                                    
             this.selectedDeviceConfigLinkFile = device.DeviceID;
             
             if (String.IsNullOrWhiteSpace(textDeviceName.Text))

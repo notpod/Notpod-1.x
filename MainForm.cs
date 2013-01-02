@@ -728,6 +728,7 @@ namespace Notpod
         private void ctxTrayPreferences_Click(object sender, EventArgs e)
         {
             ConfigurationForm conf = new ConfigurationForm(ref configuration, ref deviceConfiguration, ref itunes);
+            conf.ConnectedDevicesManager = connectedDevices;
             conf.ShowDialog();
 
             connectedDevices.Synchronize(portableDevicesService.Devices);
