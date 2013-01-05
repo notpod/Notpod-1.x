@@ -12,7 +12,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using iTunesLib;
 using Notpod.Configuration12;
-using log4net;
+using Common.Logging;
 using System.Security.Cryptography;
 using WindowsPortableDevicesLib.Domain;
 using System.Text.RegularExpressions;
@@ -428,10 +428,10 @@ namespace Notpod
             {
                 foreach (Device device in deviceConfiguration.Devices)
                 {
-                    if (device.Name != newDevice.Name)
+                    if (!device.Name.Equals(newDevice.Name))
                         continue;
 
-                    device.MediaRoot = newDevice.MediaRoot;
+                    device.MediaLocation = newDevice.MediaLocation;
                     device.RecognizePattern = newDevice.RecognizePattern;
                     device.SyncPattern = newDevice.SyncPattern;
                     device.Playlist = newDevice.Playlist;
@@ -463,9 +463,9 @@ namespace Notpod
             if (dialog.ShowDialog(this) == DialogResult.OK)
             {
                 PortableDeviceFolder selectedFolder = dialog.SelectedFolder;
+                string selectedPath = dialog.SelectedFolderFullPath;
 
-
-                MediaLocation location = new MediaLocation(selectedFolder.Name, selectedFolder.PersistentId);
+                MediaLocation location = new MediaLocation(selectedPath, selectedFolder.PersistentId);
                 
                 // Strip away the drive letter indication from the name and IDs
                 if (selectedDeviceForEdit.DeviceType == WpdDeviceTypes.WPD_DEVICE_TYPE_GENERIC)
