@@ -174,7 +174,8 @@ namespace Notpod
 
 
                 textDeviceName.Text = device.Name;
-                textMediaRoot.Text = device.MediaRoot;
+                textMediaRoot.Text = device.MediaLocation.LocationName;
+                textMediaRoot.Tag = device.MediaLocation;
 
                 this.selectedDeviceForEdit = portableDevices.First();
                 this.selectedDeviceConfigLinkFile = device.RecognizePattern;
@@ -369,7 +370,7 @@ namespace Notpod
         {
             string deviceName = textDeviceName.Text;
             string syncPattern = (string)comboSyncPatterns.SelectedItem;
-            string mediaroot = textMediaRoot.Text;
+            MediaLocation mediaLocation = (MediaLocation)textMediaRoot.Tag;
             string recognizePattern = selectedDeviceConfigLinkFile;
             string associatedPlaylist = (string)comboAssociatePlaylist.SelectedItem;
 
@@ -395,7 +396,7 @@ namespace Notpod
 
             Device newDevice = new Device();
             newDevice.Name = deviceName;
-            newDevice.MediaRoot = mediaroot;
+            newDevice.MediaLocation = mediaLocation;
             newDevice.RecognizePattern = recognizePattern;
             newDevice.Playlist = (associatedPlaylist == "Use device name..." ? "" : associatedPlaylist);
             foreach (SyncPattern sp in deviceConfiguration.SyncPattern)
@@ -461,8 +462,31 @@ namespace Notpod
             dialog.Device = selectedDeviceForEdit;
             if (dialog.ShowDialog(this) == DialogResult.OK)
             {
-                string selectedPath = dialog.SelectedFolder.PersistentId;
-                textMediaRoot.Text = selectedPath;
+                PortableDeviceFolder selectedFolder = dialog.SelectedFolder;
+
+
+                MediaLocation location = new MediaLocation(selectedFolder.Name, selectedFolder.PersistentId);
+                
+                // Strip away the drive letter indication from the name and IDs
+                if (selectedDeviceForEdit.DeviceType == WpdDeviceTypes.WPD_DEVICE_TYPE_GENERIC)
+                {
+                    if (Regex.IsMatch(location.LocationName, @"([A-Z]+)\:", System.Text.RegularExpressions.RegexOptions.IgnoreCase))
+                    {
+                        l.DebugFormat("Stripping drive indication from location name: {0}", location.LocationName);
+                        location.LocationName = location.LocationName.Remove(0, 3);
+                    }
+
+                    if (Regex.IsMatch(location.LocationIdentifier, @"([A-Z]+)\%3B\%5C", System.Text.RegularExpressions.RegexOptions.IgnoreCase))
+                    {
+                        l.DebugFormat("Stripping drive indication from location identifier: {0}", location.LocationIdentifier);
+                        location.LocationIdentifier = location.LocationIdentifier.Remove(0, 7);
+                    }
+                }
+
+                
+
+                textMediaRoot.Text = location.LocationName;
+                textMediaRoot.Tag = location;
             }
         }
 

@@ -40,7 +40,6 @@ namespace Notpod
             this.buttonBrowseMediaRoot = new System.Windows.Forms.Button();
             this.comboSyncPatterns = new System.Windows.Forms.ComboBox();
             this.buttonCreateUniqueFile = new System.Windows.Forms.Button();
-            this.textMediaRoot = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupDeviceInformation = new System.Windows.Forms.GroupBox();
             this.labelLinked = new System.Windows.Forms.Label();
@@ -55,10 +54,11 @@ namespace Notpod
             this.textDeviceName = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.listDevices = new System.Windows.Forms.ListView();
-            this.columnName = new System.Windows.Forms.ColumnHeader();
+            this.columnName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.buttonCancel = new System.Windows.Forms.Button();
             this.buttonOK = new System.Windows.Forms.Button();
             this.helpProvider = new System.Windows.Forms.HelpProvider();
+            this.textMediaRoot = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupDeviceInformation.SuspendLayout();
@@ -87,7 +87,7 @@ namespace Notpod
             this.checkConfirmMusicLocation.TabIndex = 4;
             this.checkConfirmMusicLocation.Text = "Confirm music location before synchronizing";
             this.toolTip.SetToolTip(this.checkConfirmMusicLocation, "Checking this will display a confirmation message before devices are synchronized" +
-                        " to prevent misconfiguration.");
+        " to prevent misconfiguration.");
             this.checkConfirmMusicLocation.UseVisualStyleBackColor = true;
             this.checkConfirmMusicLocation.Click += new System.EventHandler(this.checkConfirmMusicLocation_Click);
             // 
@@ -113,7 +113,7 @@ namespace Notpod
             this.checkAutocloseSyncWindow.TabIndex = 2;
             this.checkAutocloseSyncWindow.Text = "Close status window automatically if no errors";
             this.toolTip.SetToolTip(this.checkAutocloseSyncWindow, "If checked, the status window shown during synchronization will be automatically " +
-                        "closed unless there are errors.");
+        "closed unless there are errors.");
             this.checkAutocloseSyncWindow.UseVisualStyleBackColor = true;
             this.checkAutocloseSyncWindow.Click += new System.EventHandler(this.checkAutocloseSyncWindow_Click);
             // 
@@ -138,7 +138,7 @@ namespace Notpod
             this.checkNotifications.TabIndex = 0;
             this.checkNotifications.Text = "Show baloon notifications";
             this.toolTip.SetToolTip(this.checkNotifications, "Checking this option will cause a baloon to appear in your system tray whenever a" +
-                        " device is connected, disconnected and on several other events.");
+        " device is connected, disconnected and on several other events.");
             this.checkNotifications.Click += new System.EventHandler(this.checkNotifications_Click);
             // 
             // buttonBrowseMediaRoot
@@ -176,17 +176,6 @@ namespace Notpod
             this.toolTip.SetToolTip(this.buttonCreateUniqueFile, "Choose the location of your device and Notpod will create a unique file for you.");
             this.buttonCreateUniqueFile.UseVisualStyleBackColor = true;
             this.buttonCreateUniqueFile.Click += new System.EventHandler(this.buttonCreateUniqueFile_Click);
-            // 
-            // textMediaRoot
-            // 
-            this.textMediaRoot.Enabled = false;
-            this.textMediaRoot.Location = new System.Drawing.Point(140, 91);
-            this.textMediaRoot.Name = "textMediaRoot";
-            this.textMediaRoot.Size = new System.Drawing.Size(283, 20);
-            this.textMediaRoot.TabIndex = 5;
-            this.toolTip.SetToolTip(this.textMediaRoot, "Specify the location on your device where I will store the music when synchronizi" +
-                        "ng. Note that this should be a folder on your device, not on your local computer" +
-                        ".");
             // 
             // groupBox2
             // 
@@ -239,7 +228,7 @@ namespace Notpod
             this.comboAssociatePlaylist.Enabled = false;
             this.comboAssociatePlaylist.FormattingEnabled = true;
             this.comboAssociatePlaylist.Items.AddRange(new object[] {
-                                    "Use device name..."});
+            "Use device name..."});
             this.comboAssociatePlaylist.Location = new System.Drawing.Point(140, 115);
             this.comboAssociatePlaylist.Name = "comboAssociatePlaylist";
             this.comboAssociatePlaylist.Size = new System.Drawing.Size(354, 21);
@@ -334,7 +323,7 @@ namespace Notpod
             // 
             this.listDevices.Activation = System.Windows.Forms.ItemActivation.OneClick;
             this.listDevices.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-                                    this.columnName});
+            this.columnName});
             this.listDevices.FullRowSelect = true;
             this.listDevices.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.listDevices.Location = new System.Drawing.Point(9, 16);
@@ -371,6 +360,18 @@ namespace Notpod
             this.buttonOK.Text = "&Save";
             this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
             // 
+            // textMediaRoot
+            // 
+            this.textMediaRoot.Enabled = false;
+            this.textMediaRoot.Location = new System.Drawing.Point(140, 91);
+            this.textMediaRoot.Name = "textMediaRoot";
+            this.textMediaRoot.ReadOnly = true;
+            this.textMediaRoot.Size = new System.Drawing.Size(283, 20);
+            this.textMediaRoot.TabIndex = 5;
+            this.toolTip.SetToolTip(this.textMediaRoot, "Specify the location on your device where I will store the music when synchronizi" +
+        "ng. Note that this should be a folder on your device, not on your local computer" +
+        ".");
+            // 
             // ConfigurationForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -396,6 +397,7 @@ namespace Notpod
             this.groupDeviceInformation.ResumeLayout(false);
             this.groupDeviceInformation.PerformLayout();
             this.ResumeLayout(false);
+
         }
         private System.Windows.Forms.Label labelLinked;
 
@@ -416,7 +418,6 @@ namespace Notpod
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button buttonBrowseMediaRoot;
-        private System.Windows.Forms.TextBox textMediaRoot;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button buttonNew;
         private System.Windows.Forms.Button buttonDelete;
@@ -429,5 +430,6 @@ namespace Notpod
         private System.Windows.Forms.Button buttonCreateUniqueFile;
         private System.Windows.Forms.CheckBox checkWarnOnSystemDrives;
         private System.Windows.Forms.CheckBox checkConfirmMusicLocation;
+        private System.Windows.Forms.TextBox textMediaRoot;
     }
 }
