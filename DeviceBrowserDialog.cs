@@ -82,6 +82,30 @@ namespace Notpod
             }
 
             selectedFolder = (PortableDeviceFolder)tvFolders.SelectedNode.Tag;
+
+            ICollection<string> backwardsPath = new LinkedList<string>();
+            TreeNode parent = tvFolders.SelectedNode;            
+            while ((parent = parent.Parent) != null)
+            {
+                PortableDeviceFolder folder = (PortableDeviceFolder) parent.Tag;
+                if (folder != null)
+                {
+                    backwardsPath.Add(folder.Name);
+                }
+
+            }
+
+            string folderPath = "";
+            for(int i = backwardsPath.Count-1; i >= 0; i--)
+            {
+                folderPath += backwardsPath.ElementAt(i) + "\\";
+            }
+
+
+
+
+            folderPath += selectedFolder.Name;
+            SelectedFolderFullPath = folderPath;
             this.DialogResult = DialogResult.OK;
             Close();
         }
@@ -90,5 +114,7 @@ namespace Notpod
         {
             get { return selectedFolder; }
         }
+
+        public string SelectedFolderFullPath { get; set; }
     }
 }
