@@ -28,7 +28,7 @@ namespace Notpod.Configuration12
             get { return name; }
             set { name = value; }
         }
-        
+                       
         /// <summary>
         /// Accessor for mediaRoot.
         /// </summary>
@@ -37,6 +37,8 @@ namespace Notpod.Configuration12
             get { return mediaRoot; }
             set { mediaRoot = value; }
         }
+
+        public MediaLocation MediaLocation { get; set; }
 
         /// <summary>
         /// Accessor for syncPattern.
