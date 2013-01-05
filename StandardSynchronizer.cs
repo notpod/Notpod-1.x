@@ -63,7 +63,7 @@ namespace Notpod
 
             try
             {
-                PortableDeviceFolder mediaFolder = portableDevice.GetFolderForPath(deviceConfig.MediaRoot);
+                
             }
             catch (PathNotFoundException ex)
             {
