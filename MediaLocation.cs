@@ -7,10 +7,20 @@ namespace Notpod
 {
     public class MediaLocation
     {
-        public int LocationType { get; set; }
-
+        
         public string LocationIdentifier { get; set; }
 
         public string LocationName { get; set; }
+
+        public MediaLocation()
+        {
+
+        }
+
+        public MediaLocation(string name, string identifier)
+        {
+            this.LocationName = name;
+            this.LocationIdentifier = identifier;
+        }
     }
 }
