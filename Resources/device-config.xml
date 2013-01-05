@@ -3,7 +3,11 @@
   <Devices>
     <Device>
       <Name>Example Configuration</Name>
-      <MediaRoot>Music</MediaRoot>
+      <MediaRoot/>
+      <MediaLocation>
+        <LocationName>Music</LocationName>
+        <LocationIdentifier>Music</LocationIdentifier>
+      </MediaLocation>
       <SyncPattern>itunes-style</SyncPattern>
       <RecognizePattern>AnUniqueFileForMyDevice.notpod</RecognizePattern>
       <Playlist />
