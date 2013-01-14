@@ -9,6 +9,10 @@ namespace Notpod
     {
         
         public string LocationIdentifier { get; set; }
+        
+        public string LocationParentIdentifier { get; set; }
+
+        public string LocationPersistentIdentifier { get; set; }
 
         public string LocationName { get; set; }
 
@@ -17,9 +21,10 @@ namespace Notpod
 
         }
 
-        public MediaLocation(string name, string identifier)
+        public MediaLocation(string name, string parent, string identifier)
         {
             this.LocationName = name;
+            this.LocationParentIdentifier = parent;
             this.LocationIdentifier = identifier;
         }
     }

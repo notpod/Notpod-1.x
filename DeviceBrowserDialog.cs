@@ -83,11 +83,24 @@ namespace Notpod
 
             selectedFolder = (PortableDeviceFolder)tvFolders.SelectedNode.Tag;
 
+            string folderPath = GetFullFolderPathForFolder();
+
+            TreeNode parentNode = tvFolders.SelectedNode.Parent;
+            string parentId = (parentNode != null ? ((PortableDeviceFolder)parentNode.Tag).Id : null);
+            
+            SelectedFolderFullPath = folderPath;
+            SelectedFolderParentId = parentId;
+            this.DialogResult = DialogResult.OK;
+            Close();
+        }
+
+        private string GetFullFolderPathForFolder()
+        {
             ICollection<string> backwardsPath = new LinkedList<string>();
-            TreeNode parent = tvFolders.SelectedNode;            
+            TreeNode parent = tvFolders.SelectedNode;
             while ((parent = parent.Parent) != null)
             {
-                PortableDeviceFolder folder = (PortableDeviceFolder) parent.Tag;
+                PortableDeviceFolder folder = (PortableDeviceFolder)parent.Tag;
                 if (folder != null)
                 {
                     backwardsPath.Add(folder.Name);
@@ -96,18 +109,13 @@ namespace Notpod
             }
 
             string folderPath = "";
-            for(int i = backwardsPath.Count-1; i >= 0; i--)
+            for (int i = backwardsPath.Count - 1; i >= 0; i--)
             {
                 folderPath += backwardsPath.ElementAt(i) + "\\";
             }
 
-
-
-
             folderPath += selectedFolder.Name;
-            SelectedFolderFullPath = folderPath;
-            this.DialogResult = DialogResult.OK;
-            Close();
+            return folderPath;
         }
 
         public PortableDeviceFolder SelectedFolder
@@ -116,5 +124,8 @@ namespace Notpod
         }
 
         public string SelectedFolderFullPath { get; set; }
+
+
+        public string SelectedFolderParentId { get; set; }
     }
 }

@@ -464,8 +464,10 @@ namespace Notpod
             {
                 PortableDeviceFolder selectedFolder = dialog.SelectedFolder;
                 string selectedPath = dialog.SelectedFolderFullPath;
+                string selectedFolderParentId = dialog.SelectedFolderParentId;
 
-                MediaLocation location = new MediaLocation(selectedPath, selectedFolder.PersistentId);
+                MediaLocation location = new MediaLocation(selectedPath, selectedFolderParentId, selectedFolder.Id);
+                location.LocationPersistentIdentifier = selectedFolder.PersistentId;
                 
                 // Strip away the drive letter indication from the name and IDs
                 if (selectedDeviceForEdit.DeviceType == WpdDeviceTypes.WPD_DEVICE_TYPE_GENERIC)
@@ -475,11 +477,23 @@ namespace Notpod
                         l.DebugFormat("Stripping drive indication from location name: {0}", location.LocationName);
                         location.LocationName = location.LocationName.Remove(0, 3);
                     }
-
-                    if (Regex.IsMatch(location.LocationIdentifier, @"([A-Z]+)\%3B\%5C", System.Text.RegularExpressions.RegexOptions.IgnoreCase))
+                    
+                    if (Regex.IsMatch(location.LocationIdentifier, @"([A-Z]+)\:", System.Text.RegularExpressions.RegexOptions.IgnoreCase))
                     {
                         l.DebugFormat("Stripping drive indication from location identifier: {0}", location.LocationIdentifier);
-                        location.LocationIdentifier = location.LocationIdentifier.Remove(0, 7);
+                        location.LocationIdentifier = location.LocationIdentifier.Remove(0, 3);
+                    }
+                    
+                    if (Regex.IsMatch(location.LocationParentIdentifier, @"([A-Z]+)\:", System.Text.RegularExpressions.RegexOptions.IgnoreCase))
+                    {
+                        l.DebugFormat("Stripping drive indication from location parent identifier: {0}", location.LocationParentIdentifier);
+                        location.LocationParentIdentifier = location.LocationParentIdentifier.Remove(0, 3);
+                    }
+
+                    if (Regex.IsMatch(location.LocationPersistentIdentifier, @"([A-Z]+)\%3B\%5C", System.Text.RegularExpressions.RegexOptions.IgnoreCase))
+                    {
+                        l.DebugFormat("Stripping drive indication from location persistent identifier: {0}", location.LocationPersistentIdentifier);
+                        location.LocationPersistentIdentifier = location.LocationPersistentIdentifier.Remove(0, 7);
                     }
                 }
 
