@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 using System.Diagnostics;
 using Notpod.Configuration12;
 using System.Security.AccessControl;
-using log4net;
+using Common.Logging;
 using WindowsPortableDevicesLib.Domain;
 
 namespace Notpod
@@ -61,25 +61,51 @@ namespace Notpod
             if (configuration == null)
                 throw new SynchronizeException("Configuration has not been set.");
 
+            l.DebugFormat("Checking if media location exists on device {0}", deviceConfig.Name);
             try
             {
-                
+
+                string parentIdentifier = deviceConfig.MediaLocation.LocationParentIdentifier;
+                string folderIdentifier = deviceConfig.MediaLocation.LocationIdentifier;
+                if (portableDevice.DeviceType == WpdDeviceTypes.WPD_DEVICE_TYPE_GENERIC)
+                {
+                    // Due to the setup of GENERIC devices, the first "drive" below the device root indicates the drive letter for the device 
+                    // once it's connected to the system. For these devices we use this to build the rest of the path.
+                    PortableDeviceFolder deviceRoot = portableDevice.GetContents();
+                    PortableDeviceObject firstDrive = deviceRoot.Files[0];
+                    parentIdentifier = firstDrive.Id;
+                    folderIdentifier = parentIdentifier + folderIdentifier;
+                }
+                PortableDeviceFolder folder = portableDevice.GetFolder(parentIdentifier, folderIdentifier);
+                if (folder == null)
+                {
+                    MessageBox.Show(String.Format("The configured media location \"{0}\" does not exist on the device {1}. Please ensure the path exists and try again.", 
+                        deviceConfig.MediaLocation.LocationName, deviceConfig.Name), "Unable to find media location", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                l.DebugFormat("Location {0} ({1}/{2}) found on device {3}.", deviceConfig.MediaLocation.LocationName, parentIdentifier, folderIdentifier, deviceConfig.Name);
             }
-            catch (PathNotFoundException ex)
+            catch (Exception ex)
             {
-                if (MessageBox.Show("The media location does not exist on device. Do you want me to create it?", "Media location", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.Cancel)
+                l.ErrorFormat("An error occured while checking configured device folder (parent={0}, id={1}) for device{2}.", deviceConfig.MediaLocation.LocationParentIdentifier, 
+                    deviceConfig.MediaLocation.LocationIdentifier, deviceConfig.Name);
+                l.Error("Exception: ", ex);
+                if (MessageBox.Show("An error occured while checking media location on device. Please make sure the device is connected and that the media location exists.", 
+                    "Media location", MessageBoxButtons.OKCancel, MessageBoxIcon.Error) == DialogResult.Cancel)
                 {
 
                     return;
                 }
 
-                // TODO: Create path on device!
             }
-            
+
+           
+
             // Check if the media root directory actually exists 
             // Thanks to Robert Grabowski for the contribution.
-            
-                        
+
+
             //FileInfo[] files = FileHelper.GetFilesRecursive(di.ToString()).ToArray();
 
             ////Find correct synchronize pattern for the device.
@@ -209,7 +235,7 @@ namespace Notpod
             //        //if (file.Extension != ".mp3" && file.Extension != ".acc" && file.Extension != ".m4p" && file.Extension != ".m4a")
             //        if (!extensions.Contains(file.Extension))
             //            continue;
-                    
+
             //        if (syncList.ContainsKey(file.FullName))
             //        {
             //            FileInfo fi = new FileInfo(file.FullName);
@@ -220,9 +246,9 @@ namespace Notpod
             //        //If the track was not found --- delete it!
             //        string fileFullName = file.FullName;
             //        file.Delete();
-                    
+
             //        l.Debug("Removing file no longer in playlist: " + fileFullName);
-                    
+
             //        CheckAndRemoveFolders(fileFullName, drive, deviceConfig);
 
             //        tracksRemoved++;
@@ -319,7 +345,7 @@ namespace Notpod
             //            CheckAndCreateFolders(trackPath, drive, deviceConfig);
             //            syncForm.SetCurrentStatus("Copying " + filePath
             //                + " (" + syncForm.GetProgressValue() + "/" + syncForm.GetMaxProgressValue() + ")");
-                                                
+
             //            File.Copy(((IITFileOrCDTrack)track).Location, filePath, true);
             //            File.SetAttributes(filePath, FileAttributes.Normal);
 

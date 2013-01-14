@@ -573,7 +573,7 @@ namespace Notpod
                     WindowsPortableDevice drive = keys.Current;
                     Device device = (Device)deviceinfo[keys.Current];
 
-                    if (configuration.ConfirmMusicLocation && !GetMusicLocationConfirmation(drive + device.MediaRoot))
+                    if (configuration.ConfirmMusicLocation && !GetMusicLocationConfirmation(device.MediaLocation.LocationName))
                     {
                         syncForm.CloseSafe();
                         syncForm = null;
