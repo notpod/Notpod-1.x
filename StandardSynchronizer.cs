@@ -105,111 +105,104 @@ namespace Notpod
             // Check if the media root directory actually exists 
             // Thanks to Robert Grabowski for the contribution.
 
+            //Find correct synchronize pattern for the device.
+            SyncPattern devicePattern = null;
+            foreach (SyncPattern sp in configuration.SyncPattern)
+            {
+                if (sp.Identifier == deviceConfig.SyncPattern)
+                    devicePattern = sp;
+            }
 
-            //FileInfo[] files = FileHelper.GetFilesRecursive(di.ToString()).ToArray();
+            //Throw an exception if the pattern could not be found.
+            if (devicePattern == null)
+            {
+                OnSynchronizeError(deviceConfig, "Illegal synchronize pattern '" + deviceConfig.SyncPattern + "' for device '" + deviceConfig.Name + "'. Unable to complete synchronization.");
+                return;
+            }
 
-            ////Find correct synchronize pattern for the device.
-            //SyncPattern devicePattern = null;
-            //foreach (SyncPattern sp in configuration.SyncPattern)
-            //{
-            //    if (sp.Identifier == deviceConfig.SyncPattern)
-            //        devicePattern = sp;
-            //}
+            syncForm.AddLogText("Synchronizing '" + deviceConfig.Name + "'...");
+            syncForm.SetDeviceName(deviceConfig.Name, null);
 
-            ////Throw an exception if the pattern could not be found.
-            //if (devicePattern == null)
-            //{
-            //    OnSynchronizeError(deviceConfig, "Illegal synchronize pattern '" + deviceConfig.SyncPattern + "' for device '" + deviceConfig.Name + "'. Unable to complete synchronization.");
-            //    return;
-            //}
-
-            //syncForm.AddLogText("Synchronizing '" + deviceConfig.Name + "'...");
-            //syncForm.SetDeviceName(deviceConfig.Name, drive);
-
-            //syncForm.SetCurrentStatus("Initializing...");
-            //syncForm.SetMaxProgressValue(playlist.Tracks.Count);
-            //syncForm.SetProgressValue(0);
+            syncForm.SetCurrentStatus("Initializing...");
+            syncForm.SetMaxProgressValue(playlist.Tracks.Count);
+            syncForm.SetProgressValue(0);
 
 
-            //// maintain a filename -> track object dictionary for the tracks to be copied onto the device           
-            //// Thanks to Robert Grabowski for the contribution.
-            //Dictionary<string, IITFileOrCDTrack> syncList = new Dictionary<string, IITFileOrCDTrack>();
+            // maintain a filename -> track object dictionary for the tracks to be copied onto the device           
+            // Thanks to Robert Grabowski for the contribution.
+            Dictionary<string, IITFileOrCDTrack> syncList = new Dictionary<string, IITFileOrCDTrack>();
 
-            //string deviceMediaRoot = drive + (deviceConfig.MediaRoot.Length > 0 ? deviceConfig.MediaRoot + "\\" : "");
+            try
+            {
+                foreach (IITTrack track in playlist.Tracks)
+                {
+                    if (syncForm.GetOperationCancelled())
+                    {
+                        syncForm.SetCurrentStatus("Synchronization cancelled. 0 tracks added, 0 tracks removed.");
+                        syncForm.AddLogText("Synchronization cancelled.", Color.OrangeRed);
+                        OnSynchronizeCancelled();
+                        return;
+                    }
 
-            //try
-            //{
-            //    foreach (IITTrack track in playlist.Tracks)
-            //    {
-            //        if (syncForm.GetOperationCancelled())
-            //        {
-            //            syncForm.SetCurrentStatus("Synchronization cancelled. 0 tracks added, 0 tracks removed.");
-            //            syncForm.AddLogText("Synchronization cancelled.", Color.OrangeRed);
-            //            OnSynchronizeCancelled();
-            //            return;
-            //        }
+                    syncForm.SetProgressValue(syncForm.GetProgressValue() + 1);
 
-            //        syncForm.SetProgressValue(syncForm.GetProgressValue() + 1);
-
-            //        //Continue if the track is not of kind "file" or the track is one of the initial tracks on the device.
-            //        if (track.Kind != ITTrackKind.ITTrackKindFile || deviceConfig.InitialTracks.Contains(track))
-            //            continue;
+                    //Continue if the track is not of kind "file" or the track is one of the initial tracks on the device.
+                    if (track.Kind != ITTrackKind.ITTrackKindFile)
+                        continue;
 
 
-            //        string pathOnDevice = "";
+                    string pathOnDevice = "";
 
-            //        IITTrack addTrack = track;
+                    IITTrack addTrack = track;
 
-            //        try
-            //        {
-            //            pathOnDevice = SyncPatternTranslator.Translate(devicePattern, (IITFileOrCDTrack)addTrack);                        
-            //        }
-            //        catch (Exception ex)
-            //        {
-            //            syncForm.AddLogText("An error occured while working with \"" + track.Artist + " - " + track.Name
-            //                + "\". This may be because the track has been deleted from disk. Look for an exclamation mark"
-            //                + "next to the track in your playlist.", Color.Orange);
-            //            continue;
-            //        }
-            //        string fullPath = deviceMediaRoot + pathOnDevice;
-            //        l.Debug(fullPath);
+                    try
+                    {
+                        pathOnDevice = SyncPatternTranslator.Translate(devicePattern, (IITFileOrCDTrack)addTrack);
+                    }
+                    catch (Exception ex)
+                    {
+                        syncForm.AddLogText("An error occured while working with \"" + track.Artist + " - " + track.Name
+                            + "\". This may be because the track has been deleted from disk. Look for an exclamation mark"
+                            + "next to the track in your playlist.", Color.Orange);
+                        continue;
+                    }
+                    
+                    // Check if the list already contains a key - this happens in cases where there are duplicate 
+                    // entries in the playlist for the same track. Although the track may have different locations on 
+                    // the user's computer, Notpod will not handle this.
+                    if (syncList.ContainsKey(pathOnDevice))
+                    {
+                        syncForm.AddLogText("You have duplicate listings for " + track.Artist + " - " + track.Name
+                            + " in your playlist. I will continue for now, but you should remove any duplicates "
+                            + "when the synchronization is complete.", Color.Orange);
+                        continue;
+                    }
 
-            //        // Check if the list already contains a key - this happens in cases where there are duplicate 
-            //        // entries in the playlist for the same track. Although the track may have different locations on 
-            //        // the user's computer, Notpod will not handle this.
-            //        if (syncList.ContainsKey(fullPath))
-            //        {
-            //            syncForm.AddLogText("You have duplicate listings for " + track.Artist + " - " + track.Name
-            //                + " in your playlist. I will continue for now, but you should remove any duplicates "
-            //                + "when the synchronization is complete.", Color.Orange);
-            //            continue;
-            //        }
+                    syncList.Add(pathOnDevice, (IITFileOrCDTrack)addTrack);
+                }
+            }
+            catch (Exception ex)
+            {
+                syncForm.SetCurrentStatus("");
+                String message = "Error occured while initializing: " + ex.Message;
+                syncForm.AddLogText(message, Color.Red);
+                syncForm.DisableCancelButton();
+                syncForm.SetProgressValue(0);
+                OnSynchronizeError(deviceConfig, message);
 
-            //        syncList.Add(fullPath, (IITFileOrCDTrack)addTrack);
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    syncForm.SetCurrentStatus("");
-            //    String message = "Error occured while initializing: " + ex.Message;
-            //    syncForm.AddLogText(message, Color.Red);
-            //    syncForm.DisableCancelButton();
-            //    syncForm.SetProgressValue(0);
-            //    OnSynchronizeError(deviceConfig, message);
-
-            //    l.Error(message, ex);
-            //    return;
-            //}
-            //syncForm.AddLogText("Initialization completed.");
+                l.Error(message, ex);
+                return;
+            }
+            syncForm.AddLogText("Initialization completed.");
 
             //syncForm.SetCurrentStatus("Checking tracks. Removing those that are no longer in the playlist...");
             //int totalTracks = files.Length;
             //syncForm.SetMaxProgressValue(totalTracks);
             //syncForm.SetProgressValue(0);
 
-            //int tracksRemoved = 0;
-            //int tracksAdded = 0;
-            //long existingSize = 0;
+            int tracksRemoved = 0;
+            int tracksAdded = 0;
+            long existingSize = 0;
 
             //try
             //{
@@ -304,104 +297,128 @@ namespace Notpod
             //    return;
             //}
 
-            //try
-            //{
-            //    syncForm.SetCurrentStatus("Copying new files...");
-            //    syncForm.AddLogText("Preparing to copy new files.", Color.Black);
-            //    syncForm.SetMaxProgressValue(syncList.Count);
-            //    syncForm.SetProgressValue(0);
+            try
+            {
+                syncForm.SetCurrentStatus("Copying new files...");
+                syncForm.AddLogText("Preparing to copy new files.", Color.Black);
+                syncForm.SetMaxProgressValue(syncList.Count);
+                syncForm.SetProgressValue(0);
 
-            //    //Check for new track in the playlist which should be copied to the device
-            //    // NEW foreach: traverse synchronization list instead of playlist
-            //    // Thanks to Robert Grabowski.                
-            //    foreach (string filePath in syncList.Keys)
-            //    {
-            //        IITTrack track = syncList[filePath];
+                PortableDeviceFolder mediaRootFolder = portableDevice.GetFolder(deviceConfig.MediaLocation.LocationParentIdentifier, deviceConfig.MediaLocation.LocationPersistentIdentifier);
 
-            //        // Check for cancelled operation.
-            //        if (syncForm.GetOperationCancelled())
-            //        {
-            //            syncForm.SetCurrentStatus("Synchronization cancelled. " + tracksAdded
-            //                + " track(s) added, " + tracksRemoved + " track(s) removed.");
-            //            syncForm.AddLogText("Synchronization cancelled.", Color.OrangeRed);
-            //            syncForm.DisableCancelButton();
-            //            syncForm.SetProgressValue(0);
-            //            OnSynchronizeCancelled();
-            //            return;
-            //        }
+                //Check for new track in the playlist which should be copied to the device
+                // NEW foreach: traverse synchronization list instead of playlist
+                // Thanks to Robert Grabowski.                
+                foreach (string filePath in syncList.Keys)
+                {
+                    IITTrack track = syncList[filePath];
 
-
-            //        //Increase progress bar
-            //        syncForm.SetProgressValue(syncForm.GetProgressValue() + 1);
-
-            //        string trackPath = filePath.Substring(deviceMediaRoot.Length); // hack: cut out media root
-            //        l.Debug("Checking for copy: " + filePath);
-
-            //        if (File.Exists(filePath))
-            //            continue;
-
-            //        try
-            //        {
-            //            CheckAndCreateFolders(trackPath, drive, deviceConfig);
-            //            syncForm.SetCurrentStatus("Copying " + filePath
-            //                + " (" + syncForm.GetProgressValue() + "/" + syncForm.GetMaxProgressValue() + ")");
-
-            //            File.Copy(((IITFileOrCDTrack)track).Location, filePath, true);
-            //            File.SetAttributes(filePath, FileAttributes.Normal);
+                    // Check for cancelled operation.
+                    if (syncForm.GetOperationCancelled())
+                    {
+                        syncForm.SetCurrentStatus("Synchronization cancelled. " + tracksAdded
+                            + " track(s) added, " + tracksRemoved + " track(s) removed.");
+                        syncForm.AddLogText("Synchronization cancelled.", Color.OrangeRed);
+                        syncForm.DisableCancelButton();
+                        syncForm.SetProgressValue(0);
+                        OnSynchronizeCancelled();
+                        return;
+                    }
 
 
-            //            syncForm.AddLogText(filePath + " copied successfully.", Color.Green);
+                    //Increase progress bar
+                    syncForm.SetProgressValue(syncForm.GetProgressValue() + 1);
 
-            //            l.Debug("Copied: " + filePath);
-            //        }
-            //        catch (Exception ex)
-            //        {
-            //            String message = "Failed to copy " + filePath + ".\n-> " + ex.Message;
-            //            syncForm.AddLogText(message, Color.Red);
-            //            OnSynchronizeError(deviceConfig, message);
+                    l.Debug("Working with file: " + filePath);
 
-            //            l.Error(message, ex);
+                    PortableDeviceFolder currentFolder = mediaRootFolder;
 
-            //            return;
-            //        }
+                    string[] pathSegments = filePath.Split('\\');
+                    if (pathSegments.Length > 1)
+                    {
+                        foreach (string pathSegment in pathSegments)
+                        {
+                            PortableDeviceFolder segmentPortableDeviceFolder = portableDevice.GetFolder(currentFolder.PersistentId, pathSegment);
+                            if (segmentPortableDeviceFolder == null)
+                            {
+                                l.DebugFormat("Segment does not exist: {0}. Attempting to create.", pathSegment);
 
-            //        tracksAdded++;
+                                //TODO Create new folder for segment and assign to currentFolder: 
+                                // currentFolder = newFolderSegment;
+                            }
+                            else 
+                            {
+                                l.DebugFormat("Segment found: {0}", pathSegment);
+                                currentFolder = segmentPortableDeviceFolder;
+                            }
 
-            //    }
-            //}
-            //catch (MissingTrackException ex)
-            //{
-            //    syncForm.SetCurrentStatus("");
-            //    String message = "You have a missing file in your library. Please remove the track '" + ex.Track.Artist + " - " + ex.Track.Name + "' and try again. I am sorry for the inconvenience.";
-            //    syncForm.AddLogText(message, Color.Red);
-            //    syncForm.DisableCancelButton();
-            //    syncForm.SetProgressValue(0);
-            //    OnSynchronizeError(deviceConfig, message);
+                        }
+                    }
 
-            //    l.Error(message, ex);
 
-            //    return;
-            //}
-            //catch (Exception ex)
-            //{
-            //    string message = "An error occured while copying new tracks: " + ex.Message;
-            //    syncForm.SetCurrentStatus("");
-            //    syncForm.AddLogText(message,
-            //        Color.Red);
-            //    syncForm.DisableCancelButton();
-            //    syncForm.SetProgressValue(0);
-            //    OnSynchronizeError(deviceConfig, message);
 
-            //    l.Error(message, ex);
+                    if (File.Exists(filePath))
+                        continue;
 
-            //    return;
-            //}
+                    try
+                    {
+                        syncForm.SetCurrentStatus("Copying " + filePath
+                            + " (" + syncForm.GetProgressValue() + "/" + syncForm.GetMaxProgressValue() + ")");
 
-            //syncForm.SetCurrentStatus("Synchronization completed. " + tracksAdded
-            //    + " track(s) added, " + tracksRemoved + " track(s) removed.");
-            //syncForm.AddLogText("Completed. " + tracksAdded + " track(s) copied to your device.", Color.Green);
-            //syncForm.DisableCancelButton();
-            //OnSynchronizeComplete();
+                        portableDevice.TransferContentToDevice(((IITFileOrCDTrack)track).Location, currentFolder.PersistentId);
+                    
+                        syncForm.AddLogText(filePath + " copied successfully.", Color.Green);
+
+                        l.Debug("Copied: " + filePath);
+                    }
+                    catch (Exception ex)
+                    {
+                        String message = "Failed to copy " + filePath + ".\n-> " + ex.Message;
+                        syncForm.AddLogText(message, Color.Red);
+                        OnSynchronizeError(deviceConfig, message);
+
+                        l.Error(message, ex);
+
+                        return;
+                    }
+
+                    tracksAdded++;
+
+                }
+            }
+            catch (MissingTrackException ex)
+            {
+                syncForm.SetCurrentStatus("");
+                String message = "You have a missing file in your library. Please remove the track '" + ex.Track.Artist + " - " + ex.Track.Name + "' and try again. I am sorry for the inconvenience.";
+                syncForm.AddLogText(message, Color.Red);
+                syncForm.DisableCancelButton();
+                syncForm.SetProgressValue(0);
+                OnSynchronizeError(deviceConfig, message);
+
+                l.Error(message, ex);
+
+                return;
+            }
+            catch (Exception ex)
+            {
+                string message = "An error occured while copying new tracks: " + ex.Message;
+                syncForm.SetCurrentStatus("");
+                syncForm.AddLogText(message,
+                    Color.Red);
+                syncForm.DisableCancelButton();
+                syncForm.SetProgressValue(0);
+                OnSynchronizeError(deviceConfig, message);
+
+                l.Error(message, ex);
+
+                return;
+            }
+
+            syncForm.SetCurrentStatus("Synchronization completed. " + tracksAdded
+                + " track(s) added, " + tracksRemoved + " track(s) removed.");
+            syncForm.AddLogText("Completed. " + tracksAdded + " track(s) copied to your device.", Color.Green);
+            syncForm.DisableCancelButton();
+            OnSynchronizeComplete();
 
         }
 
