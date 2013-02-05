@@ -468,6 +468,8 @@ namespace Notpod
 
                 MediaLocation location = new MediaLocation(selectedPath, selectedFolderParentId, selectedFolder.Id);
                 location.LocationPersistentIdentifier = selectedFolder.PersistentId;
+
+                l.DebugFormat("Selected folder: id={0}, name={1}, persistentid={2}, parentid={3}", selectedFolder.Id, selectedFolder.Name, selectedFolder.PersistentId, selectedFolderParentId);
                 
                 // Strip away the drive letter indication from the name and IDs
                 if (selectedDeviceForEdit.DeviceType == WpdDeviceTypes.WPD_DEVICE_TYPE_GENERIC)
