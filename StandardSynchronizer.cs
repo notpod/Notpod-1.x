@@ -8,10 +8,12 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
+using System.Linq;
 using Notpod.Configuration12;
 using System.Security.AccessControl;
 using Common.Logging;
 using WindowsPortableDevicesLib.Domain;
+
 
 namespace Notpod
 {
@@ -84,7 +86,7 @@ namespace Notpod
                     return;
                 }
 
-                l.DebugFormat("Location {0} ({1}/{2}) found on device {3}.", deviceConfig.MediaLocation.LocationName, parentIdentifier, folderIdentifier, deviceConfig.Name);
+                l.DebugFormat("Location {0} ({1}/{2}) found on device {3}.", folder.Name, parentIdentifier, folderIdentifier, deviceConfig.Name);
             }
             catch (Exception ex)
             {
@@ -348,23 +350,24 @@ namespace Notpod
                     if (pathSegments.Length > 1)
                     {
                         string currentPath = mediaLocationId;
-                        for (int i = 0; i < pathSegments.Length - 1; i++)
+                        for (int i = 0; i < pathSegments.Length - 1; i++ )
                         {
-                            string pathSegment = pathSegments[i];
-                            currentPath += "\\" + pathSegment;
-                            PortableDeviceObject segmentPortableDeviceFolder = portableDevice.GetObject(currentFolder.Id, currentPath);
-                            if (segmentPortableDeviceFolder == null)
-                            {
-                                l.DebugFormat("Segment does not exist: {0}. Attempting to create.", pathSegment);
 
-                                string newFolderId = portableDevice.CreateFolder(currentFolder.Id, pathSegment);
+                            string parsedPathSegment = FileNameUtils.ConvertIllegalCharacters(pathSegments[i]);
+                            var existingFolders = from f in ((PortableDeviceFolder)currentFolder).Files where f.Name.Equals(parsedPathSegment) select f;
+
+                            if (existingFolders.Count() == 0)
+                            {
+                                l.DebugFormat("Segment does not exist: {0}. Attempting to create.", parsedPathSegment);
+
+                                string newFolderId = portableDevice.CreateFolder(currentFolder.Id, parsedPathSegment);
                                 currentFolder = portableDevice.GetObject(currentFolder.Id, newFolderId);
 
                             }
                             else
                             {
-                                l.DebugFormat("Segment found: {0}", pathSegment);
-                                currentFolder = segmentPortableDeviceFolder;
+                                l.DebugFormat("Segment found: {0}", parsedPathSegment);
+                                currentFolder = portableDevice.GetObject(currentFolder.Id, existingFolders.First().Id);
                             }
 
                         }
