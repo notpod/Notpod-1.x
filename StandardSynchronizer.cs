@@ -76,7 +76,7 @@ namespace Notpod
                     parentIdentifier = firstDrive.Id;
                     folderIdentifier = parentIdentifier + folderIdentifier;
                 }
-                PortableDeviceFolder folder = portableDevice.GetFolder(parentIdentifier, folderIdentifier);
+                PortableDeviceObject folder = portableDevice.GetObject(parentIdentifier, folderIdentifier);
                 if (folder == null)
                 {
                     MessageBox.Show(String.Format("The configured media location \"{0}\" does not exist on the device {1}. Please ensure the path exists and try again.",
@@ -315,7 +315,7 @@ namespace Notpod
 
                 }
 
-                PortableDeviceFolder mediaRootFolder = portableDevice.GetFolder(mediaLocationParentId, mediaLocationId);
+                PortableDeviceObject mediaRootFolder = portableDevice.GetObject(mediaLocationParentId, mediaLocationId);
 
                 //Check for new track in the playlist which should be copied to the device
                 // NEW foreach: traverse synchronization list instead of playlist
@@ -342,7 +342,7 @@ namespace Notpod
 
                     l.Debug("Working with file: " + filePath);
 
-                    PortableDeviceFolder currentFolder = mediaRootFolder;
+                    PortableDeviceObject currentFolder = mediaRootFolder;
 
                     string[] pathSegments = filePath.Split('\\');
                     if (pathSegments.Length > 1)
@@ -352,13 +352,13 @@ namespace Notpod
                         {
                             string pathSegment = pathSegments[i];
                             currentPath += "\\" + pathSegment;
-                            PortableDeviceFolder segmentPortableDeviceFolder = portableDevice.GetFolder(currentFolder.Id, currentPath);
+                            PortableDeviceObject segmentPortableDeviceFolder = portableDevice.GetObject(currentFolder.Id, currentPath);
                             if (segmentPortableDeviceFolder == null)
                             {
                                 l.DebugFormat("Segment does not exist: {0}. Attempting to create.", pathSegment);
 
                                 string newFolderId = portableDevice.CreateFolder(currentFolder.Id, pathSegment);
-                                currentFolder = portableDevice.GetFolder(currentFolder.Id, newFolderId);
+                                currentFolder = portableDevice.GetObject(currentFolder.Id, newFolderId);
 
                             }
                             else
@@ -369,18 +369,33 @@ namespace Notpod
 
                         }
                     }
-
+                                        
                     try
                     {
                         syncForm.SetCurrentStatus("Copying " + filePath
                             + " (" + syncForm.GetProgressValue() + "/" + syncForm.GetMaxProgressValue() + ")");
 
-                        portableDevice.TransferContentToDevice(((IITFileOrCDTrack)track).Location, currentFolder.Id);
+                        try
+                        {
+                            portableDevice.TransferContentToDevice(((IITFileOrCDTrack)track).Location, currentFolder.Id);
+                            syncForm.AddLogText(filePath + " copied successfully.", Color.Green);
+                            l.Debug("Copied: " + filePath);
+                        }
+                        catch (COMException ex)
+                        {
+                            if (ex.Message.Contains("0x80070050"))
+                            {
+                                l.DebugFormat("The file {0} already exists on device. Skipping.", filePath);
 
-                        syncForm.AddLogText(filePath + " copied successfully.", Color.Green);
+                            }
+                            else
+                            {
+                                throw ex;
+                            }
 
-                        l.Debug("Copied: " + filePath);
-                    }
+                        }
+                       
+                    } 
                     catch (Exception ex)
                     {
                         String message = "Failed to copy " + filePath + ".\n-> " + ex.Message;
