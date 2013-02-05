@@ -79,7 +79,7 @@ namespace Notpod
                 PortableDeviceFolder folder = portableDevice.GetFolder(parentIdentifier, folderIdentifier);
                 if (folder == null)
                 {
-                    MessageBox.Show(String.Format("The configured media location \"{0}\" does not exist on the device {1}. Please ensure the path exists and try again.", 
+                    MessageBox.Show(String.Format("The configured media location \"{0}\" does not exist on the device {1}. Please ensure the path exists and try again.",
                         deviceConfig.MediaLocation.LocationName, deviceConfig.Name), "Unable to find media location", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
@@ -88,10 +88,10 @@ namespace Notpod
             }
             catch (Exception ex)
             {
-                l.ErrorFormat("An error occured while checking configured device folder (parent={0}, id={1}) for device{2}.", deviceConfig.MediaLocation.LocationParentIdentifier, 
+                l.ErrorFormat("An error occured while checking configured device folder (parent={0}, id={1}) for device{2}.", deviceConfig.MediaLocation.LocationParentIdentifier,
                     deviceConfig.MediaLocation.LocationIdentifier, deviceConfig.Name);
                 l.Error("Exception: ", ex);
-                if (MessageBox.Show("An error occured while checking media location on device. Please make sure the device is connected and that the media location exists.", 
+                if (MessageBox.Show("An error occured while checking media location on device. Please make sure the device is connected and that the media location exists.",
                     "Media location", MessageBoxButtons.OKCancel, MessageBoxIcon.Error) == DialogResult.Cancel)
                 {
 
@@ -100,7 +100,7 @@ namespace Notpod
 
             }
 
-           
+
 
             // Check if the media root directory actually exists 
             // Thanks to Robert Grabowski for the contribution.
@@ -166,7 +166,7 @@ namespace Notpod
                             + "next to the track in your playlist.", Color.Orange);
                         continue;
                     }
-                    
+
                     // Check if the list already contains a key - this happens in cases where there are duplicate 
                     // entries in the playlist for the same track. Although the track may have different locations on 
                     // the user's computer, Notpod will not handle this.
@@ -304,7 +304,18 @@ namespace Notpod
                 syncForm.SetMaxProgressValue(syncList.Count);
                 syncForm.SetProgressValue(0);
 
-                PortableDeviceFolder mediaRootFolder = portableDevice.GetFolder(deviceConfig.MediaLocation.LocationParentIdentifier, deviceConfig.MediaLocation.LocationPersistentIdentifier);
+                string mediaLocationId = deviceConfig.MediaLocation.LocationIdentifier;
+                string mediaLocationParentId = deviceConfig.MediaLocation.LocationParentIdentifier;
+                if (portableDevice.DeviceType == WpdDeviceTypes.WPD_DEVICE_TYPE_GENERIC)
+                {
+                    PortableDeviceFolder deviceRoot = portableDevice.GetContents();
+                    PortableDeviceFolder root = (PortableDeviceFolder)deviceRoot.Files[0];
+                    mediaLocationId = root.Id + mediaLocationId;
+                    mediaLocationParentId = root.Id + mediaLocationParentId;
+
+                }
+
+                PortableDeviceFolder mediaRootFolder = portableDevice.GetFolder(mediaLocationParentId, mediaLocationId);
 
                 //Check for new track in the playlist which should be copied to the device
                 // NEW foreach: traverse synchronization list instead of playlist
@@ -336,17 +347,21 @@ namespace Notpod
                     string[] pathSegments = filePath.Split('\\');
                     if (pathSegments.Length > 1)
                     {
-                        foreach (string pathSegment in pathSegments)
+                        string currentPath = mediaLocationId;
+                        for (int i = 0; i < pathSegments.Length - 1; i++)
                         {
-                            PortableDeviceFolder segmentPortableDeviceFolder = portableDevice.GetFolder(currentFolder.PersistentId, pathSegment);
+                            string pathSegment = pathSegments[i];
+                            currentPath += "\\" + pathSegment;
+                            PortableDeviceFolder segmentPortableDeviceFolder = portableDevice.GetFolder(currentFolder.Id, currentPath);
                             if (segmentPortableDeviceFolder == null)
                             {
                                 l.DebugFormat("Segment does not exist: {0}. Attempting to create.", pathSegment);
 
-                                //TODO Create new folder for segment and assign to currentFolder: 
-                                // currentFolder = newFolderSegment;
+                                string newFolderId = portableDevice.CreateFolder(currentFolder.Id, pathSegment);
+                                currentFolder = portableDevice.GetFolder(currentFolder.Id, newFolderId);
+
                             }
-                            else 
+                            else
                             {
                                 l.DebugFormat("Segment found: {0}", pathSegment);
                                 currentFolder = segmentPortableDeviceFolder;
@@ -355,18 +370,13 @@ namespace Notpod
                         }
                     }
 
-
-
-                    if (File.Exists(filePath))
-                        continue;
-
                     try
                     {
                         syncForm.SetCurrentStatus("Copying " + filePath
                             + " (" + syncForm.GetProgressValue() + "/" + syncForm.GetMaxProgressValue() + ")");
 
-                        portableDevice.TransferContentToDevice(((IITFileOrCDTrack)track).Location, currentFolder.PersistentId);
-                    
+                        portableDevice.TransferContentToDevice(((IITFileOrCDTrack)track).Location, currentFolder.Id);
+
                         syncForm.AddLogText(filePath + " copied successfully.", Color.Green);
 
                         l.Debug("Copied: " + filePath);
