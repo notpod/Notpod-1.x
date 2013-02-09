@@ -299,11 +299,13 @@ namespace Notpod
             //    return;
             //}
 
+            IDictionary<String, PortableDeviceObject> fileToPortableDeviceObject = new Dictionary<String, PortableDeviceObject>();
+
             try
             {
-                syncForm.SetCurrentStatus("Copying new files...");
-                syncForm.AddLogText("Preparing to copy new files.", Color.Black);
-                syncForm.SetMaxProgressValue(syncList.Count);
+                syncForm.SetCurrentStatus("Checking folders locations...");
+                syncForm.AddLogText("Checking folder locations to make sure all necessary folders are in place.", Color.Black);
+                syncForm.SetMaxProgressValue(syncList.Count * 2);
                 syncForm.SetProgressValue(0);
 
                 string mediaLocationId = deviceConfig.MediaLocation.LocationIdentifier;
@@ -319,28 +321,10 @@ namespace Notpod
 
                 PortableDeviceObject mediaRootFolder = portableDevice.GetObject(mediaLocationParentId, mediaLocationId);
 
-                //Check for new track in the playlist which should be copied to the device
-                // NEW foreach: traverse synchronization list instead of playlist
-                // Thanks to Robert Grabowski.                
+
+
                 foreach (string filePath in syncList.Keys)
                 {
-                    IITTrack track = syncList[filePath];
-
-                    // Check for cancelled operation.
-                    if (syncForm.GetOperationCancelled())
-                    {
-                        syncForm.SetCurrentStatus("Synchronization cancelled. " + tracksAdded
-                            + " track(s) added, " + tracksRemoved + " track(s) removed.");
-                        syncForm.AddLogText("Synchronization cancelled.", Color.OrangeRed);
-                        syncForm.DisableCancelButton();
-                        syncForm.SetProgressValue(0);
-                        OnSynchronizeCancelled();
-                        return;
-                    }
-
-
-                    //Increase progress bar
-                    syncForm.SetProgressValue(syncForm.GetProgressValue() + 1);
 
                     l.Debug("Working with file: " + filePath);
 
@@ -350,7 +334,7 @@ namespace Notpod
                     if (pathSegments.Length > 1)
                     {
                         string currentPath = mediaLocationId;
-                        for (int i = 0; i < pathSegments.Length - 1; i++ )
+                        for (int i = 0; i < pathSegments.Length - 1; i++)
                         {
 
                             string parsedPathSegment = FileNameUtils.ConvertIllegalCharacters(pathSegments[i]);
@@ -372,15 +356,82 @@ namespace Notpod
 
                         }
                     }
-                                        
+
+                    //Increase progress bar
+                    syncForm.SetProgressValue(syncForm.GetProgressValue() + 1);
+
+                    fileToPortableDeviceObject[filePath] = currentFolder;
+
+                }
+            }
+            catch (Exception e)
+            {
+                syncForm.SetCurrentStatus("");
+                String message = "An unexpected exception occured while checking folders.";
+                syncForm.AddLogText(message, Color.Red);
+                syncForm.DisableCancelButton();
+                syncForm.SetProgressValue(0);
+                OnSynchronizeError(deviceConfig, message);
+
+                l.ErrorFormat("An exception occurred while checking folders: {0}", e.Message);
+                return;
+            }
+
+
+            try
+            {
+                syncForm.SetCurrentStatus("Copying new files...");
+                syncForm.AddLogText("Preparing to copy new files.", Color.Black);
+                syncForm.SetMaxProgressValue(syncList.Count);
+                syncForm.SetProgressValue(0);
+
+
+
+                //Check for new track in the playlist which should be copied to the device
+                // NEW foreach: traverse synchronization list instead of playlist
+                // Thanks to Robert Grabowski.                
+                foreach (string filePath in syncList.Keys)
+                {
+                    IITTrack track = syncList[filePath];
+
+                    // Check for cancelled operation.
+                    if (syncForm.GetOperationCancelled())
+                    {
+                        syncForm.SetCurrentStatus("Synchronization cancelled. " + tracksAdded
+                            + " track(s) added, " + tracksRemoved + " track(s) removed.");
+                        syncForm.AddLogText("Synchronization cancelled.", Color.OrangeRed);
+                        syncForm.DisableCancelButton();
+                        syncForm.SetProgressValue(0);
+                        OnSynchronizeCancelled();
+                        return;
+                    }
+
+
+                    string trackLocation = ((IITFileOrCDTrack)track).Location;
+
+                    //Increase progress bar
+                    syncForm.SetProgressValue(syncForm.GetProgressValue() + 1);
+
+                    PortableDeviceObject currentFolder = fileToPortableDeviceObject[filePath];
+
+                    if (portableDevice.GetObject(currentFolder.Id, Path.GetFileName(trackLocation)) != null)
+                    {
+
+                        l.DebugFormat("The track {0} already exists. Skipping.", filePath);
+                        continue;
+                    }
+
+
                     try
                     {
                         syncForm.SetCurrentStatus("Copying " + filePath
                             + " (" + syncForm.GetProgressValue() + "/" + syncForm.GetMaxProgressValue() + ")");
 
+
+
                         try
                         {
-                            portableDevice.TransferContentToDevice(((IITFileOrCDTrack)track).Location, currentFolder.Id);
+                            portableDevice.TransferContentToDevice(trackLocation, currentFolder.Id);
                             syncForm.AddLogText(filePath + " copied successfully.", Color.Green);
                             l.Debug("Copied: " + filePath);
                         }
@@ -393,12 +444,13 @@ namespace Notpod
                             }
                             else
                             {
+                                l.ErrorFormat("An exception occured while transfering file to device: {0}", ex.Message);
                                 throw ex;
                             }
 
                         }
-                       
-                    } 
+
+                    }
                     catch (Exception ex)
                     {
                         String message = "Failed to copy " + filePath + ".\n-> " + ex.Message;
@@ -407,7 +459,7 @@ namespace Notpod
 
                         l.Error(message, ex);
 
-                        return;
+                        continue;
                     }
 
                     tracksAdded++;
