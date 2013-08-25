@@ -143,7 +143,7 @@ namespace Notpod
             }
             
             LoadSyncPatterns();
-            deviceConfiguration.SyncPattern = syncPatterns.SyncPatterns;
+            deviceConfiguration.SyncPatterns = syncPatterns.SyncPatterns;
                         
 
             if (!CreateITunesInstance())
@@ -632,8 +632,7 @@ namespace Notpod
 
                 while (keys.MoveNext())
                 {
-                    
-                    string drive = (string)keys.Current;
+                    string drive = ((string)keys.Current).Substring(0, 3);
                     Device device = (Device)deviceinfo[keys.Current];
 
                     if (configuration.ConfirmMusicLocation && !GetMusicLocationConfirmation(drive + device.MediaRoot))

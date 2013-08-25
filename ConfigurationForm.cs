@@ -50,7 +50,7 @@ namespace Notpod
             this.checkConfirmMusicLocation.Checked = configuration.ConfirmMusicLocation;
 
             this.deviceConfiguration = deviceConfiguration;
-            for (int d = 0; d < deviceConfiguration.Devices.Length; d++)
+            for (int d = 0; d < deviceConfiguration.Devices.Count; d++)
             {
                 Device device = deviceConfiguration.Devices[d];
                 ListViewItem item = new ListViewItem(device.Name);
@@ -71,9 +71,9 @@ namespace Notpod
             }
 
             //Add synchronize patterns to combo box.
-            for (int s = 0; s < deviceConfiguration.SyncPattern.Count; s++)
+            for (int s = 0; s < deviceConfiguration.SyncPatterns.Count; s++)
             {
-                SyncPattern pattern = deviceConfiguration.SyncPattern.ElementAt(s);
+                SyncPattern pattern = deviceConfiguration.SyncPatterns.ElementAt(s);
                 comboSyncPatterns.Items.Add(pattern.Name);
             }
 
@@ -163,13 +163,13 @@ namespace Notpod
                 textMediaRoot.Text = device.MediaRoot;
 
                 this.selectedDeviceConfigLinkFile = device.RecognizePattern;
-                if(!String.IsNullOrWhiteSpace(selectedDeviceConfigLinkFile)) {
-                    
+                if (!String.IsNullOrWhiteSpace(selectedDeviceConfigLinkFile))
+                {
                     labelLinked.Text = "Linked.";
                     buttonCreateUniqueFile.Text = "Update link...";
                 }
 
-                foreach (SyncPattern pattern in deviceConfiguration.SyncPattern)
+                foreach (SyncPattern pattern in deviceConfiguration.SyncPatterns)
                 {
                     if (pattern.Identifier != device.SyncPattern)
                         continue;
@@ -192,17 +192,21 @@ namespace Notpod
                 comboAssociatePlaylist.SelectedIndex = 0;
                 if (device.Playlist != null && device.Playlist.Length > 0)
                 {
-
-                    foreach (string playlist in comboAssociatePlaylist.Items)
+                    foreach (String playlist in comboAssociatePlaylist.Items)
                     {
                         if (playlist == device.Playlist)
                         {
                             comboAssociatePlaylist.SelectedItem = playlist;
                         }
                     }
-
-
                 }
+
+                if (device.ExportPlaylist.File != null && device.ExportPlaylist.File.Length > 0)
+                {
+                    textExportPlaylist.Text = device.ExportPlaylist.File;
+                }
+
+                textExportPlaylist.Tag = device.ExportPlaylist.Type;
 
                 break;
             }
@@ -222,6 +226,7 @@ namespace Notpod
             labelLinked.Text = "Not linked. Click button to link ->";
             labelLinked.Enabled = false;
             comboAssociatePlaylist.Enabled = true;
+            textExportPlaylist.Enabled = true;
 
             if (!forNewDevice)
                 buttonDelete.Enabled = true;
@@ -230,6 +235,8 @@ namespace Notpod
             buttonCreateUniqueFile.Text= "Link to drive...";
             buttonCreateUniqueFile.Enabled = true;
             comboAssociatePlaylist.Enabled = true;
+            buttonBrowseExportPlaylist.Enabled = true;
+            buttonClearExportPlaylist.Enabled = true;
 
         }
 
@@ -255,8 +262,7 @@ namespace Notpod
 
         private void comboSyncPatterns_SelectedIndexChanged(object sender, EventArgs e)
         {
-
-            foreach (SyncPattern pattern in deviceConfiguration.SyncPattern)
+            foreach (SyncPattern pattern in deviceConfiguration.SyncPatterns)
             {
                 if (pattern.Name != (string)comboSyncPatterns.SelectedItem)
                     continue;
@@ -294,6 +300,8 @@ namespace Notpod
             textMediaRoot.Text = "";
             comboSyncPatterns.SelectedIndex = 0;
             comboAssociatePlaylist.SelectedIndex = 0;
+            textExportPlaylist.Text = "";
+            textExportPlaylist.Tag = "";
         }
 
         /// <summary>
@@ -337,12 +345,19 @@ namespace Notpod
         /// <param name="e"></param>
         private void buttonSave_Click(object sender, EventArgs e)
         {
-            string deviceName = textDeviceName.Text;
-            string syncPattern = (string)comboSyncPatterns.SelectedItem;
-            string mediaroot = textMediaRoot.Text;
-            string recognizePattern = selectedDeviceConfigLinkFile;
-            string associatedPlaylist = (string)comboAssociatePlaylist.SelectedItem;
-                        
+            String deviceName = textDeviceName.Text;
+            String syncPattern = (string)comboSyncPatterns.SelectedItem;
+            String mediaroot = textMediaRoot.Text;
+            String recognizePattern = selectedDeviceConfigLinkFile;
+            String associatedPlaylist = (string)comboAssociatePlaylist.SelectedItem;
+            String exportplaylist = textExportPlaylist.Text;
+            PlaylistType exportplaylisttype = PlaylistType.None;
+
+            if (textExportPlaylist.Tag != null)
+            {
+                exportplaylisttype = (PlaylistType)textExportPlaylist.Tag;
+            }
+
             if (deviceName.Length == 0)
             {
                 MessageBox.Show(this, "Please enter a name for the device.", "Missing information", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
@@ -368,7 +383,11 @@ namespace Notpod
             newDevice.MediaRoot = mediaroot;
             newDevice.RecognizePattern = recognizePattern;
             newDevice.Playlist = (associatedPlaylist == "Use device name..." ? "" : associatedPlaylist);
-            foreach (SyncPattern sp in deviceConfiguration.SyncPattern)
+            
+            newDevice.ExportPlaylist.Type = exportplaylisttype;
+            newDevice.ExportPlaylist.File = exportplaylist;
+
+            foreach (SyncPattern sp in deviceConfiguration.SyncPatterns)
             {
                 if (sp.Name != syncPattern)
                     continue;
@@ -404,6 +423,7 @@ namespace Notpod
                     device.RecognizePattern = newDevice.RecognizePattern;
                     device.SyncPattern = newDevice.SyncPattern;
                     device.Playlist = newDevice.Playlist;
+                    device.ExportPlaylist = newDevice.ExportPlaylist;
 
                     break;
                 }
@@ -457,7 +477,6 @@ namespace Notpod
                         SaveDeviceConfiguration();
                 }
             }
-
         }
 
         /// <summary>
@@ -611,6 +630,64 @@ namespace Notpod
             configurationChanged = true;
             buttonOK.Enabled = true;
         }
+        private void buttonBrowseExportPlaylist_Click(object sender, EventArgs e)
+        {
+            //FolderBrowserDialog dlg = new FolderBrowserDialog();
+            SaveFileDialog dlg = new SaveFileDialog();
 
+            dlg.AddExtension = true;
+            dlg.Filter = "Basic M3U (*.m3u)|*.m3u|Extended M3U (*.m3u)|*.m3u|Windows Media (*.wpl)|*.wpl|Zune Playlist (*.zpl)|*.zpl";
+            dlg.FilterIndex = (int)textExportPlaylist.Tag;
+            //dlg.DefaultExt = "m3u";
+            dlg.FileName = Path.GetFileName(textExportPlaylist.Text);
+            //dlg.InitialDirectory  = Path.GetDirectoryName(textExportPlaylist.Text);
+
+            if (dlg.ShowDialog() == DialogResult.Cancel)
+                return;
+
+            //This check is to make sure that the application do not throw an exception if a path 
+            //of length less than 3 is selected. Normally this do not occur, but there has been 
+            //reportet incidents where unsupported, special devices have given an empty path in return...
+            //See bug report 1443246.
+            // https://sourceforge.net/tracker/index.php?func=detail&aid=1443246&group_id=149133&atid=773786
+            if (dlg.FileName.Length >= 3)
+            {
+                textExportPlaylist.Text = dlg.FileName.Substring(3, dlg.FileName.Length - 3);
+
+                switch (dlg.FilterIndex)
+                {
+                    case 1:
+                        textExportPlaylist.Tag = PlaylistType.M3U;
+                        break;
+                    case 2:
+                        textExportPlaylist.Tag = PlaylistType.EXT;
+                        break;
+                    case 3:
+                        textExportPlaylist.Tag = PlaylistType.WPL;
+                        break;
+                    case 4:
+                        textExportPlaylist.Tag = PlaylistType.ZPL;
+                        break;
+                    default:
+                        textExportPlaylist.Tag = PlaylistType.None;
+                        break;
+                }
+            }
+        }
+
+        private void buttonClearExportPlaylist_Click(object sender, EventArgs e)
+        {
+            textExportPlaylist.Text = "";
+            textExportPlaylist.Tag = null;
+
+            deviceConfigurationChanged = true;
+            buttonSave.Enabled = true;
+        }
+
+        private void textExportPlaylist_TextChanged(object sender, EventArgs e)
+        {
+            deviceConfigurationChanged = true;
+            buttonSave.Enabled = true;
+        }
     }
 }

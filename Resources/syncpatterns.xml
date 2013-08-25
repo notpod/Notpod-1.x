@@ -92,5 +92,12 @@
 	      <Description>This pattern organizes all tracks in the root media folder of the device. All tracks from all artists are in one folder and names like this: Artist - Name.</Description>
 	      <CompilationsPattern />
 	    </SyncPattern>
+	    <SyncPattern>
+	      <Identifier>playlist-order</Identifier>
+	      <Name>Playlist-Order Folder</Name>
+	      <Pattern>%TRACKIDXSPACE%%ARTIST% - %NAME%</Pattern>
+	      <Description>This pattern organizes all tracks in the root media folder of the device. All tracks from all artists are in one folder and names like this: Index Artist - Name.</Description>
+	      <CompilationsPattern />
+	    </SyncPattern>
 	</SyncPatterns>
   </SyncPatternCollection>

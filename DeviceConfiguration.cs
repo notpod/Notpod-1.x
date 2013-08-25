@@ -15,43 +15,24 @@ using System.ComponentModel;
 
 namespace Notpod.Configuration12
 {
-
+    [XmlRoot]
     public class DeviceConfiguration
     {
-
-        [XmlIgnore]
-        private ICollection<SyncPattern> syncPatterns = new List<SyncPattern>();
-
-        private ICollection<Device> devices = new List<Device>();
+        public DeviceConfiguration()
+        {
+            SyncPatterns = new List<SyncPattern>();
+            Devices = new List<Device>();
+        }
 
         /// <summary>
         /// Accessor for devices.
         /// </summary>
-        public Device[] Devices
-        {
-            get
-            {
-
-                Device[] devicesarr = new Device[devices.Count];
-                devices.CopyTo(devicesarr, 0);
-                return devicesarr;
-
-            }
-            set
-            {
-                devices.Clear();
-                foreach (Device d in value)
-                    devices.Add(d);
-
-            }
-        }
+        [XmlArray("Devices")]
+        [XmlArrayItem("Device")]
+        public List<Device> Devices { get; set; }
         
         [XmlIgnore]
-        public SyncPattern[] SyncPatterns {
-            
-            set { }
-            get { return new SyncPattern[0]; }
-        }
+        public List<SyncPattern> SyncPatterns { get; set; }
         
         /// <summary>
         /// Add a device.
@@ -59,7 +40,7 @@ namespace Notpod.Configuration12
         /// <param name="d">Device to add.</param>
         public void AddDevice(Device d)
         {
-            devices.Add(d);
+            Devices.Add(d);
         }
 
         /// <summary>
@@ -69,22 +50,13 @@ namespace Notpod.Configuration12
         /// <returns></returns>
         public bool RemoveDevice(Device d)
         {
-            return devices.Remove(d);
-        }
-
-        [XmlIgnore]
-        public ICollection<SyncPattern> SyncPattern {
-         
-            get { return syncPatterns; }
-            set { syncPatterns = value;}
+            return Devices.Remove(d);
         }
         
         public bool ContainsSyncPattern(SyncPattern sp) 
         {
-            foreach(SyncPattern existingPattern in syncPatterns) {
-                
-                if(existingPattern.Identifier == sp.Identifier) {
-                    
+            foreach(SyncPattern existingPattern in SyncPatterns) {
+                if (existingPattern.Identifier == sp.Identifier) {
                     return true;
                 }
             }
