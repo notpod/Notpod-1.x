@@ -3,6 +3,7 @@ using System.Collections;
 using System.Text;
 using System.IO;
 using Notpod.Configuration12;
+using System.Collections.Generic;
 
 namespace Notpod
 {
@@ -43,12 +44,12 @@ namespace Notpod
         /// </summary>
         /// <returns>A collection containing Device objects representing the 
         /// connected devices.</returns>
-        ICollection GetConnectedDevices();
+        HashSet<Device> GetConnectedDevices();
 
         /// <summary>
         /// Get the Hashtable containing all connected devices and what drives they are connected at.
         /// </summary>
         /// <returns>Hashtable containing all connected Devices.</returns>
-        Hashtable GetConnectedDevicesWithDrives();
+        Dictionary<String, HashSet<Device>> GetConnectedDevicesWithDrives();
     }
 }

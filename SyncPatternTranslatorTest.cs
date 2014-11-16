@@ -26,7 +26,7 @@ namespace Notpod.Test
             track.Location = "C:\\Music\\Coldplay\\X&Y\\Fix You.mp3";
 
             Assert.AreEqual("Coldplay\\X&Y\\Fix You.mp3", 
-                SyncPatternTranslator.Translate(pattern, track));
+                SyncPatternTranslator.Translate(pattern, track, 0));
         }
 
     }

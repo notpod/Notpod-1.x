@@ -40,9 +40,13 @@ namespace Notpod
             this.buttonBrowseMediaRoot = new System.Windows.Forms.Button();
             this.comboSyncPatterns = new System.Windows.Forms.ComboBox();
             this.buttonCreateUniqueFile = new System.Windows.Forms.Button();
+            this.buttonBrowseExportPlaylist = new System.Windows.Forms.Button();
+            this.buttonClearExportPlaylist = new System.Windows.Forms.Button();
             this.textMediaRoot = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupDeviceInformation = new System.Windows.Forms.GroupBox();
+            this.textExportPlaylist = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.labelLinked = new System.Windows.Forms.Label();
             this.comboAssociatePlaylist = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
@@ -55,7 +59,7 @@ namespace Notpod
             this.textDeviceName = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.listDevices = new System.Windows.Forms.ListView();
-            this.columnName = new System.Windows.Forms.ColumnHeader();
+            this.columnName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.buttonCancel = new System.Windows.Forms.Button();
             this.buttonOK = new System.Windows.Forms.Button();
             this.helpProvider = new System.Windows.Forms.HelpProvider();
@@ -177,6 +181,30 @@ namespace Notpod
             this.buttonCreateUniqueFile.UseVisualStyleBackColor = true;
             this.buttonCreateUniqueFile.Click += new System.EventHandler(this.buttonCreateUniqueFile_Click);
             // 
+            // buttonBrowseExportPlaylist
+            // 
+            this.buttonBrowseExportPlaylist.Enabled = false;
+            this.buttonBrowseExportPlaylist.Location = new System.Drawing.Point(358, 140);
+            this.buttonBrowseExportPlaylist.Name = "buttonBrowseExportPlaylist";
+            this.buttonBrowseExportPlaylist.Size = new System.Drawing.Size(65, 23);
+            this.buttonBrowseExportPlaylist.TabIndex = 17;
+            this.buttonBrowseExportPlaylist.Text = "Choose";
+            this.toolTip.SetToolTip(this.buttonBrowseExportPlaylist, "Browse for the folder if the device is already connected.");
+            this.buttonBrowseExportPlaylist.UseVisualStyleBackColor = true;
+            this.buttonBrowseExportPlaylist.Click += new System.EventHandler(this.buttonBrowseExportPlaylist_Click);
+            // 
+            // buttonClearExportPlaylist
+            // 
+            this.buttonClearExportPlaylist.Enabled = false;
+            this.buttonClearExportPlaylist.Location = new System.Drawing.Point(428, 140);
+            this.buttonClearExportPlaylist.Name = "buttonClearExportPlaylist";
+            this.buttonClearExportPlaylist.Size = new System.Drawing.Size(65, 23);
+            this.buttonClearExportPlaylist.TabIndex = 18;
+            this.buttonClearExportPlaylist.Text = "Clear";
+            this.toolTip.SetToolTip(this.buttonClearExportPlaylist, "Browse for the folder if the device is already connected.");
+            this.buttonClearExportPlaylist.UseVisualStyleBackColor = true;
+            this.buttonClearExportPlaylist.Click += new System.EventHandler(this.buttonClearExportPlaylist_Click);
+            // 
             // textMediaRoot
             // 
             this.textMediaRoot.Enabled = false;
@@ -194,13 +222,17 @@ namespace Notpod
             this.groupBox2.Controls.Add(this.listDevices);
             this.groupBox2.Location = new System.Drawing.Point(2, 104);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(512, 357);
+            this.groupBox2.Size = new System.Drawing.Size(512, 387);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Devices";
             // 
             // groupDeviceInformation
             // 
+            this.groupDeviceInformation.Controls.Add(this.buttonClearExportPlaylist);
+            this.groupDeviceInformation.Controls.Add(this.buttonBrowseExportPlaylist);
+            this.groupDeviceInformation.Controls.Add(this.textExportPlaylist);
+            this.groupDeviceInformation.Controls.Add(this.label6);
             this.groupDeviceInformation.Controls.Add(this.labelLinked);
             this.groupDeviceInformation.Controls.Add(this.buttonCreateUniqueFile);
             this.groupDeviceInformation.Controls.Add(this.comboAssociatePlaylist);
@@ -218,10 +250,28 @@ namespace Notpod
             this.groupDeviceInformation.Controls.Add(this.label1);
             this.groupDeviceInformation.Location = new System.Drawing.Point(6, 182);
             this.groupDeviceInformation.Name = "groupDeviceInformation";
-            this.groupDeviceInformation.Size = new System.Drawing.Size(500, 167);
+            this.groupDeviceInformation.Size = new System.Drawing.Size(500, 199);
             this.groupDeviceInformation.TabIndex = 1;
             this.groupDeviceInformation.TabStop = false;
             this.groupDeviceInformation.Text = "Device information";
+            // 
+            // textExportPlaylist
+            // 
+            this.textExportPlaylist.Enabled = false;
+            this.textExportPlaylist.Location = new System.Drawing.Point(140, 142);
+            this.textExportPlaylist.Name = "textExportPlaylist";
+            this.textExportPlaylist.Size = new System.Drawing.Size(212, 20);
+            this.textExportPlaylist.TabIndex = 16;
+            this.textExportPlaylist.TextChanged += new System.EventHandler(this.textExportPlaylist_TextChanged);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(6, 146);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(125, 13);
+            this.label6.TabIndex = 15;
+            this.label6.Text = "Create playlist on device:";
             // 
             // labelLinked
             // 
@@ -257,7 +307,7 @@ namespace Notpod
             // buttonDelete
             // 
             this.buttonDelete.Enabled = false;
-            this.buttonDelete.Location = new System.Drawing.Point(290, 138);
+            this.buttonDelete.Location = new System.Drawing.Point(290, 168);
             this.buttonDelete.Name = "buttonDelete";
             this.buttonDelete.Size = new System.Drawing.Size(84, 23);
             this.buttonDelete.TabIndex = 11;
@@ -268,7 +318,7 @@ namespace Notpod
             // buttonSave
             // 
             this.buttonSave.Enabled = false;
-            this.buttonSave.Location = new System.Drawing.Point(215, 138);
+            this.buttonSave.Location = new System.Drawing.Point(215, 168);
             this.buttonSave.Name = "buttonSave";
             this.buttonSave.Size = new System.Drawing.Size(75, 23);
             this.buttonSave.TabIndex = 10;
@@ -278,7 +328,7 @@ namespace Notpod
             // 
             // buttonNew
             // 
-            this.buttonNew.Location = new System.Drawing.Point(140, 138);
+            this.buttonNew.Location = new System.Drawing.Point(140, 168);
             this.buttonNew.Name = "buttonNew";
             this.buttonNew.Size = new System.Drawing.Size(75, 23);
             this.buttonNew.TabIndex = 9;
@@ -355,7 +405,7 @@ namespace Notpod
             // buttonCancel
             // 
             this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.buttonCancel.Location = new System.Drawing.Point(439, 465);
+            this.buttonCancel.Location = new System.Drawing.Point(439, 497);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(75, 23);
             this.buttonCancel.TabIndex = 2;
@@ -364,7 +414,7 @@ namespace Notpod
             // buttonOK
             // 
             this.buttonOK.Enabled = false;
-            this.buttonOK.Location = new System.Drawing.Point(2, 465);
+            this.buttonOK.Location = new System.Drawing.Point(2, 497);
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(75, 23);
             this.buttonOK.TabIndex = 3;
@@ -376,7 +426,7 @@ namespace Notpod
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.buttonCancel;
-            this.ClientSize = new System.Drawing.Size(518, 492);
+            this.ClientSize = new System.Drawing.Size(518, 525);
             this.Controls.Add(this.buttonOK);
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.groupBox2);
@@ -429,5 +479,10 @@ namespace Notpod
         private System.Windows.Forms.Button buttonCreateUniqueFile;
         private System.Windows.Forms.CheckBox checkWarnOnSystemDrives;
         private System.Windows.Forms.CheckBox checkConfirmMusicLocation;
+		
+        private System.Windows.Forms.Button buttonBrowseExportPlaylist;
+        private System.Windows.Forms.TextBox textExportPlaylist;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Button buttonClearExportPlaylist;
     }
 }

@@ -104,7 +104,7 @@ namespace Notpod
 
             //Find correct synchronize pattern for the device.
             SyncPattern devicePattern = null;
-            foreach (SyncPattern sp in configuration.SyncPattern)
+            foreach (SyncPattern sp in configuration.SyncPatterns)
             {
                 if (sp.Identifier == device.SyncPattern)
                     devicePattern = sp;
@@ -131,10 +131,45 @@ namespace Notpod
 
             string deviceMediaRoot = drive + (device.MediaRoot.Length > 0 ? device.MediaRoot + "\\" : "");
 
+            string playlistFile = null;
+            if (device.ExportPlaylist != null && device.ExportPlaylist.File.Length > 0)
+            {
+                playlistFile = drive + device.ExportPlaylist.File;
+            }
+
+            IPlaylistWriter playlistWriter = null;
+
+            if (File.Exists(playlistFile))
+            {
+                File.Delete(playlistFile);
+            }
+
             try
             {
-                foreach (IITTrack track in playlist.Tracks)
+                // Create a new instance of one of the IPlaylistWriter implementations to
+                // handle the file's contents.
+                switch (device.ExportPlaylist.Type)
                 {
+                    case PlaylistType.M3U:
+                        playlistWriter = new M3UPlaylistWriter(playlistFile, playlist.Name);
+                        break;
+                    case PlaylistType.EXT:
+                        playlistWriter = new M3UExtPlaylistWriter(playlistFile, playlist.Name);
+                        break;
+                    case PlaylistType.WPL:
+                        playlistWriter = new WPLPlaylistWriter(playlistFile, playlist.Name);
+                        break;
+                    case PlaylistType.ZPL:
+                        playlistWriter = new ZPLPlaylistWriter(playlistFile, playlist.Name);
+                        break;
+                    default:
+                        break;
+                }
+          
+                for (int i = 1; i <= playlist.Tracks.Count; i++)
+                {
+                    IITTrack track = playlist.Tracks.get_ItemByPlayOrder(i);
+
                     if (syncForm.GetOperationCancelled())
                     {
                         syncForm.SetCurrentStatus("Synchronization cancelled. 0 tracks added, 0 tracks removed.");
@@ -156,9 +191,9 @@ namespace Notpod
 
                     try
                     {
-                        pathOnDevice = SyncPatternTranslator.Translate(devicePattern, (IITFileOrCDTrack)addTrack);                        
+                        pathOnDevice = SyncPatternTranslator.Translate(devicePattern, (IITFileOrCDTrack)addTrack, i);
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         syncForm.AddLogText("An error occured while working with \"" + track.Artist + " - " + track.Name
                             + "\". This may be because the track has been deleted from disk. Look for an exclamation mark"
@@ -305,7 +340,7 @@ namespace Notpod
                 syncForm.SetMaxProgressValue(syncList.Count);
                 syncForm.SetProgressValue(0);
 
-                //Check for new track in the playlist which should be copied to the device
+                // Check for new track in the playlist which should be copied to the device
                 // NEW foreach: traverse synchronization list instead of playlist
                 // Thanks to Robert Grabowski.                
                 foreach (string filePath in syncList.Keys)
@@ -328,11 +363,28 @@ namespace Notpod
                     //Increase progress bar
                     syncForm.SetProgressValue(syncForm.GetProgressValue() + 1);
 
+                    //Continue with next track if it is not of a supported extension.
+                    //if (file.Extension != ".mp3" && file.Extension != ".acc" && file.Extension != ".m4p" && file.Extension != ".m4a")
+                    if (!extensions.Contains(Path.GetExtension(((IITFileOrCDTrack)track).Location)))
+                        continue;
+
                     string trackPath = filePath.Substring(deviceMediaRoot.Length); // hack: cut out media root
                     l.Debug("Checking for copy: " + filePath);
 
+                    string trackRelativePath = "";
+                    if (playlistFile != null)
+                        trackRelativePath = EvaluateRelativePath(Path.GetDirectoryName(playlistFile), filePath);
+
+                    if (trackRelativePath.StartsWith(".\\"))
+                        trackRelativePath = trackRelativePath.Substring(2);
+
                     if (File.Exists(filePath))
+                    {
+                        if (playlistWriter != null)
+                            playlistWriter.WriteTrack(trackRelativePath, track);
+
                         continue;
+                    }
 
                     try
                     {
@@ -342,7 +394,9 @@ namespace Notpod
                                                 
                         File.Copy(((IITFileOrCDTrack)track).Location, filePath, true);
                         File.SetAttributes(filePath, FileAttributes.Normal);
-
+                        
+                        if (playlistWriter != null)
+                            playlistWriter.WriteTrack(trackRelativePath, track);
 
                         syncForm.AddLogText(filePath + " copied successfully.", Color.Green);
 
@@ -362,9 +416,7 @@ namespace Notpod
                     tracksAdded++;
 
                 }
-            }
-            catch (MissingTrackException ex)
-            {
+            } catch (MissingTrackException ex) {
                 syncForm.SetCurrentStatus("");
                 String message = "You have a missing file in your library. Please remove the track '" + ex.Track.Artist + " - " + ex.Track.Name + "' and try again. I am sorry for the inconvenience.";
                 syncForm.AddLogText(message, Color.Red);
@@ -375,9 +427,7 @@ namespace Notpod
                 l.Error(message, ex);
 
                 return;
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 string message = "An error occured while copying new tracks: " + ex.Message;
                 syncForm.SetCurrentStatus("");
                 syncForm.AddLogText(message,
@@ -391,6 +441,12 @@ namespace Notpod
                 return;
             }
 
+            if (playlistWriter != null)
+            {
+                playlistWriter.Close();
+                playlistWriter = null;
+            }
+
             syncForm.SetCurrentStatus("Synchronization completed. " + tracksAdded
                 + " track(s) added, " + tracksRemoved + " track(s) removed.");
             syncForm.AddLogText("Completed. " + tracksAdded + " track(s) copied to your device.", Color.Green);
@@ -399,6 +455,58 @@ namespace Notpod
 
         }
 
+
+        /// <summary>
+        /// Resolve the relative path of a file to another file
+        /// </summary>
+        /// <param name="mainDirPath">The path of the file, which is absolute.</param>
+        /// <param name="absoluteFilePath">The path of the file, which should be made relative.</param>
+        private static string EvaluateRelativePath(string mainDirPath, string absoluteFilePath)
+        {
+            string[] firstPathParts = mainDirPath.Trim(Path.DirectorySeparatorChar).Split(Path.DirectorySeparatorChar);
+
+            string[] secondPathParts = absoluteFilePath.Trim(Path.DirectorySeparatorChar).Split(Path.DirectorySeparatorChar);
+
+            int sameCounter = 0;
+
+            for (int i = 0; i < Math.Min(firstPathParts.Length, secondPathParts.Length); i++)
+            {
+                if (!firstPathParts[i].ToLower().Equals(secondPathParts[i].ToLower()))
+                {
+                    break;
+                }
+                sameCounter++;
+            }
+
+            if (sameCounter == 0)
+            {
+                return absoluteFilePath;
+            }
+
+            string newPath = String.Empty;
+
+            for (int i = sameCounter; i < firstPathParts.Length; i++)
+            {
+                if (i > sameCounter)
+                {
+                    newPath += Path.DirectorySeparatorChar;
+                }
+                newPath += "..";
+            }
+
+            if (newPath.Length == 0)
+            {
+                newPath = ".";
+            }
+
+            for (int i = sameCounter; i < secondPathParts.Length; i++)
+            {
+                newPath += Path.DirectorySeparatorChar;
+                newPath += secondPathParts[i];
+            }
+
+            return newPath;
+        }
 
         /// <summary>
         /// Check if the necessary folders for the given track exists. If not, create them.

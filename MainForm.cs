@@ -143,7 +143,7 @@ namespace Notpod
             }
             
             LoadSyncPatterns();
-            deviceConfiguration.SyncPattern = syncPatterns.SyncPatterns;
+            deviceConfiguration.SyncPatterns = syncPatterns.SyncPatterns;
                         
 
             if (!CreateITunesInstance())
@@ -425,12 +425,16 @@ namespace Notpod
         /// <param name="e"></param>
         protected override void OnClosing(CancelEventArgs e)
         {
-            Hashtable cd = connectedDevices.GetConnectedDevicesWithDrives();
+            Dictionary<String, HashSet<Device>> cd = connectedDevices.GetConnectedDevicesWithDrives();
             IDictionaryEnumerator cdenum = cd.GetEnumerator();
             while (cdenum.MoveNext())
             {
-                CDMEventArgs args = new CDMEventArgs(null, (Device)cdenum.Value);
-                OnDeviceDisconnect(this, (string)cdenum.Key, args);
+                HashSet<Device> devices = (HashSet<Device>)cdenum.Value;
+                foreach (Device device in devices)
+                {
+                    CDMEventArgs args = new CDMEventArgs(null, device);
+                    OnDeviceDisconnect(this, (string)cdenum.Key, args);
+                }
             }
 
             itunes = null;
@@ -551,66 +555,70 @@ namespace Notpod
         /// <returns>False if the user chooses to abort, true if all is good.</returns>
         private bool PerformDeviceCheck()
         {
-            Hashtable deviceinfo = connectedDevices.GetConnectedDevicesWithDrives();
-            IEnumerator keys = deviceinfo.Keys.GetEnumerator();
+            Dictionary<String,HashSet<Device>> deviceinfo = connectedDevices.GetConnectedDevicesWithDrives();
+            IDictionaryEnumerator keys = deviceinfo.GetEnumerator();
 
             while (keys.MoveNext())
             {
-                string drive = (string)keys.Current;
-                Device device = (Device)deviceinfo[keys.Current];
-                
-                DriveInfo driveInfo = new DriveInfo(drive);
-                if(driveInfo.DriveType == DriveType.Fixed) {
-                    
-                    l.Warn(String.Format("Detected fixed drive for {0} ({1}).", device.Name, drive));
-                    
-                    DialogResult choice = MessageBox.Show("The device '" + device.Name
-                        + "' is mapping to a fixed hard drive in your computer, not a removable storage. The drive currently associated"
-                        + " with this device is:\n\n\t" + drive + "\n\nIf you are sure this is "
-                        + "correct, you may continue. If you are unsure, or have misconfigured, "
-                        + "you should click 'Cancel' and make sure your device configuration is "
-                        + "correct before attempting a new synchronization.\n\nAre you sure you "
-                        + "want to continue?",
-                    "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+                string drive = (string)keys.Key;
+                HashSet<Device> devices = (HashSet<Device>)keys.Value;
 
-                    if (choice == DialogResult.Cancel)
-                        return false;
-                }
-                
-                if (CheckIfSystemDrive(drive))
+                foreach (Device device in devices)
                 {
-                    l.Warn(String.Format("Detected possible system drive for {0} ({1}).", device.Name, drive));
-                    
-                    DialogResult choice = MessageBox.Show("The device '" + device.Name
-                        + "' looks like it's mapping to a system hard drive. The drive currently associated"
-                        + " with this device is:\n\n\t" + drive + "\n\nIf you are sure this is "
-                        + "correct, you may continue. If you are unsure, or have misconfigured, "
-                        + "you should click 'Cancel' and make sure your device configuration is "
-                        + "correct before attempting a new synchronization.\n\nAre you sure you "
-                        + "want to continue?",
-                    "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+                    DriveInfo driveInfo = new DriveInfo(drive);
+                    if (driveInfo.DriveType == DriveType.Fixed)
+                    {
 
-                    if (choice == DialogResult.Cancel)
-                        return false;
-                
-                }
-                
-                if(CheckIfiTunesLibrary(drive))
-                {
-                    l.Warn(String.Format("Detected possible iTunes library location for {0} ({1}).", 
-                                         device.Name, drive));
-                    
-                    DialogResult choice = MessageBox.Show("The device '" + device.Name
-                        + "' looks like it's mapping to your local iTunes library. The drive currently associated"
-                        + " with this device is:\n\n\t" + drive + "\n\nIf you are sure this is "
-                        + "correct, you may continue. If you are unsure, or have misconfigured, "
-                        + "you should click 'Cancel' and make sure your device configuration is correct "
-                        + "before attempting a new synchronization.\n\nAre you sure you want to continue?",
-                    "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+                        l.Warn(String.Format("Detected fixed drive for {0} ({1}).", device.Name, drive));
 
-                    if (choice == DialogResult.Cancel)
-                        return false;
-                    
+                        DialogResult choice = MessageBox.Show("The device '" + device.Name
+                            + "' is mapping to a fixed hard drive in your computer, not a removable storage. The drive currently associated"
+                            + " with this device is:\n\n\t" + drive + "\n\nIf you are sure this is "
+                            + "correct, you may continue. If you are unsure, or have misconfigured, "
+                            + "you should click 'Cancel' and make sure your device configuration is "
+                            + "correct before attempting a new synchronization.\n\nAre you sure you "
+                            + "want to continue?",
+                        "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+
+                        if (choice == DialogResult.Cancel)
+                            return false;
+                    }
+
+                    if (CheckIfSystemDrive(drive))
+                    {
+                        l.Warn(String.Format("Detected possible system drive for {0} ({1}).", device.Name, drive));
+
+                        DialogResult choice = MessageBox.Show("The device '" + device.Name
+                            + "' looks like it's mapping to a system hard drive. The drive currently associated"
+                            + " with this device is:\n\n\t" + drive + "\n\nIf you are sure this is "
+                            + "correct, you may continue. If you are unsure, or have misconfigured, "
+                            + "you should click 'Cancel' and make sure your device configuration is "
+                            + "correct before attempting a new synchronization.\n\nAre you sure you "
+                            + "want to continue?",
+                        "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+
+                        if (choice == DialogResult.Cancel)
+                            return false;
+
+                    }
+
+                    if (CheckIfiTunesLibrary(drive))
+                    {
+                        l.Warn(String.Format("Detected possible iTunes library location for {0} ({1}).",
+                                             device.Name, drive));
+
+                        DialogResult choice = MessageBox.Show("The device '" + device.Name
+                            + "' looks like it's mapping to your local iTunes library. The drive currently associated"
+                            + " with this device is:\n\n\t" + drive + "\n\nIf you are sure this is "
+                            + "correct, you may continue. If you are unsure, or have misconfigured, "
+                            + "you should click 'Cancel' and make sure your device configuration is correct "
+                            + "before attempting a new synchronization.\n\nAre you sure you want to continue?",
+                        "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+
+                        if (choice == DialogResult.Cancel)
+                            return false;
+
+                    }
                 }
                 
             }
@@ -620,10 +628,8 @@ namespace Notpod
 
         public void PerformSynchronize()
         {
-
-
-            Hashtable deviceinfo = connectedDevices.GetConnectedDevicesWithDrives();
-            IEnumerator keys = deviceinfo.Keys.GetEnumerator();
+            Dictionary<String, HashSet<Device>> deviceinfo = connectedDevices.GetConnectedDevicesWithDrives();
+            IDictionaryEnumerator keys = deviceinfo.GetEnumerator();
             try
             {
                 // Create synchronizer and form.
@@ -632,9 +638,10 @@ namespace Notpod
 
                 while (keys.MoveNext())
                 {
-                    
-                    string drive = (string)keys.Current;
-                    Device device = (Device)deviceinfo[keys.Current];
+                    string drive = ((string)keys.Key).Substring(0, 3);
+
+                    HashSet<Device> devices = (HashSet<Device>)keys.Value;
+                    foreach (Device device in devices) {
 
                     if (configuration.ConfirmMusicLocation && !GetMusicLocationConfirmation(drive + device.MediaRoot))
                     {
@@ -660,6 +667,7 @@ namespace Notpod
                     synchronizer.SynchronizeCancelled += new SynchronizeCancelledEventHandler(OnSynchronizeCancelled);
                     synchronizer.SynchronizeDevice((IITUserPlaylist)playlist, drive, device);
 
+                }
                 }
                                 
             }

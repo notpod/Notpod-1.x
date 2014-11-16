@@ -23,13 +23,15 @@ namespace Notpod
         /// %NAME%          = The track name
         /// %TRACKNUMSPACE% = The track number with a trailing space
         /// %TRACKNUM%      = The track number (no trailing space)
+        /// %TRACKIDXSPACE% = The track index with a trailing space
+        /// %TRACKIDX%      = The track index (no trailing space)
         /// %DISCNUMDASH%   = The disc number with a trailing minus and space
         /// %DISCNUM%       = The disc number (no trailing space)
         /// </summary>
         /// <param name="pattern">SyncPattern to translate.</param>
         /// <param name="track">iTunes track containing track information.</param>
         /// <returns>A string representation of pattern and track.</returns>
-        public static string Translate(SyncPattern pattern, IITFileOrCDTrack track)
+        public static string Translate(SyncPattern pattern, IITFileOrCDTrack track, long lTrackIndex)
         {
             try
             {
@@ -41,7 +43,7 @@ namespace Notpod
                     l.Debug("track.Location is null!");
                     throw new MissingTrackException(track);
                 }
-
+ 
                 string patternstring = ((track.Compilation && pattern.CompilationsPattern != null && pattern.CompilationsPattern.Length > 0) ? pattern.CompilationsPattern : pattern.Pattern);
 
                 patternstring = TranslateArtist(pattern, track, patternstring);
@@ -51,6 +53,7 @@ namespace Notpod
                 patternstring = TranslateAlbum(track.Album, patternstring);
                 patternstring = TranslateName(track, patternstring);
                 patternstring = TranslateTrackNumber(track, patternstring);
+                patternstring = TranslateTrackIndex(track, patternstring, lTrackIndex);
                 patternstring = TranslateExtension(track, patternstring);
 
                 l.Debug("patternstring=" + patternstring);
@@ -134,6 +137,29 @@ namespace Notpod
                 patternstring = patternstring.Replace("%TRACKNUMSPACE%", "");
                 //%TRACKNUM%
                 patternstring = patternstring.Replace("%TRACKNUM%", "");
+            }
+            return patternstring;
+        }
+
+        private static string TranslateTrackIndex(IITFileOrCDTrack track, string patternstring, long lTrackIndex = 0L)
+        {
+            //Replace track number with a number only if the index is set
+            if (lTrackIndex != 0)
+            {
+                //%TRACKIDXSPACE%
+                patternstring = patternstring.Replace("%TRACKIDXSPACE%", 
+                lTrackIndex.ToString("000") + " ");
+
+                //%TRACKIDX%
+                patternstring = patternstring.Replace("%TRACKIDX%",
+                lTrackIndex.ToString("000"));
+            }
+            else //If there is no track index set for the track
+            {
+                //%TRACKIDXSPACE%
+                patternstring = patternstring.Replace("%TRACKIDXSPACE%", "");
+                //%TRACKIDX%
+                patternstring = patternstring.Replace("%TRACKIDX%", "");
             }
             return patternstring;
         }
