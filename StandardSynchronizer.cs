@@ -166,7 +166,7 @@ namespace Notpod
                         break;
                 }
           
-                for (int i = 1; i <= playlist.Tracks.Count ; i++)
+                for (int i = 1; i <= playlist.Tracks.Count; i++)
                 {
                     IITTrack track = playlist.Tracks.get_ItemByPlayOrder(i);
 

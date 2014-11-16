@@ -14,7 +14,7 @@ namespace Notpod
     {
         private DeviceConfiguration deviceConfig;
 
-        private Hashtable connectedDevices = new Hashtable();
+        private Dictionary<String, HashSet<Device>> connectedDevices = new Dictionary<String, HashSet<Device>>();
 
         #region IConnectedDevicesManager Members
 
@@ -56,19 +56,21 @@ namespace Notpod
         /// <param name="drives">List of currently available removable drives.</param>
         private void CheckForDisconnectedDevices(ArrayList drives)
         {
-            IEnumerator keys = connectedDevices.Keys.GetEnumerator();
+            IDictionaryEnumerator keys = connectedDevices.GetEnumerator();
             while (keys.MoveNext())
             {
-                string driveLetter = (string)keys.Current;
+                String driveLetter = (String)keys.Key;
                 bool found = false;
 
-                Device device = (Device)connectedDevices[keys.Current];
+                HashSet<Device> devices = (HashSet<Device>)keys.Value;
+
+                List<Device> recognized = new List<Device>();
 
                 //Loop through all drive info objects to look for the current drive.
                 foreach (DriveInfo di in drives)
                 {
-                    Device recognized = RecognizeDevice(di);
-                    if (di.Name == driveLetter && (recognized != null && recognized.Name == device.Name))
+                    recognized = RecognizeDevice(di);
+                    if (di.Name == driveLetter && (recognized != null && recognized.Count > 0))
                     {
                         found = true;
                         break;
@@ -77,9 +79,12 @@ namespace Notpod
 
                 if (!found)
                 {
+                    foreach (Device device in recognized)
+                    {
+                        OnDeviceDisconnected(driveLetter, device);
+                    }
                     RemoveDevice(driveLetter);
-                    OnDeviceDisconnected(driveLetter, device);
-                    keys = connectedDevices.Keys.GetEnumerator();
+                    keys = connectedDevices.GetEnumerator();
                 }
             }
         }
@@ -95,16 +100,21 @@ namespace Notpod
             //the defined patterns for devices that Notpod recognizes.
             foreach (DriveInfo di in drives)
             {
-                Device recognized = RecognizeDevice(di);
-                if (recognized == null)
+                List<Device> recognized = RecognizeDevice(di);
+                if (recognized == null || recognized.Count == 0)
                     continue;
 
-                if (connectedDevices.ContainsKey(di.Name))
-                    continue;
+                if (!connectedDevices.ContainsKey(di.Name))
+                    connectedDevices.Add(di.Name, new HashSet<Device>());
 
-                connectedDevices.Add(di.Name, recognized);
-                OnDeviceConnected(di, recognized);
-
+                foreach (Device device in recognized)
+                {
+                    if (!connectedDevices[di.Name].Contains(device))
+                    {
+                        connectedDevices[di.Name].Add(device);
+                        OnDeviceConnected(di, device);
+                    }
+                }
             }
         }
 
@@ -113,28 +123,28 @@ namespace Notpod
         /// </summary>
         /// <param name="drive">The drive where the device is located.</param>
         /// <returns>Device with device info if it has been recognized, null otherwise.</returns>
-        private Device RecognizeDevice(DriveInfo drive)
+        private List<Device> RecognizeDevice(DriveInfo drive)
         {
+            List<Device> result = new List<Device>();
             foreach (Device d in deviceConfig.Devices)
             {
-                if(Directory.Exists(drive.Name + d.RecognizePattern) || 
-                    File.Exists(drive.Name + d.RecognizePattern) || 
+                if (Directory.Exists(drive.Name + d.RecognizePattern) ||
+                    File.Exists(drive.Name + d.RecognizePattern) ||
                     drive.VolumeLabel == d.RecognizePattern)
                 {
-                    return d;                     
+                    result.Add(d);
                 }
             }
-
-            return null;
+            return result;
         }
 
         /// <summary>
         /// Remove a device from the list of disconnected devices.
         /// </summary>
         /// <param name="drive">The name of the drive where the device was connected.</param>
-        private void RemoveDevice(string drive)
+        private void RemoveDevice(string device)
         {
-            connectedDevices.Remove(drive);
+            connectedDevices.Remove(device);
         }
 
         /// <summary>
@@ -169,16 +179,27 @@ namespace Notpod
         /// <see cref="Notpod.IConnectedDevicesManager#GetConnectedDevices()"/>
         /// </summary>
         /// <returns>A Hashtable with Device objects representing the connected devices.</returns>
-        public ICollection GetConnectedDevices()
+        public HashSet<Device> GetConnectedDevices()
         {
-            return connectedDevices.Values;
+            HashSet<Device> result = new HashSet<Device>();
+            foreach (HashSet<Device> devices in connectedDevices.Values)
+            {
+                foreach (Device device in devices)
+                {
+                    if (!result.Contains(device))
+                    {
+                        result.Add(device);
+                    }
+                }
+            }
+            return result;
         }
 
 
         /// <summary>
         /// <see cref="Notpod.IConnectedDevicesManager#GetConnectedDevicesWithDrives()"/>
         /// </summary>
-        public Hashtable GetConnectedDevicesWithDrives()
+        public Dictionary<String,HashSet<Device>> GetConnectedDevicesWithDrives()
         {
             return connectedDevices;
         }
