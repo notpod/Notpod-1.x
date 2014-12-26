@@ -21,6 +21,7 @@ namespace Notpod
         /// %ALBUM%         = The album name
         /// %ALBUMINITIAL% 	= The album initial
         /// %NAME%          = The track name
+        /// %TRACKNUMINPLAYLIST% = Play order index from playlist with leading zero
         /// %TRACKNUMSPACE% = The track number with a trailing space
         /// %TRACKNUM%      = The track number (no trailing space)
         /// %DISCNUMDASH%   = The disc number with a trailing minus and space
@@ -46,6 +47,7 @@ namespace Notpod
 
                 patternstring = TranslateArtist(pattern, track, patternstring);
                 patternstring = TranslateArtistInitial(pattern, track, patternstring);
+                patternstring = TranslateTrackNumberInPlaylist(track, patternstring);
                 patternstring = TranslateAlbumArtist(pattern, track, patternstring);
                 patternstring = TranslateDiscNumber(track, patternstring);
                 patternstring = TranslateAlbum(track.Album, patternstring);
@@ -81,6 +83,23 @@ namespace Notpod
             patternstring = patternstring.Replace("%ARTISTINITIAL%", artist.Substring(0,1).ToUpper());
             return patternstring;
 		}
+
+        /// <summary>
+        /// Translate track playorder index from playlist.
+        /// </summary>
+        /// <param name="track"></param>
+        /// <param name="patternstring"></param>
+        /// <returns></returns>
+        private static string TranslateTrackNumberInPlaylist(IITFileOrCDTrack track, string patternstring)
+        {
+            //%TRACKNUMINPLAYLIST%
+            patternstring = patternstring.Replace("%TRACKNUMINPLAYLIST%",
+                (track.PlayOrderIndex.ToString().Length == 1 ? "00" + track.PlayOrderIndex.ToString()
+                    : track.PlayOrderIndex.ToString().Length == 2 ? "0" + track.PlayOrderIndex.ToString()
+                    : track.PlayOrderIndex.ToString())
+            );
+            return patternstring;
+        }
 
         /// <summary>
         /// Translate file extension.
